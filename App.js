@@ -1,20 +1,23 @@
-import React from "react";
+import Root from './screens/RootNavigator';
+import React, {useEffect} from 'react';
+import SplashScreen from 'react-native-splash-screen'; /** 추가 **/
 
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/HomeScreen";
-import LoginScreen from "./screens/LoginScreen";
-import KakaoLogin from "./screens/KakaoLogin";
-
-const Stack = createNativeStackNavigator();
-export default function App() {
+function App(){
+  // useEffect(() => {
+  //   try {
+  //     setTimeout(() => {
+  //       SplashScreen.hide(); /** 추가 **/
+  //     }, 2000); /** 스플래시 시간 조절 (2초) **/
+  //   } catch(e) {
+  //     console.warn('에러발생');
+  //     console.warn(e);
+  //   }
+  // });
+  
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="KakaoLogin" component={KakaoLogin} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    // <ScreenHeader></ScreenHeader>
+    <Root/>
   );
-}
+};
+
+export default App;
