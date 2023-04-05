@@ -11,18 +11,19 @@ export default function ScreenHeader(){
     const isLargeScreen = windowWidth >= 720;
     return(
         <View style={styles.screenHeader}>
-            <TouchableOpacity style={styles.screenHeaderTitle} href="#">
-                <Image source={require('../assets/logo.png')}
-                        style={styles.logo} resizeMode='contain' />
-            </TouchableOpacity>
-            <View>
-                <Text>기부하기</Text>
-            </View>
-            <View style={styles.screenHeaderBtn}>
-                <TouchableOpacity href="">
-                    <Image source={require('../assets/notification.png')}
-                    style={styles.screenHeaderBtnImg} resizeMode='contain' />
-                </TouchableOpacity>
+            <View style={styles.screenHeaderView}>
+                <View style={styles.screenHeaderTitleView}>
+                    <TouchableOpacity style={styles.screenHeaderTitle} href="">
+                        <Image source={require('../assets/logo.png')}
+                                style={styles.logo} resizeMode='contain' />
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.screenHeaderBtn}>
+                    <TouchableOpacity href="">
+                        <Image source={require('../assets/notification.png')}
+                        style={styles.screenHeaderBtnImg} resizeMode='contain' />
+                    </TouchableOpacity>
+                </View>
             </View>
         </View>
     );
@@ -30,18 +31,18 @@ export default function ScreenHeader(){
 
 const styles = StyleSheet.create({
     logo: {
-        width: windowWidth * 0.07,
-        height: windowHeight * 0.045,
+        width: windowWidth * 0.06,
+        height: windowHeight * 0.03,
     },
     screenHeader: {
         width: '100%',
-        height: '12%',
+        height: '14%',
         flexDirection: 'row',
         justifyContent: 'space-around',
         position: 'absolute',
         zIndex: 1,
         backgroundColor: Variables.mainColor,
-        borderRadius: 15,
+        // borderRadius: 15,
         alignItems: 'center',
     },
     screenHeaderTitle: {
@@ -50,7 +51,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 0.2,
         // backgroundColor: '#fff',
     },
     screenHeaderBtn: {
@@ -59,9 +59,25 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '19%',
         height: 'auto',
+        marginRight: '5%',
     },
     screenHeaderBtnImg: {
         width: windowWidth * 0.07,
         height: windowHeight * 0.045,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+    },
+    screenHeaderView: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        marginTop: '10%',
+    },
+    screenHeaderTitleView: {
+        marginLeft: '4%',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
