@@ -5,7 +5,7 @@ import { Variables } from './Variables';
 
 export default function navBottom(){
     return(
-        <View>
+        <View style={styles.mainNavBottom}>
         </View>
     );
 };

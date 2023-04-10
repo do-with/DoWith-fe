@@ -7,7 +7,7 @@ import { Link } from "react-router-native";
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export default function ScreenHeader(){
+export default function ScreenHeader({navigation}){
     const isLargeScreen = windowWidth >= 720;
     return(
         <View style={styles.screenHeader}>

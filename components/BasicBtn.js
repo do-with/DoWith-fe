@@ -1,57 +1,39 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-// import {vw, vh} from 'react-native-viewport-units';
+import { StyleSheet, Pressable, Text } from 'react-native';
+import { Variables } from './Variables';
 
-export default function BasicBtn(){
+const BasicBtn = ({ onPress, title}) => {
     return(
-        <View style={styles.basicBtn}>
-        </View>
+        <Pressable
+            onPress={onPress}
+            style={(pressed) => [
+                styles.btnSm
+            ]}>
+            <Text style={{color: 'white'}}>{title}</Text>
+        </Pressable>
     );
 };
 
+export default BasicBtn;
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
+    btnSm: {
+        width: 64,
+        height: 30,
+        marginVertical: 10,
+        marginHorizontal: 20,
+        display: 'flex',
         justifyContent: 'center',
-      },
-      basicBtn: {
-        color: 'rgba(0, 0, 0, 0.63)',
-        border: 'none',
-        width: '147px',
-        height: '60px',
-        boxShadow: '1px 2px 2px 1px rgba(182, 182, 182, 0.179)',
-        borderRadius: '8px',
-        backgroundColor: 'white',
-        fontSize: '16px',
-        fontWeight: 700,
-        letterSpacing: '2px',
-        margin: '7px 0px',
-    },
-});    
-    // basicBtn > input : {
-    //     color: 'rgba(0, 0, 0, 0.63)',
-    //     border: 'none',
-    //     width: '147px',
-    //     height: '60px',
-    //     boxShadow: '1px 2px 2px 1px rgba(182, 182, 182, 0.179)',
-    //     borderRadius: '8px',
-    //     backgroundColor: 'white',
-    //     fontSize: '16px',
-    //     fontWeight: 700,
-    //     letterSpacing: '2px',
-    //     margin: '7px 0px',
-    // },
-    // @media (min-width: 720px) {
-    //     .basic-btn> input {
-    //         font-size: 25px;
-    //         margin: 10px 0px;
-    //     }
-    //     .login-content_submit > input{
-    //         font-size: 19pt;
-    //         letter-spacing: 5px;
-    //     }
-        
-    // }
- 
+        alignItems: 'center',
+        color: 'white',
+        backgroundColor: Variables.btnColor,
+        borderTopWidth: 1,
+        borderRightWidth: 3,
+        borderBottomWidth: 3,
+        borderLeftWidth: 1,
+        borderStyle: 'solid',
+        borderColor: 'rgba(11, 14, 18, 0.13)',
+        boxShadow: '2px 3px 3px rgba(137, 189, 218, 0.2)',
+        borderRadius: 5,
+    }
+});

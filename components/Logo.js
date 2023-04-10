@@ -6,8 +6,7 @@ import { StyleSheet, View, Image, Link } from 'react-native';
 export default function Logo(){
     return(
         <View style={styles.container}>
-            <Image source={require('../assets/logo.png')}
-                    style={styles.logo} />
+            
         </View>
     );
 };

@@ -1,7 +1,6 @@
 import { StyleSheet, View, Button, Image, TouchableOpacity, Text, Pressable, Dimensions } from "react-native";
 import ScreenHeader from "../components/ScreenHeader";
 import Banner from '../components/Banner';
-import { Variables } from "../components/Variables";
 import { LinearGradient } from 'expo-linear-gradient';
 
 const windowWidth = Dimensions.get('window').width;
