@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 // import {vw, vh} from 'react-native-viewport-units';
 
 export default function Banner(){
     return(
         <View style={styles.contentBanner}>
+            <Text>배너</Text>
         </View>
     );
 };

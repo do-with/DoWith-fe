@@ -33,22 +33,3 @@ const styles = StyleSheet.create({
     },
 
 });
-
-// .main-navBottom-border > ul{
-//     display: flex;
-//     align-items: center;
-//     justify-content: space-between;
-
-// }
-
-// @media (min-width:850px){
-//     .main-navBottom {
-//         width: 100%;
-//         height: 26%;
-
-//     }
-//     .main-navBottom-border {
-//         width: 94%;
-//         height: 79%;
-//     }
-// }

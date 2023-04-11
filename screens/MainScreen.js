@@ -72,7 +72,7 @@ function MainScreen({ navigation }) {
                     </Pressable>
                 </View> 
             </View>
-
+            
             <Banner>
                 {/* <div class="single-item">
                     <a href=""> 1 </a>

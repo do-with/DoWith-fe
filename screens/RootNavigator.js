@@ -7,14 +7,14 @@ import KakaoLogin from "./KakaoLogin";
 import MainScreen from './MainScreen';
 import DonateScreen from './DonateScreen';
 import FirstCsPage from './FirstCsPage';
-import SecondCsPage from './SecondCsPage';
+import SecondCsPage from "./SecondCsPage";
 import NearByStore from './NearByStore';
 
 const Stack = createNativeStackNavigator();
 export default function RootNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="SecondCsPage">
+      <Stack.Navigator initialRouteName="FirstCsPage">
         <Stack.Screen name="MainScreen" options={{headerShown:false}} component={MainScreen}/>
         <Stack.Screen name="DonateScreen" options={{headerShown: false}} component={DonateScreen}/>
         <Stack.Screen name="LoginScreen" options={{headerShown: false}} component={LoginScreen} />

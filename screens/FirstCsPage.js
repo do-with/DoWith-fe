@@ -33,7 +33,7 @@ function FirstCsPage({ navigation }) {
             <View style={styles.csBoards}>
                 <View style={styles.csBoardsBtn}>
                     <TransImgBtn 
-                        onPress={()=>navigation.navigate("NearByStore")}
+                        onPress={()=>navigation.push("SecondCsPage", {id: 1})}
                         url={require("../assets/donator-cs.png")}
                         title="기부자 문의"
                         subtitle="기부하는 것에 대한 질문이 있으신가요?" 
@@ -41,7 +41,7 @@ function FirstCsPage({ navigation }) {
                 </View>
                 <View style={styles.csBoardsBtn}>
                     <TransImgBtn 
-                        onPress={()=>navigation.navigate("NearByStore")}
+                        onPress={()=>navigation.push("SecondCsPage", {id: 2})}
                         url={require("../assets/donation-request-cs.png")}
                         title="기부 요청 문의"
                         subtitle="기부 요청을 하려고 하시나요?" 
@@ -49,7 +49,7 @@ function FirstCsPage({ navigation }) {
                 </View>
                 <View style={styles.csBoardsBtn}>
                     <TransImgBtn 
-                        onPress={()=>navigation.navigate("NearByStore")}
+                        onPress={()=>navigation.push("SecondCsPage", {id: 3})}
                         url={require("../assets/other-cs.png")}
                         title="기타 문의"
                         subtitle="좋은 의견이나, 개선하고 싶은 것이 있으신가요?"
