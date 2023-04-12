@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 export default function RootNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="FirstCsPage">
+      <Stack.Navigator initialRouteName="MainScreen">
         <Stack.Screen name="MainScreen" options={{headerShown:false}} component={MainScreen}/>
         <Stack.Screen name="DonateScreen" options={{headerShown: false}} component={DonateScreen}/>
         <Stack.Screen name="LoginScreen" options={{headerShown: false}} component={LoginScreen} />

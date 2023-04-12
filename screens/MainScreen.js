@@ -2,6 +2,7 @@ import { StyleSheet, View, Button, Image, TouchableOpacity, Text, Pressable, Dim
 import ScreenHeader from "../components/ScreenHeader";
 import Banner from '../components/Banner';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Variables } from "../components/Variables";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -14,7 +15,7 @@ function MainScreen({ navigation }) {
             <View style={styles.content}>
                 <View style={styles.contentCategory}>
                     <TouchableOpacity style={styles.transImgBtn}
-                        onPress={() => navigation.navigate("가까운매장")}>
+                        onPress={() => navigation.navigate("NearByStore")}>
                         <Image source={require("../assets/store.png")}
                             style={styles.img} resizeMode={"contain"}/>
                         <Text>가까운 매장</Text>
@@ -54,7 +55,7 @@ function MainScreen({ navigation }) {
                     <Text>마음이 1회 전달됐어요.</Text>
                     <TouchableOpacity style={styles.blue}
                         href="">
-                        <Text style={styles.whiteText}>나의 목록 보러가기</Text>
+                        <Text style={{color: 'white'}}>나의 목록 보러가기</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.contentBtn}>
@@ -62,9 +63,9 @@ function MainScreen({ navigation }) {
                         style={[styles.blue, styles.basicBtnContentMine]}>
                         <Pressable
                             onPress={() => navigation.navigate("DonateScreen")}>
-                        <Text style={styles.whiteText}>간편하게 기부하기</Text>
+                            <Text style={{color: 'white'}}>간편하게 기부하기</Text>
                         </Pressable>
-                </LinearGradient>
+                    </LinearGradient>
                     
                     <Pressable style={styles.basicBtnContentMine}
                         onclick="">
@@ -95,7 +96,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        width: windowWidth * 0.25,
+        width: '25%',
         height: '35%',
     },
     img: {
@@ -104,10 +105,11 @@ const styles = StyleSheet.create({
 
     },
     mainContent: {
-        height: windowHeight*0.9,
+        height: '95%',
         width: '100%',
-        top: '13%',
+        top: '12%',
         position: 'relative',
+        backgroundColor: Variables.mainColor,
     },
     mainBody: {
         color: 'transparent',
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-evenly',
         width: '100%',
         alignItems:'center',
-        height: '32%',
+        height: '33%',
         position: 'relative',
         backgroundColor: 'white',
     },
@@ -130,11 +132,16 @@ const styles = StyleSheet.create({
         alignItems:'center',
         height: '32%',
         position: 'relative',
+        backgroundColor: 'rgba(255, 255, 255, 0.55)',
+        boxShadow: '1px 2px 4px rgba(70, 70, 70, 0.2)',
+        borderRadius: 15,
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
     },
     contentMine: {
         position: 'relative',
         width: '100%',
-        height: '29%',
+        height: '30%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-evenly',
@@ -142,7 +149,7 @@ const styles = StyleSheet.create({
     
     },
     contentMineHistoryBtn: {
-        fontFamily: 'Noto Sans KR',
+        // fontFamily: 'Noto Sans KR',
         display: 'flex',
         flexDirection: 'column',
         width: '42%',
@@ -178,10 +185,7 @@ const styles = StyleSheet.create({
         // letterSpacing: '2px',
     },
     blue: {
-        backgroundColor: 'linear-gradient(317.7deg, rgba(0, 0, 0, 0.7) 0%, rgba(255, 255, 255, 0.7) 105.18%), #2A93BF',
-    },
-    whiteText:{
-        color: 'white',
+        backgroundColor: Variables.btnColor,
     },
     contentBtn: {
         width: '40%',
