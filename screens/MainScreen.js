@@ -34,6 +34,7 @@ function MainScreen({ navigation }) {
                 <View style={styles.contentCategory}>
                     <TouchableOpacity style={styles.transImgBtn}>
                         <Image source={require("../assets/menual.png")}
+                            onPress={() => navigation.navigate("AboutScreen")}
                             style={styles.img} resizeMode={"contain"}/>
                         <Text>이용 방법</Text>
                     </TouchableOpacity>
