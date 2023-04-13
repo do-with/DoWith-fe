@@ -1,11 +1,17 @@
-import React from "react";
+import React, {useState} from "react";
 import { StyleSheet, View, Text, Pressable, Image } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import ScreenHeader from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
+import BottomSheet from "../components/BottomSheet";
 
 
 export default function NearByStore() {
+  const [ modalVisible, setModalVisible ] = useState(false);
+  const pressButton = () => {
+      setModalVisible(true);
+  }
+
   return (
     <View style={styles.nearByBody}>
         <ScreenHeader />
@@ -22,21 +28,38 @@ export default function NearByStore() {
           </View>
 
           <View style={styles.contentListWrapApi}>
-            <View style={[styles.contentList, styles.contentListApi]}>
-              <View style={[styles.listBoxImg, styles.listBoxImgApi]}>
-                <View style={[styles.contentListText, styles.contentListTextApi]}>
-                  <Text>푸드뱅크 이름</Text>
-                  <Text>거리</Text>
-                  <Text>전화번호</Text>
-                </View>
-
-                <View style={[styles.contentListImg, styles.contentListImgApi]}>
-                  <Text>json(아마 지도?)</Text>
+            <Pressable onPress={pressButton}>
+              <View style={[styles.contentList, styles.contentListApi]}>
+                <View style={[styles.listBoxImg, styles.listBoxImgApi]}>
+                  <View style={[styles.contentListText, styles.contentListTextApi]}>
+                    <Text>푸드뱅크 이름</Text>
+                    <Text>거리</Text>
+                    <Text>전화번호</Text>
+                  </View>
+                  <View style={[styles.contentListImg, styles.contentListImgApi]}>
+                    <Text>json(아마 지도?)</Text>
+                  </View>
                 </View>
               </View>
-            </View>
+            </Pressable>
           </View>
-          
+
+          <BottomSheet
+              modalVisible={modalVisible}
+              setModalVisible={setModalVisible}
+          />
+          {/* 내용 map을 통해 key 값 넘김 
+           <View style={styles.modal}>
+            <View style={styles.modalBody}>
+              <Text>KAKAO map</Text>
+              <View style={styles.nearbyAddress}>
+                <Text>위치 정보</Text>
+              </View>
+              <View style={styles.modal}>
+                <Text>kakao api</Text>
+              </View>
+            </View>
+          </View> */}
         </View>
       </View>
         
