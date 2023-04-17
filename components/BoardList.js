@@ -1,20 +1,25 @@
 import React from 'react';
 import { StyleSheet, View, Pressable, Text } from 'react-native';
 
-export const BoardList = ({}) => {
+export const BoardList = ({onPress, onClickList, url, title, name, createdAt, answerYn}) => {
     return(
-        <View style={[styles.csBoardList, styles.csBoardListBtn]}>
-            {/* 질문 글 개수만큼 Pressable 있어야 함 */}
-            <Pressable onPress={()=>navigation.push()}>
-                <View style={styles.boardListTitle}>
-                    <Text>질문 글 제목</Text>
-                    <Text>날짜</Text>
-                </View>
-                <View style={styles.boardListSubTitle}>
-                    <Text>이름</Text>
-                </View>
-            </Pressable>
-        </View>
+        <Pressable
+            onPress={()=>onClickList()}
+            style={(pressed) => [
+                styles.csBoardList, 
+                styles.csBoardListBtn
+        ]}>
+            <View style={styles.boardListTitle}>
+                <Text>Q. {title}</Text>
+                <Text>{createdAt}</Text>
+            </View>
+            <View style={styles.boardListSubTitle}>
+                <Text>{name}</Text>
+            </View>
+            <View>
+                <Text>{answerYn}</Text>
+            </View>
+        </Pressable>
     );
 };
 

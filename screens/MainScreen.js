@@ -22,7 +22,8 @@ function MainScreen({ navigation }) {
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.transImgBtn}>
                         <Image source={require("../assets/notice.png")}
-                                style={styles.img} resizeMode={"contain"}/>
+                            onPress={() => navigation.navigate("Announce1")}
+                            style={styles.img} resizeMode={"contain"}/>
                         <Text>알림 마당</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.transImgBtn}>

@@ -1,9 +1,20 @@
-import { StyleSheet, View, ScrollView, Text} from "react-native";
+import { useState, useEffect } from 'react';
+import { StyleSheet, View, ScrollView, Text, Pressable, TouchableOpacity } from "react-native";
 import ScreenHeader from "../components/ScreenHeader";
 import BtnSm from "../components/BtnSm";
 import { BoardList } from "../components/BoardList";
+import Moment from 'moment';
+import axios from 'axios';
 
 function SecondCsPage({ navigation, route }) {
+    const [post, setPost] = useState([]);
+    const id =  route.params.id;
+    useEffect(() => {
+        axios.get(`http://localhost:8080/post/board/${id}`)
+            .then(response => setPost(response.data))
+            .catch(error => console.log(error))
+      }, []);
+      
   return (
     <View style={styles.joinBody}>
         <ScreenHeader />
@@ -13,12 +24,23 @@ function SecondCsPage({ navigation, route }) {
                     <BtnSm primary title="최신순" color="white"/>
                     <BtnSm title="글쓰기" />
                 </View>
-
-                <View style={styles.boardListView}>
-                    {/* <BoardList /> 컴포넌트 사용 */}
-                    <Text>id: {route.params.id}</Text>
-                    <BoardList />
-                </View>
+                {post.map((post) => {
+                    let date = post.created_at.toString();
+                    const formattedDate = Moment(date).format('d MMM');
+                    const onClickList = () => {
+                        navigation.push("ThirdCsPage", {id: post.id});
+                    };
+                    return(
+                        <View key={post.id}>
+                            <BoardList
+                                onClickList={onClickList}
+                                title={post.title}
+                                createdAt={formattedDate}
+                                answerYn={post.answer_yn.toString()}
+                            />
+                        </View>
+                    )
+                })}
             </ScrollView>
         </View>
     </View>
@@ -57,5 +79,7 @@ const styles = StyleSheet.create({
     boardListView: {
         justifyContent: 'center',
         alignItems: 'center',
+        borderWidth: 5,
+        zIndex: 1,
     }
 });
