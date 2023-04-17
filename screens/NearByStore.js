@@ -1,16 +1,48 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { StyleSheet, View, Text, Pressable, Image } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import ScreenHeader from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
 import BottomSheet from "../components/BottomSheet";
-
+import { WebView } from "react-native-webview";
 
 export default function NearByStore() {
   const [ modalVisible, setModalVisible ] = useState(false);
   const pressButton = () => {
       setModalVisible(true);
   }
+  const mapUrl = "https://dapi.kakao.com/v2/maps/sdk.js?appkey=27ec305b516496a1b6ccfee8a420e520";
+
+  const injectedJavaScript = `
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = '${mapUrl}';
+    document.head.appendChild(script);
+
+    script.addEventListener("load", ()=>{
+      window.kakao.maps.load(() => {
+        const mapContainer = document.getElementById("map");
+        const mapOption = {
+          center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+          level: 8, // 지도의 확대 레벨
+        };
+        new window.kakao.maps.Map(mapContainer, mapOption);
+      })
+    })`;
+
+  const Map = () => {
+    return (
+      <View style={{ flex: 1}}>
+        <WebView
+          style={{width: '100%', height: '100%'}}
+          // source={{ uri: 'file:///Users/1jinju/DoWith-fe/screens/map.html' }}
+          source={require('./map.html')}
+          originWhitelist={['*']}
+          javaScriptEnabled={true} // JavaScript 활성화
+        />
+      </View>
+    )
+  };
 
   return (
     <View style={styles.nearByBody}>
@@ -42,12 +74,15 @@ export default function NearByStore() {
                 </View>
               </View>
             </Pressable>
+            <Map/>
           </View>
 
           <BottomSheet
               modalVisible={modalVisible}
               setModalVisible={setModalVisible}
           />
+          
+
           {/* 내용 map을 통해 key 값 넘김 
            <View style={styles.modal}>
             <View style={styles.modalBody}>
