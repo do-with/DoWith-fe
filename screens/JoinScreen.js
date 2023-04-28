@@ -176,15 +176,6 @@ const styles = StyleSheet.create({
         marginBottom: '3%',
         fontSize: 14,
     },
-    joinBtn: {
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '90%',
-        height: '9%',
-        backgroundColor: Variables.btnColor,
-        borderRadius: 3,
-    },
     textForm:{
         borderBottomWidth: 1,
         borderBottomColor: '#d7d7d7',
@@ -202,5 +193,14 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#d7d7d7',
         paddingBottom: '2%',
+    },
+    joinBtn: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '90%',
+        height: '9%',
+        backgroundColor: Variables.btnColor,
+        borderRadius: 5,
     },
 });
