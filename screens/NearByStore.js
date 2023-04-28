@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import { StyleSheet, View, Text, Pressable, Image } from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
-import ScreenHeader from "../components/ScreenHeader";
+import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
 import BottomSheet from "../components/BottomSheet";
 import { WebView } from "react-native-webview";
@@ -36,9 +36,9 @@ export default function NearByStore() {
         <WebView
           style={{width: '100%', height: '100%'}}
           // source={{ uri: 'file:///Users/1jinju/DoWith-fe/screens/map.html' }}
-          source={require('./map.html')}
+          // source={require('./map.html')}
           originWhitelist={['*']}
-          javaScriptEnabled={true} // JavaScript 활성화
+          javaScriptEnabled={injectedJavaScript} // JavaScript 활성화
         />
       </View>
     )
@@ -46,7 +46,7 @@ export default function NearByStore() {
 
   return (
     <View style={styles.nearByBody}>
-        <ScreenHeader />
+        <ScreenHeader headerTitle="가까운 매장"/>
         <View style={styles.nearByContent}>
           <View style={styles.nearByImgBackground}>
             <Image source={require("../assets/nearby-background.png")}

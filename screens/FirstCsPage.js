@@ -1,12 +1,12 @@
 import { StyleSheet, View, Text, Pressable, Image } from "react-native";
-import ScreenHeader from "../components/ScreenHeader";
+import { ScreenHeader } from "../components/ScreenHeader";
 import { TransImgBtn } from "../components/TransImgBtn";
 import { Variables } from "../components/Variables";
 
 function FirstCsPage({ navigation }) {
   return (
     <View style={styles.csFirstPageBody}>
-        <ScreenHeader />
+        <ScreenHeader headerTitle="문의하기" />
         <View style={styles.csFirstPageContent}>
             <View style={styles.csCall}>
                 <Text style={styles.h3}>전화 연결</Text>

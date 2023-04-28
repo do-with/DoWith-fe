@@ -2,8 +2,8 @@
 // home -> login -> kakaoLogin -> Main
 
 import { StyleSheet, View, Text, Pressable, TextInput, Button, TouchableOpacity, Image, Dimensions } from "react-native";
-import ScreenHeader from "../components/ScreenHeader";
-import {useState } from 'react';
+import { ScreenHeader } from "../components/ScreenHeader";
+import { useState } from 'react';
 import { CustomInput } from "../components/CustomInput";
 import { Variables } from "../components/Variables";
 
@@ -11,12 +11,12 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 function LoginScreen({ navigation }) {
-
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
   return (
     <View style={styles.loginBody}>
-        <ScreenHeader />
+        <ScreenHeader headerTitle="로그인"/>
         <View style={styles.loginContent}>
           <View style={styles.loginForm}>
             <CustomInput 
@@ -47,7 +47,7 @@ function LoginScreen({ navigation }) {
           </View>
           <View style={styles.basicBtnJoinTrans}>
             <Pressable style={styles.btnJoinBox}
-              onPress={() => navigation.navigate("JoinScreen")}>
+              onPress={() => navigation.navigate("JoinScreen1")}>
               <Text>회원가입</Text>
             </Pressable>
           </View>

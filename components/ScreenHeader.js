@@ -7,7 +7,7 @@ import { Link } from "react-router-native";
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export default function ScreenHeader({navigation}){
+export const ScreenHeader = ({navigation, headerTitle}) => {
     const isLargeScreen = windowWidth >= 720;
     return(
         <View style={styles.screenHeader}>
@@ -17,6 +17,9 @@ export default function ScreenHeader({navigation}){
                         <Image source={require('../assets/logo.png')}
                                 style={styles.logo} resizeMode='contain' />
                     </TouchableOpacity>
+                </View>
+                <View>
+                    <Text style={styles.headerTitleText}>{headerTitle}</Text>
                 </View>
                 <View style={styles.screenHeaderBtn}>
                     <TouchableOpacity href="">
@@ -74,10 +77,15 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         marginTop: '10%',
+        alignItems: 'center',
     },
     screenHeaderTitleView: {
         marginLeft: '4%',
         justifyContent: 'center',
         alignItems: 'center',
     },
+    headerTitleText: {
+        fontWeight: 'bold',
+        color: Variables.btnColor,
+    }
 });

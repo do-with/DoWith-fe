@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Image, Text } from 'react-native';
-import ScreenHeader from '../components/ScreenHeader';
+import { ScreenHeader } from '../components/ScreenHeader';
 import { InputImgBtn } from '../components/InputImgBtn';
 
 export default function AboutScreen({navigation}){
@@ -19,7 +19,7 @@ export default function AboutScreen({navigation}){
 
     return(
         <View style={styles.aboutBody}>
-            <ScreenHeader />
+            <ScreenHeader headerTitle="이용방법"/>
             <View style={styles.aboutContent}>
                 <View style={[styles.checkDoner, styles.checkDonerAbout]}>
                     <View style={[styles.imgBtnJoin, styles.imgBtnJoinAbout]}>

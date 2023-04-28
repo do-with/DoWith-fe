@@ -1,10 +1,10 @@
 import { StyleSheet, View, TextInput} from "react-native";
-import ScreenHeader from "../components/ScreenHeader";
+import { ScreenHeader } from "../components/ScreenHeader";
 
 function DonateScreen({ navigation }) {
   return (
     <View style={styles.joinBody}>
-        <ScreenHeader />
+        <ScreenHeader headerTitle="기부하기" />
         <View style={styles.joinContent}>
             <TextInput placeholder="useless placeholder" />
         </View>

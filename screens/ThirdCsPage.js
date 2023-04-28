@@ -1,28 +1,28 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, Text} from "react-native";
-import ScreenHeader from "../components/ScreenHeader";
+import { ScreenHeader } from "../components/ScreenHeader";
 import axios from 'axios';
-
+import {ipAddress} from '../ipAddress';
 function SecondCsPage({ navigation, route }) {
     const [postConetent, setPostContent] = useState([]);
     const [commentList, setCommentList] = useState([]);
     const id =  route.params.id;
     
     useEffect(() => {
-        axios.get(`http://localhost:8080/post/${id}`)
+        axios.get(`http://${ipAddress}:8080/post/${id}`)
             .then(response => setPostContent(response.data))
             .catch(error => console.log(error))
       }, []);
 
     useEffect(() => {
-    axios.get(`http://localhost:8080/comment/post/${id}`)
-        .then(response => setCommentList(response.data))
-        .catch(error => console.log(error))
+        axios.get(`http://${ipAddress}:8080/comment/post/${id}`)
+            .then(response => setCommentList(response.data))
+            .catch(error => console.log(error))
     }, []);
       
     return (
         <View style={styles.joinBody}>
-            <ScreenHeader />
+            <ScreenHeader headerTitle="문의하기"/>
             <View style={styles.csSecondPageContent}>
                 <ScrollView>
                     <View style={styles.boardListView}>
