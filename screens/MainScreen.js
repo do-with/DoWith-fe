@@ -45,22 +45,30 @@ function MainScreen({ navigation }) {
                                 style={styles.img} resizeMode={"contain"}/>
                         <Text>문의하기</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.transImgBtn}>
+                    <TouchableOpacity style={styles.transImgBtn}
+                        onPress={() => navigation.navigate("SupportMoney")}>
                         <Image source={require("../assets/burger.png")}
                                 style={styles.img} resizeMode={"contain"}/>
-                        <Text>지역 거래</Text>
+                        <Text>후원하기</Text>
                     </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.contentMine}>
-                <View style={styles.contentMineHistoryBtn}>
-                    <Text>마음이 1회 전달됐어요.</Text>
-                    <TouchableOpacity style={styles.blue}
-                        href="">
-                        <Text style={{color: 'white'}}>나의 목록 보러가기</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.contentBtn}>
+                <LinearGradient colors={['#2992be','#2A93BF', '#3b5998']}
+                        style={styles.localTradeBtn}>
+                    <Pressable onPress={() => navigation.navigate('')}>
+                        <Text style={styles.localTradeBtnText}>우리 동네</Text>
+                        <Text style={styles.localTradeBtnText}>기부 거래</Text>
+                    </Pressable>
+                </LinearGradient>
+
+                <Pressable style={styles.donationBtn}
+                    onPress={() => navigation.navigate('')}>
+                    <Text style={styles.donationBtnText}>5분 만에</Text>
+                    <Text style={styles.donationBtnText}>기부 접수</Text>
+                </Pressable>
+                
+                {/* <View style={styles.contentBtn}>
                     <LinearGradient colors={['#2992be','#2A93BF', '#3b5998']}
                         style={[styles.blue, styles.basicBtnContentMine]}>
                         <Pressable
@@ -73,7 +81,7 @@ function MainScreen({ navigation }) {
                         onclick="">
                         <Text>나의 혜택보기</Text>
                     </Pressable>
-                </View> 
+                </View>  */}
             </View>
             
             <Banner>
@@ -150,14 +158,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     
     },
-    contentMineHistoryBtn: {
-        // fontFamily: 'Noto Sans KR',
+    donationBtn: {
         display: 'flex',
         flexDirection: 'column',
-        width: '42%',
-        height: '66%',
+        width: '45%',
+        height: '60%',
         boxSizing: 'border-box',
-        backgroundColor: 'white',
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
@@ -166,15 +172,16 @@ const styles = StyleSheet.create({
             width: 1,
             height: 2,
         },
+        backgroundColor: '#fff',
         shadowOpacity: 0.33,
         shadowRadius: 3,
         elevation: 3,
     },
-    basicBtnContentMine: {
+    localTradeBtn: {
         display: 'flex',
         flexDirection: 'column',
-        height: '35%',
-        width: '100%',
+        width: '45%',
+        height: '60%',
         justifyContent: 'center',
         color: 'rgba(0, 0, 0, 0.63)',
         border: 'none',
@@ -186,8 +193,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // letterSpacing: '2px',
     },
-    blue: {
-        backgroundColor: Variables.btnColor,
+    localTradeBtnText: {
+        color: '#fff',
+        fontWeight: 'bold',
+        fontSize: 20,
+    },
+    donationBtnText: {
+        fontWeight: 'bold',
+        fontSize: 20,
     },
     contentBtn: {
         width: '40%',

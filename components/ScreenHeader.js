@@ -1,14 +1,16 @@
 import React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, Text, Dimensions } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Text, Dimensions, Pressable } from 'react-native';
 import { Variables } from './Variables';
-import { Link } from "react-router-native";
+import { useNavigation } from '@react-navigation/native';
+
 // import {vw, vh} from 'react-native-viewport-units';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export const ScreenHeader = ({navigation, headerTitle}) => {
+export const ScreenHeader = ({headerTitle}) => {
     const isLargeScreen = windowWidth >= 720;
+    const navigation = useNavigation();
     return(
         <View style={styles.screenHeader}>
             <View style={styles.screenHeaderView}>
@@ -21,11 +23,19 @@ export const ScreenHeader = ({navigation, headerTitle}) => {
                 <View>
                     <Text style={styles.headerTitleText}>{headerTitle}</Text>
                 </View>
-                <View style={styles.screenHeaderBtn}>
-                    <TouchableOpacity href="">
-                        <Image source={require('../assets/notification.png')}
-                        style={styles.screenHeaderBtnImg} resizeMode='contain' />
-                    </TouchableOpacity>
+                <View style={styles.icon}>
+                    <View style={styles.screenHeaderBtn}>
+                        <Pressable onPress={() => navigation.navigate("Notification")}>
+                            <Image source={require('../assets/notification.png')}
+                            style={styles.screenHeaderBtnImg} resizeMode='contain' />
+                        </Pressable>
+                    </View>
+                    <View style={styles.screenHeaderBtn}>
+                        <Pressable onPress={() => navigation.navigate('MyPage')}>
+                            <Image source={require('../assets/notification.png')}
+                            style={styles.screenHeaderBtnImg} resizeMode='contain' />
+                        </Pressable>
+                    </View>
                 </View>
             </View>
         </View>
@@ -60,9 +70,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        width: '19%',
+        width: '2%',
         height: 'auto',
-        marginRight: '5%',
+        marginRight: '50%',
+        borderWidth: 1,
     },
     screenHeaderBtnImg: {
         width: windowWidth * 0.07,
@@ -87,5 +98,12 @@ const styles = StyleSheet.create({
     headerTitleText: {
         fontWeight: 'bold',
         color: Variables.btnColor,
+    },
+    icon: {
+        width: '20%',
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'row',
+        borderWidth: 1,
     }
 });

@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, Text} from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
-import axios from 'axios';
 import {ipAddress} from '../ipAddress';
+import axios from 'axios';
+
 function SecondCsPage({ navigation, route }) {
     const [postConetent, setPostContent] = useState([]);
     const [commentList, setCommentList] = useState([]);

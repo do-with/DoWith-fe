@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, Text, Pressable, TouchableOpacity } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
-import BtnSm from "../components/BtnSm";
 import { BoardList } from "../components/BoardList";
+import {ipAddress} from '../ipAddress';
+import BtnSm from "../components/BtnSm";
 import Moment from 'moment';
 import axios from 'axios';
-import {ipAddress} from '../ipAddress';
+
 
 function SecondCsPage({ navigation, route }) {
     const [post, setPost] = useState([]);
