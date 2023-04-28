@@ -29,7 +29,7 @@ function SecondCsPage({ navigation, route }) {
                 </View>
                 {post.map((post) => {
                     let date = post.created_at.toString();
-                    const formattedDate = Moment(date).format('d MMM');
+                    const formattedDate = Moment(date).format('YY.M.d');
                     const onClickList = () => {
                         navigation.push("ThirdCsPage", {id: post.id});
                     };
