@@ -16,6 +16,7 @@ function SecondCsPage({ navigation, route }) {
             .then(response => setPost(response.data))
             .catch(error => console.log(error))
       }, []);
+
       
   return (
     <View style={styles.joinBody}>
@@ -33,9 +34,11 @@ function SecondCsPage({ navigation, route }) {
                     const onClickList = () => {
                         navigation.push("ThirdCsPage", {id: post.id});
                     };
+                    const postId = post.id;
                     return(
                         <View key={post.id}>
                             <BoardList
+                                postId={id}
                                 onClickList={onClickList}
                                 title={post.title}
                                 createdAt={formattedDate}

@@ -1,7 +1,39 @@
 import React from 'react';
-import { StyleSheet, View, Pressable, Text } from 'react-native';
+import { StyleSheet, View, Pressable, Text, Alert } from 'react-native';
+import { ipAddress } from '../ipAddress';
+import axios from 'axios';
 
-export const BoardList = ({onPress, onClickList, url, title, name, createdAt, answerYn}) => {
+export const BoardList = ({ afterDelete, onClickList, id, title, name, createdAt, answerYn}) => {
+    const onDelete = () => {
+        const post_id = id;
+        axios
+          .delete(`http://${ipAddress}:8080/post/${post_id}`, {})
+          .then(() => {
+            // 게시글 목록을 다시 로딩합니다.
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      };
+
+    const onDeleteConfirm = () => {
+        Alert.alert(
+          "글 삭제",
+          "정말로 삭제하시겠습니까?",
+          [
+            {
+              text: "취소",
+              style: "cancel",
+            },
+            {
+              text: "삭제",
+              onPress: onDelete,
+            },
+          ],
+          { cancelable: false }
+        );
+      };
+    
     return(
         <Pressable
             onPress={()=>onClickList()}
@@ -10,7 +42,13 @@ export const BoardList = ({onPress, onClickList, url, title, name, createdAt, an
                 styles.csBoardListBtn
         ]}>
             <View style={styles.boardListTitle}>
-                <Text>Q. {title}</Text>
+                <View>
+                    <Text>Q. {title}</Text>
+                    <Pressable onPress={onDeleteConfirm}
+                        style={styles.deleteBtn}>
+                        <Text>x</Text>
+                    </Pressable>
+                </View>
                 <Text>{createdAt}</Text>
             </View>
             <View style={styles.boardListSubTitle}>
@@ -58,6 +96,10 @@ const styles = StyleSheet.create({
         display: 'flex',
         marginTop: '2%',
         flexDirection: 'column',
+    },
+    deleteBtn: {
+        width: 40,
+        borderWidth: 2,
     },
     boardListSubTitle: {
         width: '100%',

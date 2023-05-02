@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Image, Text, Pressable, TextInput } from 'react-native';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { ipAddress } from '../ipAddress';

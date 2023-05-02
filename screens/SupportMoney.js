@@ -1,22 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, Pressable, TextInput, Image } from 'react-native';
 import { Variables } from '../components/Variables';
 
 export default function SupportMoney({navigation}){
     const [point, setPoint] = useState();
     const [name, setName] = useState();
+
     const onSubmit = () => {
-        // useEffect(() => {
-        //     axios.post(``,
-        //     {
-                
-        //     })
-        //         .then(response => {
-        //             setPost(response.data);
-        //             navigation.navigate('');
+        // if (point && content) {
+        //     const data = {
+        //         point: point,
+        //         name: name,
+        //     };
+        //     axios.post(`http://${ipAddress}:8080/`, data, 
+        //         {
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             }
         //         })
-        //         .catch(error => console.log(error))
-        //   }, []);
+        //         .then(() => {
+        //             navigation.navigate('AfterSupport');
+        //         })
+        //         .catch(error => console.log(error)); 
+        // } 
         navigation.navigate('AfterSupport');
     };
 

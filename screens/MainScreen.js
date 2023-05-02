@@ -67,31 +67,7 @@ function MainScreen({ navigation }) {
                     <Text style={styles.donationBtnText}>5분 만에</Text>
                     <Text style={styles.donationBtnText}>기부 접수</Text>
                 </Pressable>
-                
-                {/* <View style={styles.contentBtn}>
-                    <LinearGradient colors={['#2992be','#2A93BF', '#3b5998']}
-                        style={[styles.blue, styles.basicBtnContentMine]}>
-                        <Pressable
-                            onPress={() => navigation.navigate("DonateScreen")}>
-                            <Text style={{color: 'white'}}>간편하게 기부하기</Text>
-                        </Pressable>
-                    </LinearGradient>
-                    
-                    <Pressable style={styles.basicBtnContentMine}
-                        onclick="">
-                        <Text>나의 혜택보기</Text>
-                    </Pressable>
-                </View>  */}
             </View>
-            
-            <Banner>
-                {/* <div class="single-item">
-                    <a href=""> 1 </a>
-                    <a href=""> 2 </a>
-                    <a href=""> 3 </a>
-                  </div> */}
-            </Banner>
-
         </View>
     </View>
   );
