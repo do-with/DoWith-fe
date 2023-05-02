@@ -33,7 +33,7 @@ export const ScreenHeader = ({headerTitle}) => {
                     </View>
                     <View style={styles.screenHeaderBtn}>
                         <Pressable onPress={() => navigation.navigate('MyPage')}>
-                            <Image source={require('../assets/notification.png')}
+                            <Image source={require('../assets/search.png')}
                             style={styles.screenHeaderBtnImg} resizeMode='contain' />
                         </Pressable>
                     </View>
@@ -67,22 +67,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         // backgroundColor: '#fff',
     },
-    screenHeaderBtn: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        width: '2%',
-        height: 'auto',
-        marginRight: '50%',
-        borderWidth: 1,
-    },
-    screenHeaderBtnImg: {
-        width: windowWidth * 0.07,
-        height: windowHeight * 0.045,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-end',
-    },
     screenHeaderView: {
         display: 'flex',
         flexDirection: 'row',
@@ -92,12 +76,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     screenHeaderTitleView: {
-        marginLeft: '4%',
         justifyContent: 'center',
         alignItems: 'center',
     },
     headerTitleText: {
-        fontWeight: 'bold',
+        fontWeight: 700,
+        fontSize: 19,
         color: Variables.btnColor,
     },
     icon: {
@@ -105,6 +89,17 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         flexDirection: 'row',
-        borderWidth: 1,
-    }
+        marginLeft: '4%',
+        marginRight: '4%',
+    },
+    screenHeaderBtn: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        height: 'auto',
+        marginRight: '25%', 
+    },
+    screenHeaderBtnImg: {
+        width: 30,
+        height: 30,
+    },
 });
