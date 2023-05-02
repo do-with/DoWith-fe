@@ -29,33 +29,28 @@ function FirstCsPage({ navigation }) {
                     </View>
                 </View>
             </View>
-                
-            <View style={styles.csBoards}>
-                <View style={styles.csBoardsBtn}>
-                    <TransImgBtn 
-                        onPress={()=>navigation.push("SecondCsPage", {id: 1})}
-                        url={require("../assets/donator-cs.png")}
-                        title="기부자 문의"
-                        subtitle="기부하는 것에 대한 질문이 있으신가요?" 
-                    />
-                </View>
-                <View style={styles.csBoardsBtn}>
-                    <TransImgBtn 
-                        onPress={()=>navigation.push("SecondCsPage", {id: 2})}
-                        url={require("../assets/donation-request-cs.png")}
-                        title="기부 요청 문의"
-                        subtitle="기부 요청을 하려고 하시나요?" 
-                    />
-                </View>
-                <View style={styles.csBoardsBtn}>
-                    <TransImgBtn 
-                        onPress={()=>navigation.push("SecondCsPage", {id: 3})}
-                        url={require("../assets/other-cs.png")}
-                        title="기타 문의"
-                        subtitle="좋은 의견이나, 개선하고 싶은 것이 있으신가요?"
-                    />
+            <View style={styles.csBoardsView}>
+                <Text style={styles.csBoardsTitle}>문의 게시판</Text>
+                <View style={styles.csBoards}>
+                    <View style={styles.csBoardsBtn}>
+                        <TransImgBtn 
+                            onPress={()=>navigation.push("SecondCsPage", {id: 1})}
+                            url={require("../assets/donator-cs.png")}
+                            title="기부자 문의"
+                            subtitle="기부하는 것에 대한 질문이 있으신가요?" 
+                        />
+                    </View>
+                    <View style={styles.csBoardsBtn}>
+                        <TransImgBtn 
+                            onPress={()=>navigation.push("SecondCsPage", {id: 2})}
+                            url={require("../assets/other-cs.png")}
+                            title="기타 문의"
+                            subtitle="좋은 의견이나, 개선하고 싶은 것이 있으신가요?"
+                        />
+                    </View>
                 </View>
             </View>
+            
         </View>
     </View>
   );
@@ -84,7 +79,7 @@ const styles = StyleSheet.create({
     },
     csCall: {
         width: '100%',
-        height: '23%',
+        height: '27%',
         justifyContent: 'space-around',
         borderBottomWidth: 2,
         borderBottomColor: 'white',
@@ -115,17 +110,28 @@ const styles = StyleSheet.create({
         marginLeft: '4%',
         marginBottom: '20%',
     },
+    csBoardsView:{
+        top: '5%',
+    },
+    csBoardsTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: Variables.btnColor,
+        marginLeft: '4%',
+        marginBottom: '8%',
+    },
     csBoards: {
         width: '100%',
-        height: '100%',
+        height: '90%',
         display: 'flex',
-        top: '5%',
+        // top: '5%',
+        flexDirection: 'column',
         alignItems: 'center',
     },
     csBoardsBtn: {
         width: '88%',
         marginVertical: 8,
-        height: '15%',
+        height: '20%',
         backgroundColor: '#FFFFFF',
         borderTopWidth: 1,
         borderRightWidth: 2,
