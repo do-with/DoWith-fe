@@ -32,16 +32,16 @@ export default function NearByStore() {
 
   const Map = () => {
     return (
-      <View style={{ flex: 1}}>
+      <View style={{ flex: 1 }}>
         <WebView
-          style={{width: '100%', height: '100%'}}
-          // source={{ uri: 'file:///Users/1jinju/DoWith-fe/screens/map.html' }}
-          // source={require('./map.html')}
-          originWhitelist={['*']}
-          javaScriptEnabled={injectedJavaScript} // JavaScript 활성화
+          style={{ width: "100%", height: "100%"}}
+          source={require("./map.html")}
+          originWhitelist={["*"]}
+          javaScriptEnabled={true} // JavaScript 활성화
+          injectedJavaScript={injectedJavaScript} // 실행시킬 자바스크립트 코드
         />
       </View>
-    )
+    );
   };
 
   return (
