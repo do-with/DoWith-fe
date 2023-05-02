@@ -15,7 +15,8 @@ export const ScreenHeader = ({headerTitle}) => {
         <View style={styles.screenHeader}>
             <View style={styles.screenHeaderView}>
                 <View style={styles.screenHeaderTitleView}>
-                    <TouchableOpacity style={styles.screenHeaderTitle} href="">
+                    <TouchableOpacity style={styles.screenHeaderTitle}
+                        onPress={() => navigation.navigate("MainScreen")}>
                         <Image source={require('../assets/logo.png')}
                                 style={styles.logo} resizeMode='contain' />
                     </TouchableOpacity>

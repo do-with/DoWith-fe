@@ -20,6 +20,7 @@ import AfterSupport from "./AfterSupport";
 import Static from "./Static";
 import AfterDonate from "./AfterDonate";
 import LocalTrade from "./LocalTrade";
+import DonationList from "./DonationList";
 // import Nginx from "./Nginx";
 
 const Stack = createNativeStackNavigator();
@@ -27,12 +28,13 @@ const Stack = createNativeStackNavigator();
 export default function RootNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="FirstCsPage">
+      <Stack.Navigator initialRouteName="MyPage">
         <Stack.Screen name="JoinScreen" options={{headerShown: false}} component={JoinScreen} />
 
         <Stack.Screen name="Notification" options={{headerShown:false}} component={Notification}/>
         <Stack.Screen name="MyPage" options={{headerShown:false}} component={MyPage}/>
         <Stack.Screen name="LoginScreen" options={{headerShown: false}} component={LoginScreen} />
+        <Stack.Screen name="DonationList" options={{headerShown: false}} component={DonationList} />
 
         <Stack.Screen name="MainScreen" options={{headerShown:false}} component={MainScreen}/>
         <Stack.Screen name="NearByStore" options={{headerShown: false}} component={NearByStore} />
