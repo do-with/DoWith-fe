@@ -3,7 +3,7 @@ import { StyleSheet, View, Pressable, Text, Alert } from 'react-native';
 import { ipAddress } from '../ipAddress';
 import axios from 'axios';
 
-export const BoardList = ({ afterDelete, onClickList, id, title, name, createdAt, answerYn}) => {
+export const BoardList = ({ onClickList, id, title, createdAt, answerYn}) => {
     const onDelete = () => {
         const post_id = id;
         axios
@@ -50,9 +50,6 @@ export const BoardList = ({ afterDelete, onClickList, id, title, name, createdAt
                     </Pressable>
                 </View>
                 <Text>{createdAt}</Text>
-            </View>
-            <View style={styles.boardListSubTitle}>
-                <Text>{name}</Text>
             </View>
             <View>
                 <Text>{answerYn}</Text>

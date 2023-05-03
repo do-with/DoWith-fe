@@ -1,14 +1,21 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, View, ScrollView, Text} from "react-native";
+import { StyleSheet, View, ScrollView, Text, Image } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import {ipAddress} from '../ipAddress';
 import axios from 'axios';
+import Moment from 'moment';
 
 function SecondCsPage({ navigation, route }) {
     const [postConetent, setPostContent] = useState([]);
     const [commentList, setCommentList] = useState([]);
     const id =  route.params.id;
     
+    let postdate = postConetent.created_at;
+    const formattedPostDate = Moment(postdate).format('yyyy-M-d');
+
+    let commentDate = commentList.created_at;
+    const formattedCommentDate = Moment(commentDate).format('M.d');
+
     useEffect(() => {
         axios.get(`http://${ipAddress}:8080/post/${id}`)
             .then(response => setPostContent(response.data))
@@ -27,14 +34,21 @@ function SecondCsPage({ navigation, route }) {
             <View style={styles.csSecondPageContent}>
                 <ScrollView>
                     <View style={styles.boardListView}>
-                        <Text>{postConetent.title}</Text>
+                        <View>
+                            <Text>{postConetent.title}</Text>
+                            <Text>{formattedPostDate}</Text>
+                        </View>
+                        
                         <Text>{postConetent.content}</Text>
                     </View>
                     {commentList.map((commentList) => {
                     return(
-                        <View>
+                        <View key={commentList.id}>
+                            <Image source={require('../assets/donator.png')}
+                                style={styles.img} resizeMode='contain' />
+                            <Text>관리자 1</Text>
                             <Text>{commentList.content}</Text>
-                            <Text>{commentList.created_at}</Text>
+                            <Text>{formattedCommentDate}</Text>
                         </View>
                     )
                 })}
@@ -76,5 +90,9 @@ const styles = StyleSheet.create({
     boardListView: {
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    img: {
+        width: 20,
+        height: 20,
     }
 });
