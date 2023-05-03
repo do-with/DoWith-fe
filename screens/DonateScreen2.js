@@ -4,11 +4,8 @@ import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function DonateScreen({ navigation }) {
+export default function DonateScreen2({ navigation }) {
     const [category, setCategory] = useState('');
-    // const [category, setCategory] = useState('');
-    // const [category, setCategory] = useState('');
-    // const [category, setCategory] = useState('');
 
     return (
     <View style={styles.registerBody}>
@@ -16,50 +13,53 @@ export default function DonateScreen({ navigation }) {
         <View style={styles.registerContent}>
             <Text style={styles.personalizeText}>지영 님 마음 전달 중 ... ♡</Text>
             <View style={styles.registerBox}>
+                {/* 카카오 주소 api 사용 */}
                 <View style={styles.registerDonate1}>
-                    <Text>대분류 선택 *</Text>
-                    <TextInput
-                        value={category}
-                        onChangeText={setCategory}
-                        placeholder="눌러주세요"       
-                        style={styles.inputText} 
-                    />
-                    <View style={styles.donateItemPic}>
-                        <Text>유통기한이 있다면 보이게 찍어주세요.</Text>
-                        <Pressable>
-                            <Text>기부 물품 찍기</Text>
-                        </Pressable>
-                        <Text>여러 개인 경우 전체적인 모습을 찍어주세요.</Text>
+                    <View style={styles.registerAddress}>
+                        <View style={styles.findAddress}>
+                            <TextInput
+                                value={category}
+                                onChangeText={setCategory}
+                                placeholder="우편번호"
+                            />
+                        </View>
+                        <TextInput
+                            value={category}
+                            onChangeText={setCategory}
+                            placeholder="주소"
+                        />
+                        <TextInput
+                            value={category}
+                            onChangeText={setCategory}
+                            placeholder="상세주소"
+                        />
+                        <TextInput
+                            value={category}
+                            onChangeText={setCategory}
+                            placeholder="참고항목"
+                        />
                     </View>
                 </View>
 
-                <View style={styles.registerDonate1}>
-                    <Text>대표 물품명 *</Text>
-                    <TextInput
-                        value={category}
-                        onChangeText={setCategory}
-                        placeholder="대표 물품을 입력해주세요"       
-                        style={styles.inputText} 
-                    />
-                    <Text>수량 *</Text>
-                    <TextInput
-                        value={category}
-                        onChangeText={setCategory}
-                        placeholder="총 수량을 입력해주세요"       
-                        style={styles.inputText} 
-                    />
-                    <Text>기부자명 *</Text>
-                    <TextInput
-                        value={category}
-                        onChangeText={setCategory}
-                        placeholder="기부자 닉네임을 적어주세요"       
-                        style={styles.inputText} 
-                    />
+                <View style={[styles.registerDonate1, styles.registerDonate1Sm]}>
+                    <Text>기부 방법을 선택해주세요 *</Text>
+                    <View style={styles.howToDonateBtn}>
+                        <Pressable>
+                            <Text>택배</Text>
+                        </Pressable>
+                        <Pressable>
+                            <Text>수거</Text>
+                        </Pressable>
+                        <Pressable>
+                            <Text>방문</Text>
+                        </Pressable>
+                    </View>
+                    <Text>지정된 매장 주소로 택배를 보내주셔야 합니다.</Text>
                 </View>
                 <LinearGradient colors={['#3b5998','#3b5998','#003C7C']}
                     style={styles.registerBtn}>
-                    <Pressable onPress={()=>navigation.navigate('DonateScreen2')}>
-                        <Text style={styles.registerBtnText}>다음</Text>
+                    <Pressable onPress={()=>navigation.navigate('AfterDonate')}>
+                        <Text style={styles.registerBtnText}>완료</Text>
                     </Pressable>
                 </LinearGradient>
             </View>
@@ -116,19 +116,29 @@ const styles = StyleSheet.create({
         boxSizing: 'border-box',
         paddingTop: '6%',
     },
-    inputText: {
-        width: '100%',
-        height: '12%',
-        position: 'relative',
+    registerAddress: {
         display: 'flex',
-        alignItems: 'center',
         flexDirection: 'column',
+        width: '85%',
+        height: '95%',
+        justifyContent: 'center',
     },
-    donateItemPic: {
+    findAddress: {
         display: 'flex',
-        flexDirection: 'column',
-        width: '87%',
-        height: 88,
+        justifyContent: 'space-between',
+        width: '100%',
+        height: '18%',
+        marginBottom: '4%',
+    },
+    registerDonate1Sm : {
+        height: 136,
+    },
+    howToDonateBtn: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        height: '45%',
+        justifyContent: 'space-evenly',
         marginTop: '2%',
     },
     registerBtn: {
