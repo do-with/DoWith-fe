@@ -21,6 +21,8 @@ import Static from "./Static";
 import AfterDonate from "./AfterDonate";
 import LocalTrade from "./LocalTrade";
 import DonationList from "./DonationList";
+import ChargeMoney from './ChargeMoney';
+import ChangePoint from "./ChangePoint";
 // import Nginx from "./Nginx";
 
 const Stack = createNativeStackNavigator();
@@ -28,12 +30,14 @@ const Stack = createNativeStackNavigator();
 export default function RootNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="MyPage">
+      <Stack.Navigator initialRouteName="AfterDonate">
         <Stack.Screen name="JoinScreen" options={{headerShown: false}} component={JoinScreen} />
 
         <Stack.Screen name="Notification" options={{headerShown:false}} component={Notification}/>
         <Stack.Screen name="MyPage" options={{headerShown:false}} component={MyPage}/>
         <Stack.Screen name="LoginScreen" options={{headerShown: false}} component={LoginScreen} />
+        <Stack.Screen name="ChargeMoney" options={{headerShown: false}} component={ChargeMoney} />
+        <Stack.Screen name="ChangePoint" options={{headerShown: false}} component={ChangePoint} />
         <Stack.Screen name="DonationList" options={{headerShown: false}} component={DonationList} />
 
         <Stack.Screen name="MainScreen" options={{headerShown:false}} component={MainScreen}/>
@@ -41,6 +45,7 @@ export default function RootNavigator() {
         <Stack.Screen name="Announce1" options={{headerShown: false}} component={Announce1} />
         <Stack.Screen name="Static" options={{headerShown: false}} component={Static} />
         <Stack.Screen name="AboutScreen" options={{headerShown: false}} component={AboutScreen} />
+        
 
         <Stack.Screen name="FirstCsPage" options={{headerShown: false}} component={FirstCsPage} />
         <Stack.Screen name="SecondCsPage" options={{headerShown: false}} component={SecondCsPage} />

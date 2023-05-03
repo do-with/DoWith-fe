@@ -27,13 +27,13 @@ export default function MyPage({navigation}){
                 <View style={styles.myPageBtnView}>
                     <LinearGradient colors={['#d7eeff','#ffffff']}
                          style={styles.myPageBtn}>
-                        <Pressable>
+                        <Pressable onPress={()=>navigation.navigate('ChargeMoney')}>
                             <Text style={styles.text}>금액 충전하기</Text>
                         </Pressable>
                     </LinearGradient>
                     <LinearGradient colors={['#d7eeff','#ffffff']}
                         style={styles.myPageBtn}>
-                        <Pressable>
+                        <Pressable onPress={()=>navigation.navigate('ChangePoint')}>
                             <Text style={styles.text}>포인트로 바꾸기</Text>
                         </Pressable>
                     </LinearGradient>

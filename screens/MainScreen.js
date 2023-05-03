@@ -1,6 +1,5 @@
 import { StyleSheet, View, Button, Image, TouchableOpacity, Text, Pressable, Dimensions } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
-import Banner from '../components/Banner';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Variables } from "../components/Variables";
 

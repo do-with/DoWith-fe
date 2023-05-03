@@ -51,14 +51,6 @@ function LoginScreen({ navigation }) {
               <Text>회원가입</Text>
             </Pressable>
           </View>
-
-          <View style={styles.apiLogin}>
-            <Text>다른 방법으로 로그인</Text>
-            <Pressable onPress={() => navigation.navigate("KakaoLogin")}>
-              <Image source={require("../assets/kakao-login-medium-narrow.png")}
-                style={styles.img} resizeMode={"contain"}/>
-            </Pressable>
-          </View>
       </View>
     </View>
   );
@@ -92,16 +84,6 @@ const styles = StyleSheet.create({
     width: '94%',
     position: 'relative',
     right: '3%',
-  },
-  apiLogin: {
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    top: '13%',
-    height: '19%',
-    boxSizing: 'border-box',
   },
   basicBtnLoginSubmit: {
     position: 'relative',
