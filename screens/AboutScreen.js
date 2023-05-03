@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Image, Text } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 import { ScreenHeader } from '../components/ScreenHeader';
-import { InputImgBtn } from '../components/InputImgBtn';
 
 export default function AboutScreen({navigation}){
     return(
