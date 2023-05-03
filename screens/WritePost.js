@@ -34,28 +34,49 @@ export default function WritePost({navigation, route}){
                 .catch(error => console.log(error));
         } 
     };
+    const getBoardName = (board_id) => {
+        if (board_id === 1) {
+          return '기부자 문의';
+        }
+        else if (board_id === 2) {
+          return '기타 문의';
+        }
+        return '기부자 문의';
+      };
 
     return(
         <View style={styles.joinBody}>
-            <ScreenHeader headerTitle="글쓰기" />
+            <ScreenHeader headerTitle="문의하기" />
             <View style={styles.writePostContent}>
-                <TextInput
-                    value={title}
-                    onChangeText={setTitle}
-                    placeholder="제목"       
-                    style={styles.input}    
-                />
-                <TextInput
-                    value={content}
-                    onChangeText={setContent}
-                    placeholder="내용"       
-                    style={styles.input}    
-                />
+                <Text>게시판 글쓰기</Text>
+                <View>
+                    <View>
+                        <Text>분류</Text>
+                        <Text>{getBoardName(board_id)}</Text>
+                    </View>
+                    <View>
+                        <Text>제목</Text>
+                        <TextInput
+                            value={title}
+                            onChangeText={setTitle}
+                            placeholder="제목"       
+                            style={styles.input}    
+                        />
+                    </View>
+                    <View>
+                        <Text>내용</Text>
+                        <TextInput
+                            value={content}
+                            onChangeText={setContent}
+                            placeholder="내용을 입력해주세요"       
+                            style={styles.input}    
+                        />
+                    </View>
+                </View>
                 <Pressable style={styles.submitBtn}
                     onPress={onSubmit}>
-                    <Text style={styles.submitBtnText}>작성</Text>
+                    <Text style={styles.submitBtnText}>완료</Text>
                 </Pressable>
-                
             </View>
         </View>
     );
@@ -73,15 +94,18 @@ const styles = StyleSheet.create({
         height: '100%',
         position: 'relative',
         top: '13%',
+        backgroundColor: Variables.mainColor,
     },
     input: {
         height: 100,
+        backgroundColor: '#fff',
+        borderRadius: 8,
     },
     submitBtn: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '80%',
+        width: '30%',
         height: '6%',
         backgroundColor: Variables.btnColor,
         borderRadius: 5,
