@@ -5,9 +5,11 @@ import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
 import BottomSheet from "../components/BottomSheet";
 import { WebView } from "react-native-webview";
+import * as Location from "expo-location";
+
 
 export default function NearByStore() {
-  const [ modalVisible, setModalVisible ] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const pressButton = () => {
       setModalVisible(true);
   }
@@ -44,61 +46,84 @@ export default function NearByStore() {
     );
   };
 
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
+  useEffect(() => {
+		(async () => {
+			let { status } = await Location.requestForegroundPermissionsAsync();
+			if (status !== "granted") {
+				setErrorMsg("Permission to access location was denied");
+				return;
+			}
+			let location = await Location.getCurrentPositionAsync({});
+			setLocation(location);
+    })();
+	}, []);
+
+  const getCurrentLocation = () => {
+    console.log("getCurrentLocation");
+    if (errorMsg) {
+      text = errorMsg;
+    } else if (location) {
+      latitude = location.coords.latitude;
+      longitude = location.coords.longitude;
+      text = JSON.stringify(location);
+      //text에 location값이 저장된다.
+      console.log(text);
+    }
+    
+   };
+
   return (
     <View style={styles.nearByBody}>
-        <ScreenHeader headerTitle="가까운 매장"/>
-        <View style={styles.nearByContent}>
-          <View style={styles.nearByImgBackground}>
-            <Image source={require("../assets/nearby-background.png")}
-              style={styles.img} resizeMode={"contain"}/>
-            <LinearGradient colors={['#4A6BAC', '#1B3974']}
-              style={styles.imgBackground}>
-              <Pressable style={styles.imgBackgroundBtn}>
-                <Text style={{color: 'white'}}>현위치</Text>
-              </Pressable>
-            </LinearGradient>
-          </View>
+      <ScreenHeader headerTitle="가까운 매장" />
+      <View style={styles.nearByContent}>
+        <View style={styles.nearByImgBackground}>
+          <Image
+            source={require("../assets/nearby-background.png")}
+            style={styles.img}
+            resizeMode={"contain"}
+          />
+          <LinearGradient
+            colors={["#4A6BAC", "#1B3974"]}
+            style={styles.imgBackground}
+          >
+            <Pressable
+              style={styles.imgBackgroundBtn}
+              onPress={getCurrentLocation}
+            >
+              <Text style={{ color: "white" }}>현위치</Text>
+            </Pressable>
+          </LinearGradient>
+        </View>
 
-          <View style={styles.contentListWrapApi}>
-            <Pressable onPress={pressButton}>
-              <View style={[styles.contentList, styles.contentListApi]}>
-                <View style={[styles.listBoxImg, styles.listBoxImgApi]}>
-                  <View style={[styles.contentListText, styles.contentListTextApi]}>
-                    <Text>푸드뱅크 이름</Text>
-                    <Text>거리</Text>
-                    <Text>전화번호</Text>
-                  </View>
-                  <View style={[styles.contentListImg, styles.contentListImgApi]}>
-                    <Text>json(아마 지도?)</Text>
-                  </View>
+        <View style={styles.contentListWrapApi}>
+          <Pressable onPress={pressButton}>
+            <View style={[styles.contentList, styles.contentListApi]}>
+              <View style={[styles.listBoxImg, styles.listBoxImgApi]}>
+                <View
+                  style={[styles.contentListText, styles.contentListTextApi]}
+                >
+                  <Text>푸드뱅크 이름</Text>
+                  <Text>거리</Text>
+                  <Text>전화번호</Text>
+                </View>
+                <View style={[styles.contentListImg, styles.contentListImgApi]}>
+                  <Text>json(아마 지도?)</Text>
                 </View>
               </View>
-            </Pressable>
-            <Map/>
-          </View>
-
-          <BottomSheet
-              modalVisible={modalVisible}
-              setModalVisible={setModalVisible}
-          />
-          
-
-          {/* 내용 map을 통해 key 값 넘김 
-           <View style={styles.modal}>
-            <View style={styles.modalBody}>
-              <Text>KAKAO map</Text>
-              <View style={styles.nearbyAddress}>
-                <Text>위치 정보</Text>
-              </View>
-              <View style={styles.modal}>
-                <Text>kakao api</Text>
-              </View>
             </View>
-          </View> */}
+          </Pressable>
+          <Map />
         </View>
+
+        <BottomSheet
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+        />
       </View>
-        
-  )
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
