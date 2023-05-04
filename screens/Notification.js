@@ -21,7 +21,7 @@ export default function Notification({navigation}){
             <View style={styles.joinContent}>
                 {notiList.map((notiList) => {
                     let date = notiList.created_at.toString();
-                    const formattedDate = Moment(date).format('d MMM');
+                    const formattedDate = Moment(date).format('M.d');
                     return(
                         <View style={styles.notiBoardList}
                             key={notiList.id}>

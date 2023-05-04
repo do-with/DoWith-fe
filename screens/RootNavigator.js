@@ -20,6 +20,10 @@ import AfterSupport from "./AfterSupport";
 import Static from "./Static";
 import AfterDonate from "./AfterDonate";
 import LocalTrade from "./LocalTrade";
+import DonationList from "./DonationList";
+import ChargeMoney from './ChargeMoney';
+import ChangePoint from "./ChangePoint";
+import DonateScreen2 from "./DonateScreen2";
 // import Nginx from "./Nginx";
 
 const Stack = createNativeStackNavigator();
@@ -27,12 +31,15 @@ const Stack = createNativeStackNavigator();
 export default function RootNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="FirstCsPage">
+      <Stack.Navigator initialRouteName="DonateScreen2">
         <Stack.Screen name="JoinScreen" options={{headerShown: false}} component={JoinScreen} />
 
         <Stack.Screen name="Notification" options={{headerShown:false}} component={Notification}/>
         <Stack.Screen name="MyPage" options={{headerShown:false}} component={MyPage}/>
         <Stack.Screen name="LoginScreen" options={{headerShown: false}} component={LoginScreen} />
+        <Stack.Screen name="ChargeMoney" options={{headerShown: false}} component={ChargeMoney} />
+        <Stack.Screen name="ChangePoint" options={{headerShown: false}} component={ChangePoint} />
+        <Stack.Screen name="DonationList" options={{headerShown: false}} component={DonationList} />
 
         <Stack.Screen name="MainScreen" options={{headerShown:false}} component={MainScreen}/>
         <Stack.Screen name="NearByStore" options={{headerShown: false}} component={NearByStore} />
@@ -46,6 +53,7 @@ export default function RootNavigator() {
         <Stack.Screen name="WritePost" options={{headerShown: false}} component={WritePost} />
 
         <Stack.Screen name="DonateScreen" options={{headerShown: false}} component={DonateScreen}/>
+        <Stack.Screen name="DonateScreen2" options={{headerShown: false}} component={DonateScreen2}/>
         <Stack.Screen name="AfterDonate" options={{headerShown: false}} component={AfterDonate} />
 
         <Stack.Screen name="LocalTrade" options={{headerShown: false}} component={LocalTrade} />

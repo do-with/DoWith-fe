@@ -30,11 +30,21 @@ function SecondCsPage({ navigation, route }) {
                 </View>
                 {post.map((post) => {
                     let date = post.created_at.toString();
-                    const formattedDate = Moment(date).format('YY.M.d');
+                    const formattedDate = Moment(date).format('M.d');
                     const onClickList = () => {
                         navigation.push("ThirdCsPage", {id: post.id});
                     };
                     const postId = post.id;
+                    const answerYn = post.answer_yn.toString();
+                    const getAnserYn = (answerYn) => {
+                        if (post.answer_yn === 'false') {
+                            return '';
+                          }
+                          else if (post.answer_yn === 'true') {
+                            return '답변 완료';
+                          }
+                          return '';
+                    };
                     return(
                         <View key={post.id}>
                             <BoardList
@@ -42,7 +52,7 @@ function SecondCsPage({ navigation, route }) {
                                 onClickList={onClickList}
                                 title={post.title}
                                 createdAt={formattedDate}
-                                answerYn={post.answer_yn.toString()}
+                                answerYn={getAnserYn(post.answer_yn.toString())}
                             />
                         </View>
                     )

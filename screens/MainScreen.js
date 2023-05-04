@@ -1,6 +1,5 @@
 import { StyleSheet, View, Button, Image, TouchableOpacity, Text, Pressable, Dimensions } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
-import Banner from '../components/Banner';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Variables } from "../components/Variables";
 
@@ -10,7 +9,7 @@ const windowHeight = Dimensions.get('window').height;
 function MainScreen({ navigation }) {
   return (
     <View style={styles.mainBody}>
-        <ScreenHeader />
+        <ScreenHeader headerTitle="DoWith" />
         <View style={styles.mainContent}>
             <View style={styles.content}>
                 <View style={styles.contentCategory}>
@@ -20,22 +19,23 @@ function MainScreen({ navigation }) {
                             style={styles.img} resizeMode={"contain"}/>
                         <Text>가까운 매장</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.transImgBtn}>
+                    <TouchableOpacity style={styles.transImgBtn}
+                        onPress={() => navigation.navigate("Announce1")}>
                         <Image source={require("../assets/notice.png")}
-                            onPress={() => navigation.navigate("Announce1")}
                             style={styles.img} resizeMode={"contain"}/>
                         <Text>알림 마당</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.transImgBtn}>
+                    <TouchableOpacity style={styles.transImgBtn}
+                        onPress={() => navigation.navigate("Static")}>
                         <Image source={require("../assets/donateSitu.png")}
-                                style={styles.img} resizeMode={"contain"}/>
+                            style={styles.img} resizeMode={"contain"}/>
                         <Text>기부 현황</Text> 
                     </TouchableOpacity>
                 </View>
                 <View style={styles.contentCategory}>
-                    <TouchableOpacity style={styles.transImgBtn}>
+                    <TouchableOpacity style={styles.transImgBtn}
+                        onPress={() => navigation.navigate("AboutScreen")}>
                         <Image source={require("../assets/menual.png")}
-                            onPress={() => navigation.navigate("AboutScreen")}
                             style={styles.img} resizeMode={"contain"}/>
                         <Text>이용 방법</Text>
                     </TouchableOpacity>
@@ -56,14 +56,14 @@ function MainScreen({ navigation }) {
             <View style={styles.contentMine}>
                 <LinearGradient colors={['#2992be','#2A93BF', '#3b5998']}
                         style={styles.localTradeBtn}>
-                    <Pressable onPress={() => navigation.navigate('')}>
+                    <Pressable onPress={() => navigation.navigate('LocalTrade')}>
                         <Text style={styles.localTradeBtnText}>우리 동네</Text>
                         <Text style={styles.localTradeBtnText}>기부 거래</Text>
                     </Pressable>
                 </LinearGradient>
 
                 <Pressable style={styles.donationBtn}
-                    onPress={() => navigation.navigate('')}>
+                    onPress={() => navigation.navigate('DonateScreen')}>
                     <Text style={styles.donationBtnText}>5분 만에</Text>
                     <Text style={styles.donationBtnText}>기부 접수</Text>
                 </Pressable>
