@@ -30,13 +30,12 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         position: 'relative',
-        top: '13%',
+        top: '14%',
     },
     announceImgBackground: {
         position: 'relative',
         width: '100%',
         height: '22%',
-        // background: URL('../assets/donator.png'),
         display: 'flex',
         alignItems: 'flex-end',
     }
