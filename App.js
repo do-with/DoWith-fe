@@ -1,20 +1,46 @@
-import React from "react";
+import Root from './screens/RootNavigator';
+import React, {useEffect, useState} from 'react';
+import { StyleSheet, View, Image} from "react-native";
 
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import HomeScreen from "./screens/HomeScreen";
-import LoginScreen from "./screens/LoginScreen";
-import KakaoLogin from "./screens/KakaoLogin";
+function App(){
+  // const[loading, setLoading] = useState(true);
 
-const Stack = createNativeStackNavigator();
-export default function App() {
+  // const getReady = () => {
+  //   setTimeout(() => {
+  //     setLoading(false)
+  //   }, 1000);
+
+  // }
+
+  // useEffect(()=> {
+  //   getReady();
+  // }, []);
+  
+  // return loading ? (
+  //   <View style={styles.loadingView}>
+  //     <Image
+  //           resizeMode={"cover"}
+  //           source={require("./assets/splash.jpg")}
+  //           style={styles.imageStyle}></Image>
+  //   </View>
+  // ):(
+  //       <Root />
+  // )
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-        <Stack.Screen name="KakaoLogin" component={KakaoLogin} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Root />
   );
-}
+};
+
+export default App;
+
+const styles = StyleSheet.create({
+  imageStyle: {
+    width: '100%',
+    height: '100%',
+  },
+  loadingView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
