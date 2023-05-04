@@ -80,6 +80,7 @@ export default function NearByStore() {
       .get(`http://${ipAddress}:8080/market/distance/${latitude}/${longitude}`)
       .then((response) => setMarketList(response.data))
       .catch((error) => console.log(error));
+      console.log(marketList);
   };
   
   const [marketList, setMarketList] = useState([]);
@@ -111,6 +112,7 @@ export default function NearByStore() {
               <Pressable onPress={pressButton}>
                 <View style={[styles.contentList, styles.contentListApi]}>
                     {marketList.map((marketList) => {
+                      const dist = Math.round(marketList.distance * 100) / 100;
                       return(
                         <View style={[styles.listBoxImg, styles.listBoxImgApi]}
                           key={marketList.id}>
@@ -118,6 +120,7 @@ export default function NearByStore() {
                               <Text>{marketList.name}</Text>
                               <Text>{marketList.address}</Text>
                               <Text>{marketList.phone}</Text>
+                              <Text>{dist}km</Text>
                           </View>
                         </View>
                       )
