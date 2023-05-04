@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import { StyleSheet, View, Text, Pressable, Image } from "react-native";
+import { StyleSheet, View, Text, Pressable, Image, ScrollView} from "react-native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
@@ -52,6 +52,7 @@ export default function NearByStore() {
   const [errorMsg, setErrorMsg] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+
   useEffect(() => {
 		(async () => {
 			let { status } = await Location.requestForegroundPermissionsAsync();
@@ -65,7 +66,6 @@ export default function NearByStore() {
 	}, []);
 
   const getCurrentLocation = () => {
-    console.log("getCurrentLocation");
     if (errorMsg) {
       text = errorMsg;
     } else if (location) {
@@ -76,11 +76,10 @@ export default function NearByStore() {
       console.log("latitude : ",latitude);
       console.log("longitude : ",longitude);
     }
-    // axios
-    //   .get(`http://${ipAddress}:8080/market/distance/${latitude}/${longitude}`)
-    //   .then((response) => setMarketList(response.data))
-    //   .catch((error) => console.log(error));
-    // console.log(marketList);
+    axios
+      .get(`http://${ipAddress}:8080/market/distance/${latitude}/${longitude}`)
+      .then((response) => setMarketList(response.data))
+      .catch((error) => console.log(error));
   };
   
   const [marketList, setMarketList] = useState([]);
@@ -88,51 +87,52 @@ export default function NearByStore() {
   return (
     <View style={styles.nearByBody}>
       <ScreenHeader headerTitle="가까운 매장" />
-      <View style={styles.nearByContent}>
-        <View style={styles.nearByImgBackground}>
-          <Image
-            source={require("../assets/nearby-background.png")}
-            style={styles.img}
-            resizeMode={"contain"}
-          />
-          <LinearGradient
-            colors={["#4A6BAC", "#1B3974"]}
-            style={styles.imgBackground}
-          >
-            <Pressable
-              style={styles.imgBackgroundBtn}
-              onPress={getCurrentLocation}
+        <View style={styles.nearByContent}>
+          <View style={styles.nearByImgBackground}>
+            <Image
+              source={require("../assets/nearby-background.png")}
+              style={styles.img}
+              resizeMode={"contain"}
+            />
+            <LinearGradient
+              colors={["#4A6BAC", "#1B3974"]}
+              style={styles.imgBackground}
             >
-              <Text style={{ color: "white" }}>현위치</Text>
-            </Pressable>
-          </LinearGradient>
-        </View>
-
-        <View style={styles.contentListWrapApi}>
-          <Pressable onPress={pressButton}>
-            <View style={[styles.contentList, styles.contentListApi]}>
-              <View style={[styles.listBoxImg, styles.listBoxImgApi]}>
-                <View
-                  style={[styles.contentListText, styles.contentListTextApi]}
-                >
-                  <Text>푸드뱅크 이름</Text>
-                  <Text>거리</Text>
-                  <Text>전화번호</Text>
+              <Pressable
+                style={styles.imgBackgroundBtn}
+                onPress={getCurrentLocation}
+              >
+                <Text style={{ color: "white" }}>현위치</Text>
+              </Pressable>
+            </LinearGradient>
+          </View>
+          <View style={styles.contentListWrapApi}>
+            <ScrollView>
+              <Pressable onPress={pressButton}>
+                <View style={[styles.contentList, styles.contentListApi]}>
+                    {marketList.map((marketList) => {
+                      return(
+                        <View style={[styles.listBoxImg, styles.listBoxImgApi]}
+                          key={marketList.id}>
+                          <View style={[styles.contentListText, styles.contentListTextApi]}>
+                              <Text>{marketList.name}</Text>
+                              <Text>{marketList.address}</Text>
+                              <Text>{marketList.phone}</Text>
+                          </View>
+                        </View>
+                      )
+                  })}
                 </View>
-                <View style={[styles.contentListImg, styles.contentListImgApi]}>
-                  <Text>json(아마 지도?)</Text>
-                </View>
-              </View>
-            </View>
-          </Pressable>
-          <Map />
-        </View>
+              </Pressable>
+            </ScrollView>
+            <Map />
+          </View>
 
-        <BottomSheet
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-        />
-      </View>
+          <BottomSheet
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
+        </View>
     </View>
   );
 }
@@ -146,9 +146,9 @@ const styles = StyleSheet.create({
     nearByContent: {
       position: 'relative',
       width: '100%',
-      height: '88%',
+      height: '100%',
       top: '13%',
-      backgroundColor: Variables.mainColor,
+      backgroundColor: '#fff',
     },
     nearByImgBackground: {
       position: 'relative',
@@ -156,6 +156,7 @@ const styles = StyleSheet.create({
       height: '22%',
       display: 'flex',
       alignItems: 'center',
+      backgroundColor: Variables.mainColor,
     },
     img: {
       left: '1%',
@@ -193,7 +194,7 @@ const styles = StyleSheet.create({
     },
     contentListWrapApi: {
       backgroundColor: 'white',
-      height: '75%',
+      height: 500,
     },
 
     contentList: {
