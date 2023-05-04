@@ -6,6 +6,8 @@ import { Variables } from "../components/Variables";
 import BottomSheet from "../components/BottomSheet";
 import { WebView } from "react-native-webview";
 import * as Location from "expo-location";
+import { ipAddress } from "../ipAddress";
+import axios from "axios";
 
 
 export default function NearByStore() {
@@ -48,6 +50,8 @@ export default function NearByStore() {
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
   useEffect(() => {
 		(async () => {
 			let { status } = await Location.requestForegroundPermissionsAsync();
@@ -56,7 +60,7 @@ export default function NearByStore() {
 				return;
 			}
 			let location = await Location.getCurrentPositionAsync({});
-			setLocation(location);
+      setLocation(location);
     })();
 	}, []);
 
@@ -65,15 +69,22 @@ export default function NearByStore() {
     if (errorMsg) {
       text = errorMsg;
     } else if (location) {
-      latitude = location.coords.latitude;
-      longitude = location.coords.longitude;
+      setLatitude(location.coords.latitude);
+      setLongitude(location.coords.longitude);
       text = JSON.stringify(location);
       //text에 location값이 저장된다.
-      console.log(text);
+      console.log("latitude : ",latitude);
+      console.log("longitude : ",longitude);
     }
-    
-   };
-
+    // axios
+    //   .get(`http://${ipAddress}:8080/market/distance/${latitude}/${longitude}`)
+    //   .then((response) => setMarketList(response.data))
+    //   .catch((error) => console.log(error));
+    // console.log(marketList);
+  };
+  
+  const [marketList, setMarketList] = useState([]);
+  
   return (
     <View style={styles.nearByBody}>
       <ScreenHeader headerTitle="가까운 매장" />
