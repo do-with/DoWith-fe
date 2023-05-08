@@ -10,8 +10,20 @@ import {
     PanResponder
 } from 'react-native';
 
-const BottomSheet = (props) => {
-    const { modalVisible, setModalVisible } = props;
+import { WebView } from "react-native-webview";
+
+
+const BottomSheet = (props,{}) => {
+  const {
+    modalVisible,
+    setModalVisible,
+    name,
+    address,
+    phone,
+    distance,
+    longitude,
+    latitude,
+  } = props;
     const screenHeight = Dimensions.get("screen").height;
     const panY = useRef(new Animated.Value(screenHeight)).current;
     const translateY = panY.interpolate({
@@ -59,28 +71,152 @@ const BottomSheet = (props) => {
         })
     }
 
+  const mapUrl = "https://dapi.kakao.com/v2/maps/sdk.js?appkey=27ec305b516496a1b6ccfee8a420e520";
+
+  const injectedJavaScript = `
+  console.log("injected 실행");
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = '${mapUrl}';
+  document.head.appendChild(script);
+  console.log("script: ",script);
+
+  script.addEventListener("load", ()=>{
+    window.kakao.maps.load(() => {
+      const mapContainer = document.getElementById("map");
+      const mapOption = {
+        center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+        level: 8, // 지도의 확대 레벨
+      };
+      new window.kakao.maps.Map(mapContainer, mapOption);
+    });
+  });
+`;
+
+  const Map = () => {
+    console.log("Map 함수 실행")
     return (
-        <Modal
-            visible={modalVisible}
-            animationType={"fade"}
-            transparent
-            statusBarTranslucent
-        >
-            <View style={styles.overlay}>
-                <TouchableWithoutFeedback
-                    onPress={closeModal}
+      <View
+        style={{
+          width: "100%",
+          flex: 1,
+        }}
+      >
+        <WebView
+          style={{
+            maxHeight: 300,
+            borderWidth: 1,
+            // position: "relateive",
+          }}
+          source={require("../screens/map.html")}
+          originWhitelist={["*"]}
+          javaScriptEnabled={true} // JavaScript 활성화
+          injectedJavaScript={injectedJavaScript} // 실행시킬 자바스크립트 코드
+          onLoad={() => console.log("웹 뷰 로드")}
+        />
+      </View>
+    );
+  };
+    return (
+      <Modal
+        visible={modalVisible}
+        animationType={"fade"}
+        transparent
+        statusBarTranslucent
+      >
+        <View style={styles.overlay}>
+          <TouchableWithoutFeedback onPress={closeModal}>
+            <View style={styles.background} />
+          </TouchableWithoutFeedback>
+          <Animated.View
+            style={{
+              ...styles.bottomSheetContainer,
+              transform: [{ translateY: translateY }],
+            }}
+            {...panResponders.panHandlers}
+          >
+            <View
+              style={{
+                height: "25%",
+                display: "flex",
+                flexDirection: "column",
+              }}
+            >
+              <View
+                style={{
+                  height: "75%",
+                  justifyContent: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <View
+                  style={{
+                    justifyContent: "center",
+                    width: "25%",
+                    alignItems: "center",
+                  }}
                 >
-                    <View style={styles.background}/>
-                </TouchableWithoutFeedback>
-                <Animated.View
-                    style={{...styles.bottomSheetContainer, transform: [{ translateY: translateY }]}}
-                    {...panResponders.panHandlers}
+                  <Text
+                    style={{
+                        fontSize: 24,
+                        color: "rgba(35, 35, 35, 0.75)",
+                        paddingLeft:'20%'
+                    }}
+    >
+                    {distance}km
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    justifyContent: "center",
+                    width: "75%",
+                    paddingLeft: "5%",
+                  }}
                 >
-                    <Text>내용</Text>   
-                </Animated.View>
+                  <Text
+                    style={{
+                      fontSize: 16,
+                      color: "rgba(35, 35, 35, 0.82)",
+                      fontWeight: 700,
+                      fontStyle: "normal",
+                      lineHeight: 23,
+                    }}
+                  >
+                    {name}
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 14,
+                      color: "rgba(35, 35, 35, 0.85)",
+                      fontStyle: "normal",
+                      fontWeight: 400,
+                      lineHeight: 20,
+                    }}
+                  >
+                    {address}
+                  </Text>
+                </View>
+              </View>
+              <View>
+                <Text
+                  style={{
+                    fontSize: 17,
+                    color: "rgba(35, 35, 35, 0.85)",
+                    fontStyle: "normal",
+                    fontWeight: 400,
+                    lineHeight: 25,
+                    paddingLeft:"2%"
+                  }}
+                >
+                  {phone}
+                </Text>
+              </View>
             </View>
-        </Modal>
-    )
+            <Map/>
+          </Animated.View>
+        </View>
+      </Modal>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -90,12 +226,12 @@ const styles = StyleSheet.create({
         backgroundColor: "rgba(0, 0, 0, 0.4)"
     },
     background: {
-        flex: 1,
+      flex: 1,
     },
     bottomSheetContainer: {
-        height: 300,
-        justifyContent: "center",
-        alignItems: "center",
+        height: 500,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
         backgroundColor: "white",
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
