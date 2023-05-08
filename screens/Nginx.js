@@ -1,28 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import { View } from 'react-native';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import { View } from "react-native";
+import axios from "axios";
 
 function Nginx() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://172.28.16.1:8080/api`)
-      .then(response => { 
+    axios
+      .get(`http://localhost:8080`)
+      .then((response) => {
         setData(response.data.Notices);
         console.log(response.length);
         console.log(response.data.length);
         console.log(response.data.Notices);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }, []);
 
-  return (
-    <View>
-      {data.length > 0 && <View>{data[0].title}</View>}
-    </View>
-  );
+  return <View>{data.length > 0 && <View>{data[0].title}</View>}</View>;
 }
 
 export default Nginx;
