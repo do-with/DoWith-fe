@@ -1,6 +1,13 @@
-import React, {useState, useEffect} from "react";
-import { StyleSheet, View, Text, Pressable, Image, ScrollView} from "react-native";
-import { LinearGradient } from 'expo-linear-gradient';
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Pressable,
+  Image,
+  ScrollView,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
 import BottomSheet from "../components/BottomSheet";
@@ -9,12 +16,11 @@ import * as Location from "expo-location";
 import { ipAddress } from "../ipAddress";
 import axios from "axios";
 
-
 export default function NearByStore() {
   const [modalVisible, setModalVisible] = useState(false);
   const pressButton = () => {
     setModalVisible(true);
-  }
+  };
 
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
@@ -22,16 +28,16 @@ export default function NearByStore() {
   const [longitude, setLongitude] = useState(null);
 
   useEffect(() => {
-		(async () => {
-			let { status } = await Location.requestForegroundPermissionsAsync();
-			if (status !== "granted") {
-				setErrorMsg("Permission to access location was denied");
-				return;
-			}
-			let location = await Location.getCurrentPositionAsync({});
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setErrorMsg("Permission to access location was denied");
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync({});
       setLocation(location);
     })();
-	}, []);
+  }, []);
 
   const getCurrentLocation = () => {
     if (errorMsg) {
@@ -41,16 +47,16 @@ export default function NearByStore() {
       setLongitude(location.coords.longitude);
       text = JSON.stringify(location);
       //text에 location값이 저장된다.
-      console.log("latitude : ",latitude);
-      console.log("longitude : ",longitude);
+      console.log("latitude : ", latitude);
+      console.log("longitude : ", longitude);
     }
     axios
       .get(`http://${ipAddress}:8080/market/distance/${latitude}/${longitude}`)
       .then((response) => setMarketList(response.data))
       .catch((error) => console.log(error));
-      console.log(marketList);
+    console.log(marketList);
   };
-  
+
   const [marketList, setMarketList] = useState([]);
   //test 코드
   marketList.name = "매장이름";
@@ -83,72 +89,40 @@ export default function NearByStore() {
         </View>
         <View style={styles.contentListWrapApi}>
           <ScrollView>
-            <Pressable onPress={pressButton}>
-              <View style={[styles.contentList, styles.contentListApi]}>
-                {/* {marketList.map((marketList) => {
-                  const dist = Math.round(marketList.distance * 100) / 100;
-                  return (
-                    <View
-                      style={[styles.listBoxImg, styles.listBoxImgApi]}
-                      key={marketList.id}
-                    >
+            {marketList.map((market) => {
+              const dist = Math.round(market.distance * 100) / 100;
+              return (
+                <View key={market.id}>
+                  <Pressable onPress={() => setModalVisible(market.id)}>
+                    <View style={[styles.listBoxImg, styles.listBoxImgApi]}>
                       <View
                         style={[
                           styles.contentListText,
                           styles.contentListTextApi,
                         ]}
                       >
-                        <Text>{marketList.name}</Text>
-                        <Text>{marketList.address}</Text>
-                        <Text>{marketList.phone}</Text>
+                        <Text>{market.name}</Text>
+                        <Text>{market.address}</Text>
+                        <Text>{market.phone}</Text>
                         <Text>{dist}km</Text>
                       </View>
                     </View>
-                  );
-                })} */}
-                <View style={[styles.listBoxImg, styles.listBoxImgApi]}>
-                  <View
-                    style={[styles.contentListText, styles.contentListTextApi]}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        fontWeight: "bold",
-                        marginTop: "5%",
-                      }}
-                    >
-                      매장이름
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        color: "grey",
-                        marginTop: "3%",
-                      }}
-                    >
-                      거리km
-                    </Text>
-                    <Text style={{ fontSize: 14, marginTop: "10%" }}>
-                      전화번호
-                    </Text>
-                  </View>
+                  </Pressable>
+                  <BottomSheet
+                    modalVisible={modalVisible === market.id}
+                    setModalVisible={setModalVisible}
+                    name={market.name}
+                    address={market.address}
+                    phone={market.phone}
+                    distance={dist}
+                    longitude={market.longitude}
+                    latitude={market.latitude}
+                  />
                 </View>
-              </View>
-            </Pressable>
+              );
+            })}
           </ScrollView>
-          {/* <Map /> */}
         </View>
-
-        <BottomSheet
-          modalVisible={modalVisible}
-          setModalVisible={setModalVisible}
-          name={marketList.name}
-          address={marketList.address}
-          phone={marketList.phone}
-          distance={marketList.distance}
-          longitude={marketList.longitude}
-          latitude={marketList.latitude}
-        />
       </View>
     </View>
   );
@@ -208,7 +182,6 @@ const styles = StyleSheet.create({
     position: "relative",
     width: "100%",
     height: "auto",
-    
   },
   contentListWrapApi: {
     backgroundColor: "white",
@@ -251,7 +224,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     boxSizing: "border-box",
     paddingLeft: "6%",
-    paddingTop:"2%"
+    paddingTop: "2%",
   },
   contentListTextApi: {
     fontSize: 17,

@@ -1,19 +1,18 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from "react";
 import {
-    View,
-    StyleSheet,
-    Text,
-    Modal,
-    Animated,
-    TouchableWithoutFeedback,
-    Dimensions,
-    PanResponder
-} from 'react-native';
+  View,
+  StyleSheet,
+  Text,
+  Modal,
+  Animated,
+  TouchableWithoutFeedback,
+  Dimensions,
+  PanResponder,
+} from "react-native";
 
 import { WebView } from "react-native-webview";
 
-
-const BottomSheet = (props,{}) => {
+const BottomSheet = (props, {}) => {
   const {
     modalVisible,
     setModalVisible,
@@ -24,54 +23,56 @@ const BottomSheet = (props,{}) => {
     longitude,
     latitude,
   } = props;
-    const screenHeight = Dimensions.get("screen").height;
-    const panY = useRef(new Animated.Value(screenHeight)).current;
-    const translateY = panY.interpolate({
-        inputRange: [-1, 0, 1],
-        outputRange: [0, 0, 1],
-    });
+  const screenHeight = Dimensions.get("screen").height;
+  const panY = useRef(new Animated.Value(screenHeight)).current;
+  const translateY = panY.interpolate({
+    inputRange: [-1, 0, 1],
+    outputRange: [0, 0, 1],
+  });
 
-    const resetBottomSheet = Animated.timing(panY, {
-        toValue: 0,
-        duration: 300,
-        useNativeDriver: true,
-    });
+  const resetBottomSheet = Animated.timing(panY, {
+    toValue: 0,
+    duration: 300,
+    useNativeDriver: true,
+  });
 
-    const closeBottomSheet = Animated.timing(panY, {
-        toValue: screenHeight,
-        duration: 300,
-        useNativeDriver: true,
-    });
+  const closeBottomSheet = Animated.timing(panY, {
+    toValue: screenHeight,
+    duration: 300,
+    useNativeDriver: true,
+  });
 
-    const panResponders = useRef(PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onMoveShouldSetPanResponder: () => false,
-        onPanResponderMove: (event, gestureState) => {
-            panY.setValue(gestureState.dy);
-        },
-        onPanResponderRelease: (event, gestureState) => {
-            if(gestureState.dy > 0 && gestureState.vy > 1.5) {
-                closeModal();
-            }
-            else {
-                resetBottomSheet.start();
-            }
+  const panResponders = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onMoveShouldSetPanResponder: () => false,
+      onPanResponderMove: (event, gestureState) => {
+        panY.setValue(gestureState.dy);
+      },
+      onPanResponderRelease: (event, gestureState) => {
+        if (gestureState.dy > 0 && gestureState.vy > 1.5) {
+          closeModal();
+        } else {
+          resetBottomSheet.start();
         }
-    })).current;
+      },
+    })
+  ).current;
 
-    useEffect(()=>{
-        if(props.modalVisible) {
-            resetBottomSheet.start();
-        }
-    }, [props.modalVisible]);
-
-    const closeModal = () => {
-        closeBottomSheet.start(()=>{
-            setModalVisible(false);
-        })
+  useEffect(() => {
+    if (props.modalVisible) {
+      resetBottomSheet.start();
     }
+  }, [props.modalVisible]);
 
-  const mapUrl = "https://dapi.kakao.com/v2/maps/sdk.js?appkey=27ec305b516496a1b6ccfee8a420e520";
+  const closeModal = () => {
+    closeBottomSheet.start(() => {
+      setModalVisible(false);
+    });
+  };
+
+  const mapUrl =
+    "https://dapi.kakao.com/v2/maps/sdk.js?appkey=27ec305b516496a1b6ccfee8a420e520";
 
   const injectedJavaScript = `
   console.log("injected 실행");
@@ -94,7 +95,7 @@ const BottomSheet = (props,{}) => {
 `;
 
   const Map = () => {
-    console.log("Map 함수 실행")
+    console.log("Map 함수 실행");
     return (
       <View
         style={{
@@ -117,125 +118,125 @@ const BottomSheet = (props,{}) => {
       </View>
     );
   };
-    return (
-      <Modal
-        visible={modalVisible}
-        animationType={"fade"}
-        transparent
-        statusBarTranslucent
-      >
-        <View style={styles.overlay}>
-          <TouchableWithoutFeedback onPress={closeModal}>
-            <View style={styles.background} />
-          </TouchableWithoutFeedback>
-          <Animated.View
+  return (
+    <Modal
+      visible={modalVisible}
+      animationType={"fade"}
+      transparent
+      statusBarTranslucent
+    >
+      <View style={styles.overlay}>
+        <TouchableWithoutFeedback onPress={closeModal}>
+          <View style={styles.background} />
+        </TouchableWithoutFeedback>
+        <Animated.View
+          style={{
+            ...styles.bottomSheetContainer,
+            transform: [{ translateY: translateY }],
+          }}
+          {...panResponders.panHandlers}
+        >
+          <View
             style={{
-              ...styles.bottomSheetContainer,
-              transform: [{ translateY: translateY }],
+              height: "25%",
+              display: "flex",
+              flexDirection: "column",
             }}
-            {...panResponders.panHandlers}
           >
             <View
               style={{
-                height: "25%",
-                display: "flex",
-                flexDirection: "column",
+                height: "75%",
+                justifyContent: "center",
+                flexDirection: "row",
               }}
             >
               <View
                 style={{
-                  height: "75%",
                   justifyContent: "center",
-                  flexDirection: "row",
+                  width: "25%",
+                  alignItems: "center",
                 }}
               >
-                <View
-                  style={{
-                    justifyContent: "center",
-                    width: "25%",
-                    alignItems: "center",
-                  }}
-                >
-                  <Text
-                    style={{
-                        fontSize: 24,
-                        color: "rgba(35, 35, 35, 0.75)",
-                        paddingLeft:'20%'
-                    }}
-    >
-                    {distance}km
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    justifyContent: "center",
-                    width: "75%",
-                    paddingLeft: "5%",
-                  }}
-                >
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      color: "rgba(35, 35, 35, 0.82)",
-                      fontWeight: 700,
-                      fontStyle: "normal",
-                      lineHeight: 23,
-                    }}
-                  >
-                    {name}
-                  </Text>
-                  <Text
-                    style={{
-                      fontSize: 14,
-                      color: "rgba(35, 35, 35, 0.85)",
-                      fontStyle: "normal",
-                      fontWeight: 400,
-                      lineHeight: 20,
-                    }}
-                  >
-                    {address}
-                  </Text>
-                </View>
-              </View>
-              <View>
                 <Text
                   style={{
-                    fontSize: 17,
+                    fontSize: 24,
+                    color: "rgba(35, 35, 35, 0.75)",
+                    paddingLeft: "20%",
+                  }}
+                >
+                  {distance}km
+                </Text>
+              </View>
+              <View
+                style={{
+                  justifyContent: "center",
+                  width: "75%",
+                  paddingLeft: "5%",
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: 16,
+                    color: "rgba(35, 35, 35, 0.82)",
+                    fontWeight: 700,
+                    fontStyle: "normal",
+                    lineHeight: 23,
+                  }}
+                >
+                  {name}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: 14,
                     color: "rgba(35, 35, 35, 0.85)",
                     fontStyle: "normal",
                     fontWeight: 400,
-                    lineHeight: 25,
-                    paddingLeft:"2%"
+                    lineHeight: 20,
                   }}
                 >
-                  {phone}
+                  {address}
                 </Text>
               </View>
             </View>
-            <Map/>
-          </Animated.View>
-        </View>
-      </Modal>
-    );
-}
+            <View>
+              <Text
+                style={{
+                  fontSize: 17,
+                  color: "rgba(35, 35, 35, 0.85)",
+                  fontStyle: "normal",
+                  fontWeight: 400,
+                  lineHeight: 25,
+                  paddingLeft: "2%",
+                }}
+              >
+                {phone}
+              </Text>
+            </View>
+          </View>
+          <Map />
+        </Animated.View>
+      </View>
+    </Modal>
+  );
+};
 
 const styles = StyleSheet.create({
-    overlay: {
-        flex: 1,
-        justifyContent: "flex-end",
-        backgroundColor: "rgba(0, 0, 0, 0.4)"
-    },
-    background: {
-      flex: 1,
-    },
-    bottomSheetContainer: {
-        height: 500,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        backgroundColor: "white",
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-    }
-})
+  overlay: {
+    flex: 1,
+    justifyContent: "flex-end",
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
+  },
+  background: {
+    flex: 1,
+  },
+  bottomSheetContainer: {
+    height: 500,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+});
 
 export default BottomSheet;
