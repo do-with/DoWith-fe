@@ -24,6 +24,7 @@ import DonationList from "./DonationList";
 import ChargeMoney from './ChargeMoney';
 import ChangePoint from "./ChangePoint";
 import DonateScreen2 from "./DonateScreen2";
+import Announce2 from "./Announce2";
 // import Nginx from "./Nginx";
 
 const Stack = createNativeStackNavigator();
@@ -31,7 +32,8 @@ const Stack = createNativeStackNavigator();
 export default function RootNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="DonateScreen2">
+      <Stack.Navigator initialRouteName="Announce2"
+        screenOptions={{animationEnabled: false}}>
         <Stack.Screen name="JoinScreen" options={{headerShown: false}} component={JoinScreen} />
 
         <Stack.Screen name="Notification" options={{headerShown:false}} component={Notification}/>
@@ -44,6 +46,7 @@ export default function RootNavigator() {
         <Stack.Screen name="MainScreen" options={{headerShown:false}} component={MainScreen}/>
         <Stack.Screen name="NearByStore" options={{headerShown: false}} component={NearByStore} />
         <Stack.Screen name="Announce1" options={{headerShown: false}} component={Announce1} />
+        <Stack.Screen name="Announce2" options={{headerShown: false}} component={Announce2} />
         <Stack.Screen name="Static" options={{headerShown: false}} component={Static} />
         <Stack.Screen name="AboutScreen" options={{headerShown: false}} component={AboutScreen} />
 

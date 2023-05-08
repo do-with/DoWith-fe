@@ -5,12 +5,12 @@ import { ipAddress } from '../ipAddress';
 import Moment from 'moment';
 import axios from 'axios';
 
-export default function Notification({navigation}){
+export default function Notification({navigation, route}){
     const [notiList, setNotiList] = useState([]);
-    const user_id = 1;
+    const userId = route.params.userId;
 
     useEffect(() => {
-        axios.get(`http://${ipAddress}:8080/notification/user/${user_id}`)
+        axios.get(`http://${ipAddress}:8080/notification/user/${userId}`)
             .then(response => setNotiList(response.data))
             .catch(error => console.log(error))
       }, []);

@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, Text, Pressable } from 'react-native';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { LinearGradient } from 'expo-linear-gradient';
 
-export default function Announce1({navigation}){
+export default function Announce2({navigation}){
     return(
         <View style={styles.joinBody}>
             <ScreenHeader headerTitle="알림마당"/>
@@ -14,14 +14,14 @@ export default function Announce1({navigation}){
                     <View style={styles.announceBtnView}>
                         <LinearGradient colors={['#fbfbfba3', '#fbfbfbd4', '#ffffff']}
                             style={styles.announceBtnLinear}>
-                            <Pressable style={styles.announceBtn}>
+                            <Pressable onPress={()=>navigation.navigate('Announce1')}
+                                style={styles.announceBtn}>
                                 <Text style={styles.announceBtnText}>기부소식</Text>
                             </Pressable>
                         </LinearGradient>
                         <LinearGradient colors={['#fbfbfba3', '#fbfbfbd4', '#ffffff']}
                             style={styles.announceBtnLinear}>
-                            <Pressable onPress={()=>navigation.navigate('Announce2')}
-                                style={styles.announceBtn}>
+                            <Pressable style={styles.announceBtn}>
                                 <Text style={styles.announceBtnText}>공지사항</Text>
                             </Pressable>
                         </LinearGradient>
@@ -32,17 +32,15 @@ export default function Announce1({navigation}){
                     <View style={styles.refresh}>
                         <Text>전체글</Text>
                     </View>
-
                     <View style={styles.contentList}>
-                        <View style={styles.listBoxImg}>
+                        <View style={styles.listBoxNoImg}>
                             <View style={styles.contentListText}>
-                                <Text style={styles.h3}>대표자</Text>
-                                <Text style={styles.span1}>대표자, 과자 외 물품이 아동센터에 전달</Text>
-                                <Text style={styles.span2}>날짜</Text>
+                                <Text style={styles.h3}>전산실 전기 공사에 따른 이용..</Text>
+                                <Text style={styles.span}>글쓴이 이름</Text>
                             </View>
-                            <View style={styles.contentListImg}>
-                                <Image source={require('../assets/ask.png')}
-                                    style={styles.img} resizeMode={'contain'}/>
+                            <View style={styles.contentListSubText}>
+                                <Text style={styles.span}>날짜</Text>
+                                <Text style={styles.span}>조회수</Text>
                             </View>
                         </View>
                     </View>
@@ -129,47 +127,34 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#d2d2d2',
     },
-    listBoxImg: {
-        width: '100%',
-        height: 124,
-        borderBottomWidth: 1,
-        borderBottomColor: '#d8d8d8',
-        display: 'flex',
-        flexDirection: 'row',
-        wordBreak: 'break-all',
-    },
-    contentListText: {
-        width: '61%',
-        display: 'flex',
+    listBoxNoImg: {
         flexDirection: 'column',
         justifyContent: 'center',
-        boxSizing: 'border-box',
-        paddingLeft: '6%',
+        alignItems: 'center',
+        width: '100%',
+        height: 113,
+        borderBottomWidth: 1,
+        borderBottomColor: 'rgba(214, 214, 214, 0.9)',
+    },
+    contentListText: {
+        paddingLeft: 0,
+        width: '88%',
     },
     h3: {
-        fontSize: 18,
-        fontWeight: '700',
-        marginBottom: '3%',
+        marginBottom: '2%',
     },
-    span1: {
-        fontSize: 16,
-        marginBottom: '4%',
+    span: {
+        fontSize: 15,
+        marginBottom: 10,
         lineHeight: 22,
         letterSpacing: 0.5,
+        color: '#6f6f6f',
     },
-    span2: {
-        fontSize: 15,
-        color: '#bababa',
-    },
-    contentListImg: {
+    contentListSubText: {
         display: 'flex',
-        justifyContent: 'center',
+        width: '88%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        width: '37%',
-    },
-    img: {
-        width: '80%',
-        height: '68%',
-        borderRadius: 10,
     },
 });
