@@ -32,8 +32,7 @@ const Stack = createNativeStackNavigator();
 export default function RootNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Announce2"
-        screenOptions={{animationEnabled: false}}>
+      <Stack.Navigator initialRouteName="Static">
         <Stack.Screen name="JoinScreen" options={{headerShown: false}} component={JoinScreen} />
 
         <Stack.Screen name="Notification" options={{headerShown:false}} component={Notification}/>
