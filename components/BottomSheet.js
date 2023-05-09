@@ -9,6 +9,8 @@ import {
   Dimensions,
   PanResponder,
 } from "react-native";
+import { Platform } from "react-native";
+import { Asset } from "expo-asset";
 
 import { WebView } from "react-native-webview";
 
@@ -74,25 +76,23 @@ const BottomSheet = (props, {}) => {
   const mapUrl =
     "https://dapi.kakao.com/v2/maps/sdk.js?appkey=27ec305b516496a1b6ccfee8a420e520";
 
-  const injectedJavaScript = `
-  console.log("injected 실행");
-  const script = document.createElement("script");
-  script.async = true;
-  script.src = '${mapUrl}';
-  document.head.appendChild(script);
-  console.log("script: ",script);
+  const injectedJS = `
+    let MarketLatitude = ${latitude};
+    let MarketLongitude = ${longitude};
+    window.MarketLatitude = MarketLatitude;
+    window.MarketLongitude = MarketLongitude;
+  `;
 
-  script.addEventListener("load", ()=>{
-    window.kakao.maps.load(() => {
-      const mapContainer = document.getElementById("map");
-      const mapOption = {
-        center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 8, // 지도의 확대 레벨
-      };
-      new window.kakao.maps.Map(mapContainer, mapOption);
-    });
+  const marketLatitude = latitude;
+  const MarketLongitude = longitude;
+
+  const localHtmlFile = Asset.fromModule(require("../screens/map.html"));
+  const localHtmlFilePath = Platform.select({
+    ios: localHtmlFile.uri,
+    android: localHtmlFile.uri.replace("file://", "file:///android_asset/"),
   });
-`;
+
+  const uriWithQuery = `${localHtmlFilePath}?latitude=${marketLatitude}&longitude=${MarketLongitude}`;
 
   const Map = () => {
     console.log("Map 함수 실행");
@@ -109,10 +109,10 @@ const BottomSheet = (props, {}) => {
             borderWidth: 1,
             // position: "relateive",
           }}
-          source={require("../screens/map.html")}
+          source={{ uri: uriWithQuery }}
           originWhitelist={["*"]}
           javaScriptEnabled={true} // JavaScript 활성화
-          injectedJavaScript={injectedJavaScript} // 실행시킬 자바스크립트 코드
+          injectedJavaScript={injectedJS} // 실행시킬 자바스크립트 코드
           onLoad={() => console.log("웹 뷰 로드")}
         />
       </View>

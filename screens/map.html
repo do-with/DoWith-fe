@@ -14,9 +14,14 @@
       kakao = window.kakao || {};
       kakao.maps = window.kakao.maps || {};
 
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const num1 = parseInt(urlParams.get("latitude"));
+      const num2 = parseInt(urlParams.get("longitude"));
+
       var container = document.getElementById("map");
       var options = {
-        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        center: new kakao.maps.LatLng(33.2231212, 126.223243),
         level: 1,
       };
 

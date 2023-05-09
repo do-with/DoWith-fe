@@ -31,7 +31,7 @@ const Stack = createNativeStackNavigator();
 export default function RootNavigator() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="NearByStore">
+      <Stack.Navigator initialRouteName="FirstCsPage">
         <Stack.Screen
           name="JoinScreen"
           options={{ headerShown: false }}
