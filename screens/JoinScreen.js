@@ -19,23 +19,21 @@ export default function Join1({navigation}){
     const [birth, setBirth] = useState('');
 
     // 체크박스 폼
-    const [isAgreed1, setIsAgreed1] = useState(false); // 이용약관 동의 여부
-    const [isAgreed2, setIsAgreed2] = useState(false); // 개인정보수집이용 동의 여부
-    const [isAgreed3, setIsAgreed3] = useState(false); // 만 14세 이상 확인 여부
+    const [isAgreed1, setIsAgreed1] = useState(false); // 개인정보수집이용 동의 여부
+    const [isAgreed2, setIsAgreed2] = useState(false); // 마케팅 정보 수신
     
     const clickJoin = () => {
         if (password  !== checkPassword) {
             Alert.alert("비밀번호");
         }
         else if (name && phone && email && birth && password && checkPassword
-            && isAgreed1 && isAgreed2 && isAgreed3) {
+            && isAgreed1 && isAgreed2) {
             const data = {
                 email: email,
                 password: password,
                 name: name,
                 use_pcy_agree_yn: isAgreed1,
                 info_proc_agree_yn: isAgreed2,
-                mkt_info_agree_yn: isAgreed3,
                 phone: phone,
                 birth_date: birth,
             };
@@ -128,9 +126,8 @@ export default function Join1({navigation}){
                         </View>
 
                         <View>
-                            <CustomCheckBox value={isAgreed1} onValueChange={setIsAgreed1} text="이용약관동의 (필수)" />
-                            <CustomCheckBox value={isAgreed2} onValueChange={setIsAgreed2} text="개인정보수집이용 동의 (필수)" />
-                            <CustomCheckBox value={isAgreed3} onValueChange={setIsAgreed3} text="만 14세 이상 확인 (필수)" />
+                            <CustomCheckBox value={isAgreed1} onValueChange={setIsAgreed1} text="[필수]이용 약관과 개인 정보 수집 및 이용에 동의 합니다" />
+                            <CustomCheckBox value={isAgreed2} onValueChange={setIsAgreed2} text="이메일 SNS 마케팅 정보 수신 동의합니다" />
                         </View>
                         
                         <View style={styles.joinBtnView}>
@@ -216,7 +213,7 @@ const styles = StyleSheet.create({
         borderColor: '#A3A2A2',
         borderRadius: 5,
         color: '#ABABAB',
-        boxSizing: 'border-box',
+        // boxSizing: 'border-box',
         paddingLeft: '5%',
         fontSize: 16,
     },

@@ -1,28 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { StyleSheet, View, Text, Pressable } from 'react-native';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Variables } from '../components/Variables';
-import { ipAddress } from '../ipAddress';
-import axios from 'axios';
+import { AuthContext } from '../contexts/AuthContext';
 
-export default function MyPage({navigation, route}){
-    const userId = route.params.userId;
-    const [name, setName] = useState('');
-
-    useEffect(() => {
-        axios.get(`http://${ipAddress}:8080/user/${userId}`)
-            .then(response => setName(response.data.name))
-            .catch(error => console.log(error))
-    }, []);
+export default function MyPage({navigation}){
+    const { user, isAuthenticated } = useContext(AuthContext);
     
     return(
         <View style={styles.joinBody}>
             <ScreenHeader headerTitle="마이페이지"/>
             <View style={styles.joinContent}>
-                <View style={styles.myProfile}>
-                    <Text style={styles.profileText}>프로필</Text>
-                    <Text style={styles.profileText}>{name}</Text>
+                <View>
+                {isAuthenticated ? (
+                    <View style={styles.myProfile}>
+                        <Text style={styles.profileText}>프로필</Text>
+                        <Text style={styles.profileText}>{user.name}</Text>
+                    </View>
+                ) : (
+                    <Pressable onPress={()=>navigation.navigate('LoginScreen')}>
+                        <View style={styles.myProfile}> 
+                            <Text style={styles.profileText}>로그인이 필요합니다.</Text>
+                        </View>
+                    </Pressable>
+                )}
                 </View>
                 <View style={styles.myInfoBoardView}>
                     <View style={styles.myInfoBoard}>

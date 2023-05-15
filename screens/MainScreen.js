@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Image, TouchableOpacity, Text, Pressable, Dimensions } from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity, Text, Pressable } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Variables } from "../components/Variables";
 import { ipAddress } from "../ipAddress";
 import axios from "axios";
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-function MainScreen({ navigation }) {
+function MainScreen({ navigation}) {
     const [count, setCount] = useState(0);
 
+    // 스프링에서 전체 사용자 조회 만들면 실행 가능
     useEffect(() => {
-        axios.get(`http://${ipAddress}:8080/user/1`)
+        axios.get(`http://${ipAddress}:8080/users`)
             .then(response => setCount(Object.keys(response.data).length))
             .catch(error => console.log(error))
       }, []);
-
+    
     return (
         <View style={styles.mainBody}>
-            <ScreenHeader headerTitle="DoWith" />
+            <ScreenHeader headerTitle="DoWith"/>
             <View style={styles.mainContent}>
                 <View style={styles.mainContentTotalDonor}>
                     <View style={styles.highlightSentence}>
