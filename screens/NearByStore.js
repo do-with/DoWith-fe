@@ -11,21 +11,18 @@ import { LinearGradient } from "expo-linear-gradient";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
 import BottomSheet from "../components/BottomSheet";
-import { WebView } from "react-native-webview";
+import BottomSheet2 from "../components/BottomSheet2";
 import * as Location from "expo-location";
 import { ipAddress } from "../ipAddress";
 import axios from "axios";
 
 export default function NearByStore() {
   const [modalVisible, setModalVisible] = useState(false);
-  const pressButton = () => {
-    setModalVisible(true);
-  };
-
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -39,6 +36,10 @@ export default function NearByStore() {
     })();
   }, []);
 
+  useEffect(() => {
+    getMarketListById();
+  }, []);
+
   const getCurrentLocation = () => {
     if (errorMsg) {
       text = errorMsg;
@@ -49,6 +50,7 @@ export default function NearByStore() {
       //text에 location값이 저장된다.
       console.log("latitude : ", latitude);
       console.log("longitude : ", longitude);
+      setLoading(false);
     }
     axios
       .get(`http://${ipAddress}:8080/market/distance/${latitude}/${longitude}`)
@@ -58,14 +60,83 @@ export default function NearByStore() {
   };
 
   const [marketList, setMarketList] = useState([]);
-  //test 코드
-  marketList.name = "매장이름";
-  marketList.address = "주소";
-  marketList.phone = "전화번호";
-  marketList.distance = "거리";
-  marketList.longitude = "126.56747518962283";
-  marketList.latitude = "33.4478231507773";
-  return (
+  const [marketListById, setMarketListById] = useState([]);
+
+  const getMarketListById = () => {
+    axios
+      .get(`http://${ipAddress}:8080/market`)
+      .then((response) => setMarketListById(response.data))
+      .catch((error) => console.log(error));
+  };
+
+  return loading ? (
+    <View style={styles.nearByBody}>
+      <ScreenHeader headerTitle="가까운 매장" />
+      <View style={styles.nearByContent}>
+        <View style={styles.nearByImgBackground}>
+          <Image
+            source={require("../assets/nearby-background.png")}
+            style={styles.img}
+            resizeMode={"contain"}
+          />
+          <LinearGradient
+            colors={["#4A6BAC", "#1B3974"]}
+            style={styles.imgBackground}
+          >
+            <Pressable
+              style={styles.imgBackgroundBtn}
+              onPress={getCurrentLocation}
+            >
+              <Text style={{ color: "white" }}>현위치</Text>
+            </Pressable>
+          </LinearGradient>
+        </View>
+        <View style={styles.contentListWrapApi}>
+          <ScrollView>
+            {marketListById.map((market) => {
+              return (
+                <View key={market.id}>
+                  <Pressable onPress={() => setModalVisible(market.id)}>
+                    <View style={[styles.listBoxImg, styles.listBoxImgApi]}>
+                      <View
+                        style={[
+                          styles.contentListText,
+                          styles.contentListTextApi,
+                        ]}
+                      >
+                        <View
+                          style={{
+                            height: "60%",
+                            justifyContent: "space-between",
+                            marginTop: "2%",
+                          }}
+                        >
+                          <Text style={{ fontSize: 15, fontWeight: 700 }}>
+                            {market.name}
+                          </Text>
+                          <Text>{market.address}</Text>
+                          <Text>{market.phone}</Text>
+                        </View>
+                      </View>
+                    </View>
+                  </Pressable>
+                  <BottomSheet2
+                    modalVisible={modalVisible === market.id}
+                    setModalVisible={setModalVisible}
+                    name={market.name}
+                    address={market.address}
+                    phone={market.phone}
+                    longitude={market.longitude}
+                    latitude={market.latitude}
+                  />
+                </View>
+              );
+            })}
+          </ScrollView>
+        </View>
+      </View>
+    </View>
+  ) : (
     <View style={styles.nearByBody}>
       <ScreenHeader headerTitle="가까운 매장" />
       <View style={styles.nearByContent}>
@@ -101,10 +172,21 @@ export default function NearByStore() {
                           styles.contentListTextApi,
                         ]}
                       >
-                        <Text>{market.name}</Text>
-                        <Text>{market.address}</Text>
-                        <Text>{market.phone}</Text>
-                        <Text>{dist}km</Text>
+                        <View
+                          style={{
+                            height: "60%",
+                            justifyContent: "space-between",
+                            marginTop: "2%",
+                          }}
+                        >
+                          <Text style={{ fontSize: 15, fontWeight: 700 }}>
+                            {market.name}
+                          </Text>
+                          <Text>{market.address}</Text>
+                          <Text>{market.phone}</Text>
+                        </View>
+
+                        <Text style={{ color: "grey" }}>{dist}km</Text>
                       </View>
                     </View>
                   </Pressable>
@@ -177,32 +259,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  contentListWrap: {
-    position: "relative",
     width: "100%",
-    height: "auto",
   },
   contentListWrapApi: {
     backgroundColor: "white",
-    height: 500,
-  },
-  contentList: {
-    display: "flex",
-    flexDirection: "column",
-    boxSizing: "border-box",
-  },
-  contentListApi: {
-    alignItems: "center",
-  },
-
-  listBoxImg: {
+    height: "63%",
     width: "100%",
-    height: 124,
-    borderBottomWidth: 1,
+  },
+  listBoxImg: {
+    borderBottomWidth: 3,
     borderBottomColor: "#d8d8d8",
     display: "flex",
     wordBreak: "break-all",
+    justifyContent: "center",
+    paddingHorizontal: "3%",
   },
   listBoxImgApi: {
     marginTop: "3%",
@@ -212,19 +282,18 @@ const styles = StyleSheet.create({
     borderColor: "rgba(199, 199, 199, 0.8)",
     boxShadow: "1px 1px 4px rgba(189, 189, 189, 0.25)",
     borderRadius: 10,
-    width: "93%",
-    height: 117,
+    width: "95%",
+    height: 105,
     wordBreak: "break-all",
+    marginLeft: "3%",
   },
-
   contentListText: {
-    width: "61%",
+    width: "100%",
     display: "flex",
+    height: "90%",
     flexDirection: "column",
-    justifyContent: "center",
+    justifyContent: "space-around",
     boxSizing: "border-box",
-    paddingLeft: "6%",
-    paddingTop: "2%",
   },
   contentListTextApi: {
     fontSize: 17,
@@ -232,17 +301,6 @@ const styles = StyleSheet.create({
     marginBottom: "2%",
     color: "rgba(35, 35, 35, 0.94)",
   },
-
-  contentListImg: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "37%",
-  },
-  contentListImgApi: {
-    width: "41%",
-  },
-
   nearbyAddress: {
     position: "relative",
     width: 345,

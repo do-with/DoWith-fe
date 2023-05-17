@@ -14,7 +14,7 @@ import {
 import { WebView } from "react-native-webview";
 import Communications from "react-native-communications";
 
-const BottomSheet = (props, {}) => {
+const BottomSheet2 = (props, {}) => {
   const {
     modalVisible,
     setModalVisible,
@@ -126,9 +126,6 @@ const BottomSheet = (props, {}) => {
         >
           <View style={styles.marketView}>
             <View style={styles.marketTitleView}>
-              <View style={styles.distView}>
-                <Text style={styles.distText}>{distance}km</Text>
-              </View>
               <View style={styles.marketTextView}>
                 <Text style={styles.titleText}>{name}</Text>
                 <Text style={styles.etcText}>{address}</Text>
@@ -173,19 +170,9 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "row",
   },
-  distView: {
-    justifyContent: "center",
-    width: "25%",
-    alignItems: "center",
-  },
-  distText: {
-    fontSize: 18,
-    color: "rgba(35, 35, 35, 0.75)",
-    paddingLeft: "10%",
-  },
   marketTextView: {
     justifyContent: "center",
-    width: "75%",
+    width: "95%",
     paddingHorizontal: "3%",
   },
   titleText: {
@@ -204,4 +191,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BottomSheet;
+export default BottomSheet2;
