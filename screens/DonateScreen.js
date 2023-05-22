@@ -3,12 +3,33 @@ import { StyleSheet, View, TextInput, Text, Pressable } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
 import { LinearGradient } from "expo-linear-gradient";
+import DropDownPicker from "react-native-dropdown-picker";
 
 export default function DonateScreen({ navigation }) {
   const [category, setCategory] = useState("");
-  // const [category, setCategory] = useState('');
-  // const [category, setCategory] = useState('');
-  // const [category, setCategory] = useState('');
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: "제과류", value: "1" },
+    { label: "즉석식품", value: "2" },
+    { label: "냉동식품", value: "3" },
+    { label: "통조림", value: "4" },
+    { label: "장류", value: "5" },
+    { label: "소스류", value: "6" },
+    { label: "기름류", value: "7" },
+    { label: "음료류", value: "8" },
+    { label: "육가공류", value: "9" },
+    { label: "농산물", value: "10" },
+    { label: "제빵류", value: "11" },
+    { label: "세제류", value: "12" },
+    { label: "휴지류", value: "13" },
+    { label: "수건류", value: "14" },
+    { label: "기저귀류", value: "15" },
+    { label: "신체 위생용품류", value: "16" },
+    { label: "여성 위생용품류", value: "17" },
+    { label: "청소 & 환경 위생용품류", value: "18" },
+  ]);
 
   return (
     <View style={styles.registerBody}>
@@ -18,11 +39,23 @@ export default function DonateScreen({ navigation }) {
         <View style={styles.registerBox}>
           <View style={styles.registerDonate1}>
             <Text style={styles.text}>대분류 선택 *</Text>
-            <TextInput
-              value={category}
-              onChangeText={setCategory}
-              placeholder="눌러주세요"
-              style={styles.inputText}
+            <DropDownPicker
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+              placeholder="물품 분류를 선택해주세요"
+              listMode="MODAL"
+              modalProps={{
+                animationType: "fade",
+              }}
+              modalTitle="물품 분류 선택"
+              style={{
+                borderWidth: 0.5,
+                minHeight: "20%",
+              }}
             />
             <View style={styles.donateItemPic}>
               <Text style={{ color: "red", fontSize: 13 }}>
