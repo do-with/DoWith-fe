@@ -1,18 +1,45 @@
-// 로그인 전
-// home -> login -> kakaoLogin -> Main
-
-import { StyleSheet, View, Text, Pressable, TextInput, Button, TouchableOpacity, Image, Dimensions } from "react-native";
+import React, { useState, useContext } from 'react';
+import { StyleSheet, View, Text, Pressable, TouchableOpacity, Dimensions, Alert } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
-import { useState } from 'react';
 import { CustomInput } from "../components/CustomInput";
 import { Variables } from "../components/Variables";
+import { ipAddress } from "../ipAddress";
+import { AuthContext } from '../contexts/AuthContext';
+import axios from 'axios';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 function LoginScreen({ navigation }) {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const authContext = useContext(AuthContext);
+
+  const onClickLoginBtn = async () => {
+      const data = {
+        email: email,
+        password: password,
+      };
+
+      await axios.post(`http://${ipAddress}:8080/user/login`, data, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        }
+      })
+      .then(response => {
+          const user = response.data;
+          console.log(user);
+
+          authContext.login(user);
+          navigation.navigate('MainScreen');
+      })
+      .catch(error => {
+        console.log(error);
+        Alert.alert("아이디 또는 비밀번호를 잘못 입력하였습니다.");
+      });
+  };
 
   return (
     <View style={styles.loginBody}>
@@ -20,8 +47,8 @@ function LoginScreen({ navigation }) {
         <View style={styles.loginContent}>
           <View style={styles.loginForm}>
             <CustomInput 
-              value={username}
-              setValue={setUsername}
+              value={email}
+              setValue={setEmail}
               placeholder="아이디 입력"
             />
             <CustomInput 
@@ -41,13 +68,13 @@ function LoginScreen({ navigation }) {
 
           <View style={styles.basicBtnLoginSubmit}>
             <Pressable style={styles.btnLoginBox}
-              onPress={() => navigation.navigate("MainScreen")}>
+              onPress={onClickLoginBtn}>
               <Text style={styles.whiteText}>로그인</Text>
             </Pressable>
           </View>
           <View style={styles.basicBtnJoinTrans}>
             <Pressable style={styles.btnJoinBox}
-              onPress={() => navigation.navigate("JoinScreen1")}>
+              onPress={() => navigation.navigate("JoinScreen")}>
               <Text>회원가입</Text>
             </Pressable>
           </View>
@@ -114,7 +141,7 @@ const styles = StyleSheet.create({
   basicBtnJoinTrans: {
     position: 'relative',
     display: 'flex',
-    boxSizing: 'border-box',
+    // boxSizing: 'border-box',
     paddingLeft: '7%',
   },
   img: {
