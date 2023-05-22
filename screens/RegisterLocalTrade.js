@@ -74,6 +74,20 @@ export default function RegisterLocalTrade({navigation}){
         //         })
         //         .catch(error => console.log(error));
         // } 
+        const formData = new FormData();
+       
+        formData.append("image1", imageUris[0]);
+        formData.append("image2", imageUris[1]);
+        console.log(formData);
+        const user_id = 1;
+        axios.post(`http://${ipAddress}:8080/local-trade/user/${user_id}`, formData)
+        .then(response => {
+            console.log(response);
+            navigation.navigate('MainScreen');
+        })
+        .catch(error => {
+            console.log(error);
+        });
     };
 
     return(
@@ -182,6 +196,7 @@ const styles = StyleSheet.create({
     selectImageBtn: {
         backgroundColor: '#ddd',
         width: '27%',
+        marginRight: '3%',
         height: '100%',
         display: 'flex',
         justifyContent: 'center',
@@ -191,7 +206,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     selectedImageContainer: {
-        marginLeft: '5%',
+        marginRight: '5%',
     },
     removeImageBtn: {
         position: 'absolute',
