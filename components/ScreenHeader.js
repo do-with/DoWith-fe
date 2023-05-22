@@ -32,7 +32,7 @@ export const ScreenHeader = ({headerTitle}) => {
                     </View>
                     <View style={styles.screenHeaderBtn}>
                         <Pressable onPress={() => navigation.push('MyPage')}>
-                            <Image source={require('../assets/search.png')}
+                            <Image source={require('../assets/profile.png')}
                             style={styles.screenHeaderBtnImg} resizeMode='contain' />
                         </Pressable>
                     </View>
