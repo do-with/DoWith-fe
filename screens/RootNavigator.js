@@ -36,7 +36,6 @@ export default function RootNavigator() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="LoginScreen">
         <Stack.Screen name="JoinScreen" options={{headerShown: false}} component={JoinScreen} />
-
         <Stack.Screen
           name="Notification"
           options={{ headerShown: false }}
@@ -111,7 +110,6 @@ export default function RootNavigator() {
           options={{ headerShown: false }}
           component={AfterDonate}
         />
-
         <Stack.Screen name="LocalTrade" options={{headerShown: false}} component={LocalTrade} />
         <Stack.Screen name="RegisterLocalTrade" options={{headerShown: false}} component={RegisterLocalTrade} />
 
