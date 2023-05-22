@@ -6,16 +6,15 @@ import { Variables } from "../components/Variables";
 import Moment from "moment";
 import axios from "axios";
 
-export default function Notification({ navigation }) {
-  const [notiList, setNotiList] = useState([]);
-  const user_id = 1;
+export default function Notification({navigation, route}){
+    const [notiList, setNotiList] = useState([]);
+    const userId = route.params.userId;
 
-  useEffect(() => {
-    axios
-      .get(`http://${ipAddress}:8080/notification/user/${user_id}`)
-      .then((response) => setNotiList(response.data))
-      .catch((error) => console.log(error));
-  }, []);
+    useEffect(() => {
+        axios.get(`http://${ipAddress}:8080/notification/user/${userId}`)
+            .then(response => setNotiList(response.data))
+            .catch(error => console.log(error))
+      }, []);
 
   return (
     <View style={styles.joinBody}>

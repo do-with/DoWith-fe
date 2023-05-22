@@ -9,7 +9,6 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export const ScreenHeader = ({headerTitle}) => {
-    const isLargeScreen = windowWidth >= 720;
     const navigation = useNavigation();
     return(
         <View style={styles.screenHeader}>
@@ -26,14 +25,14 @@ export const ScreenHeader = ({headerTitle}) => {
                 </View>
                 <View style={styles.icon}>
                     <View style={styles.screenHeaderBtn}>
-                        <Pressable onPress={() => navigation.navigate("Notification")}>
+                        <Pressable onPress={() => navigation.push("Notification")}>
                             <Image source={require('../assets/notification.png')}
                             style={styles.screenHeaderBtnImg} resizeMode='contain' />
                         </Pressable>
                     </View>
                     <View style={styles.screenHeaderBtn}>
-                        <Pressable onPress={() => navigation.navigate('MyPage')}>
-                            <Image source={require('../assets/search.png')}
+                        <Pressable onPress={() => navigation.push('MyPage')}>
+                            <Image source={require('../assets/profile.png')}
                             style={styles.screenHeaderBtnImg} resizeMode='contain' />
                         </Pressable>
                     </View>
