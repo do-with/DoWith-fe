@@ -1,19 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, Pressable, Modal } from 'react-native';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { Variables } from '../components/Variables';
 import { LinearGradient } from 'expo-linear-gradient';
+import BarGraph from '../components/BarGraph';
+import RingGraph from '../components/RingGraph';
+import { ipAddress } from '../ipAddress';
+import axios from 'axios';
 
 export default function Static({navigation}){
     const [modalVisible, setModalVisible] = useState(false);
-    const [money, setMoney] = useState(null);
-    const [count, setCount] = useState(null);
+    const [money, setMoney] = useState(null); // 후원금액 get
+    const [count, setCount] = useState(null); // 기부 참여자 수 get
     const [area, setArea] = useState('제주');
+    const [selectedButtonIndex, setSelectedButtonIndex] = useState(null); // 선택된 버튼의 인덱스 저장
+    
+    useEffect(() => {
+        axios.get(`http://${ipAddress}:8080/user/count`)
+            .then(response => setCount(response.data))
+            .catch(error => console.log(error))
+    }, []);
 
+    // JSON 파일 가져와서 그래프 데이터 설정
+    // const [graphData, setGraphData] = useState([]);
+    // useEffect(() => {
+    //     const jsonData = require('./data.json');
+    //     const data = jsonData.map((item) => item.value);
+    //     setGraphData(data);
+    //   }, []);
+
+    const ringGraphData = [0.4];
+
+    const barGraphData = {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [
+          {
+            data: [20, 45, 28, 80, 99, 43],
+          },
+        ],
+    };
+      
     const areas = ['제주', '부산', '울산', '대구', '인천',
-         '대전', '광주', '서울', '부산', '울산',
-         '제주', '부산', '울산', '대구', '인천',
-         '제주', '부산', '울산', '대구', '인천'
+         '대전', '광주', '서울', '2', '5',
+         '어쩌구', '3', '6', '8', '10',
+         '1', '4', '7', '9', '11'
     ];
 
     const openSelectModal = () => {
@@ -23,6 +53,7 @@ export default function Static({navigation}){
     const onPressArea = (area) => {
         setArea(area);
         setModalVisible(false);
+        setSelectedButtonIndex(area);
     };
 
     const chunk = (arr, size) => {
@@ -35,40 +66,62 @@ export default function Static({navigation}){
         <View style={styles.joinBody}>
             <ScreenHeader headerTitle="기부현황"/>
             <View style={styles.joinContent}>
-                <View style={styles.countBoxView}>
-                    <LinearGradient colors={['#fbfbfb57', '#fbfbfba1', '#ffffff']}
-                        style={styles.countBox}>
-                        <View>
-                            <Text>푸드뱅크 기부금 현재</Text>
-                            <Text>{money}원</Text>
+                <View style={styles.graphBoxContainer}>
+                    <Text style={[styles.basicText, 
+                        {
+                            fontSize: 17,
+                            marginVertical: '2%',
+                        }]}
+                    >
+                        전체 모금 현황
+                    </Text>
+                    <View style={styles.graphBox}>
+                        <RingGraph data={ringGraphData} />
+                        <View style={styles.textView}>
+                            <View>
+                                <Text style={styles.basicText}>현재 모금액</Text>
+                                <Text style={styles.basicText}>512,000원</Text>
+                            </View>
+                            <View>
+                                <Text style={styles.basicText}>기부 참여자</Text>
+                                <Text style={styles.basicText}>{count}명</Text>
+                            </View>
                         </View>
-                    </LinearGradient>
-                    <LinearGradient colors={['#fbfbfb57', '#fbfbfba1', '#ffffff']}
-                        style={styles.countBox}>
-                        <View>
-                            <Text>{count}명이 푸드뱅크</Text>
-                            <Text>기부에 참여하고 있어요</Text>
-                        </View>
-                    </LinearGradient>
-                </View>
-
-                <View style={styles.staticBoxView}>
-                    <View style={styles.staticBox}>
-                        <Text>제공 현황</Text>
-                    </View>
-                </View>
-                
-                <View style={styles.areaBoxView}>
-                    <Pressable onPress={openSelectModal}
-                        style={styles.areaName}>
-                        <Text>{area}</Text>
-                    </Pressable>
-                    <View style={styles.areaBox}>
-                        <Text>지역별 선호물품</Text>
-                        <Text>지역별 기부금액 통계</Text>
                     </View>
                 </View>
 
+                <View style={styles.bottomContainer}>
+                    <View style={styles.titleView}>
+                        <Text style={[styles.basicText, {fontSize: 17}]}>
+                            푸드뱅크 지역별 상세 기부 현황
+                        </Text>
+                        <Pressable onPress={openSelectModal}
+                            style={styles.areaName}>
+                            <Text style={{fontWeight: 700, fontSize: 15, color: '#3a3a3a'}}>
+                                {area}
+                            </Text>
+                        </Pressable>
+                    </View>
+
+                    <View style={styles.summaryBoxView}>
+                        <LinearGradient colors={['#d7eeff61', '#d7eeff']}
+                            style={styles.summaryBox}>
+                            <View>
+                                <Text style={{fontWeight: 500, fontSize: 15, color: 'rgba(5,5,5,0.61)'}}>
+                                    {area} 선호 물품은
+                                </Text>
+                                <Text style={{fontWeight: 500, fontSize: 17}}>
+                                    1위 라면, 2위 김밥, 3위 샴푸입니다!
+                                </Text>
+                            </View>
+                        </LinearGradient>
+                    </View>
+
+                    <View>
+                        <Text style={styles.lineText}>기부 물품 현황</Text>
+                            <BarGraph data={barGraphData} />
+                    </View>
+                </View>
 
                 <Modal
                     animationType="slide"
@@ -86,8 +139,13 @@ export default function Static({navigation}){
                                 {chunk.map((area, index) => (
                                     <View key={index}>
                                         <Pressable onPress={()=>onPressArea(area)}
-                                            style={styles.modalBtn}>
-                                            <Text>{area}</Text>
+                                            style={[
+                                                styles.modalBtn,
+                                                selectedButtonIndex === area && styles.selectedModalBtn,
+                                            ]}>
+                                            <Text style={selectedButtonIndex === area && styles.selectedModalBtnText}>
+                                                {area}
+                                            </Text>
                                         </Pressable>
                                     </View>
                                 ))}
@@ -115,99 +173,91 @@ const styles = StyleSheet.create({
         height: '100%',
         backgroundColor: Variables.mainColor,
         wordBreak: 'break-all',
+        alignItems: 'center',
     },
     joinContent: {
-        width: '100%',
+        width: '90%',
         height: '100%',
-        position: 'relative',
-        display: 'flex',
         flexDirection: 'column',
+        justifyContent: 'flex-start',
         top: '14%',
     },
-    countBoxView: {
+    basicText: {
+        fontWeight: 700,
+        color: '#3a3a3a',
+        lineHeight: 25,
+    },
+    graphBoxContainer: {
+        height: '33%',
+        marginBottom: '1%',
+    },
+    graphBox: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        height: '83%',
+        marginBottom: '2%',
+        borderRadius: 8,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 2,
+            height: 3,
+        },
+        shadowOpacity: 0.11,
+        shadowRadius: 4,
+    },
+    textView:{
+        width: '40%',
+        height: '55%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    bottomContainer: {
+        height: '60%',
+        justifyContent: 'space-between',
+    },
+    titleView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        height: '7%',
+        marginBottom: '2%',
+    },
+    areaName: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        height: '95%',
+        width: '20%',
+        borderRadius: 8,
+    },
+    summaryBoxView: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
     },
-    countBox: {
+    summaryBox: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
         height: 103,
-        width: '45%',
+        width: '100%',
+        marginBottom: '5%',
+        borderRadius: 8,
+    },
+    lineText: {
+        fontSize: 15,
+        lineHeight: 22,
+        color: '#3A3A3A',
         marginBottom: '2%',
-        borderRadius: 8,
     },
-    staticBoxView: {
-        alignItems: 'center',
-        height: '25%',
-        marginBottom: '2%',
-    },
-    staticBox: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
-        height: '99%',
-        width: '95%',
-        marginBottom: '2%',
-        borderRadius: 8,
-        borderRadius: 8,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 2,
-            height: 3,
-        },
-        shadowOpacity: 0.11,
-        shadowRadius: 4,
-        borderRadius: 10,
-    },
-    areaBoxView: {
-        alignItems: 'flex-start',
-        marginLeft: '2%',
-    },
-    areaName: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        height: '8%',
-        width: '25%',
-        marginBottom: '2%',
-        borderRadius: 8,
-
-        borderWidth: 1,
-        borderLeftWidth: 2,
-        borderBottomWidth: 2,
-        borderColor: 'rgba(133, 133, 133, 0.09)',
-        boxShadow: '2px 2px 1px rgba(116, 116, 116, 0.03)',
-        borderRadius: 10,
-    },
-    areaBox: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
-        height: '55%',
-        width: '98%',
-        marginBottom: '2%',
-        borderRadius: 8,
-
-        borderRadius: 8,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 2,
-            height: 3,
-        },
-        shadowOpacity: 0.11,
-        shadowRadius: 4,
-        borderRadius: 10,
-    },
+    // modal style
     centeredView: {
         flex: 1,
         justifyContent: "center",
@@ -261,6 +311,13 @@ const styles = StyleSheet.create({
         borderStyle: 'solid',
         borderWidth: 1,
         borderColor: '#B5B5B5',
-        borderRadius: 5,
+        borderRadius: 4,
+    },
+    selectedModalBtn: {
+        backgroundColor: Variables.btnColor, // 선택된 버튼의 색상
+        borderWidth: 0,
+    },
+    selectedModalBtnText: {
+        color: 'white', // 선택된 버튼의 글자색
     },
 });

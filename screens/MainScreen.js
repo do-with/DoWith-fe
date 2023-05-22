@@ -9,12 +9,11 @@ import axios from "axios";
 function MainScreen({ navigation}) {
     const [count, setCount] = useState(0);
 
-    // 스프링에서 전체 사용자 조회 만들면 실행 가능
     useEffect(() => {
-        axios.get(`http://${ipAddress}:8080/users`)
-            .then(response => setCount(Object.keys(response.data).length))
+        axios.get(`http://${ipAddress}:8080/user/count`)
+            .then(response => setCount(response.data))
             .catch(error => console.log(error))
-      }, []);
+    }, []);
     
     return (
         <View style={styles.mainBody}>
