@@ -1,7 +1,8 @@
-import Root from './screens/RootNavigator';
-import React, {useEffect, useState} from 'react';
-import { StyleSheet, View, Image} from "react-native";
 
+import React from 'react';
+import { StyleSheet } from "react-native";
+import RootNavigator from './screens/RootNavigator';
+import { AuthProvider } from "./contexts/AuthContext";
 function App(){
   // const[loading, setLoading] = useState(true);
 
@@ -26,8 +27,14 @@ function App(){
   // ):(
   //       <Root />
   // )
+  // return (
+  //     <RootNavigator />
+  // );
   return (
-    <Root />
+    <AuthProvider>
+      <RootNavigator />
+    </AuthProvider>
+      
   );
 };
 
