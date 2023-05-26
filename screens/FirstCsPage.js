@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, Pressable, Image } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { TransImgBtn } from "../components/TransImgBtn";
 import { Variables } from "../components/Variables";
@@ -81,8 +81,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         borderBottomWidth: 2,
         borderBottomColor: 'white',
-        /* background: rgba(255, 255, 255, 0.55); */
-        /* box-shadow: 1px 2px 4px rgba(70, 70, 70, 0.2); */
     },
     csCallBtn: {
         backgroundColor: '#FFFFFF',

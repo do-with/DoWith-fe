@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { StyleSheet, View, Text, Image, Pressable } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { ipAddress } from "../ipAddress";
 import { Variables } from "../components/Variables";
+import { AuthContext } from "../contexts/AuthContext";
 import Moment from "moment";
 import axios from "axios";
 
-export default function Notification({navigation, route}){
+export default function Notification({navigation}){
     const [notiList, setNotiList] = useState([]);
-    const userId = route.params.userId;
+
+    const { user } = useContext(AuthContext);
+    const userId = user.id;
 
     useEffect(() => {
         axios.get(`http://${ipAddress}:8080/notification/user/${userId}`)

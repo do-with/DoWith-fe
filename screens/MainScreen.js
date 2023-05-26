@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { StyleSheet, View, Image, TouchableOpacity, Text, Pressable } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Variables } from "../components/Variables";
 import { ipAddress } from "../ipAddress";
+import { AuthContext } from "../contexts/AuthContext";
 import axios from "axios";
 
 function MainScreen({ navigation}) {
+    const { isAuthenticated } = useContext(AuthContext);
     const [count, setCount] = useState(0);
 
     useEffect(() => {
@@ -14,6 +16,15 @@ function MainScreen({ navigation}) {
             .then(response => setCount(response.data))
             .catch(error => console.log(error))
     }, []);
+
+    const onChargeBtnClick = () => {
+        if (isAuthenticated) {
+            navigation.navigate('');
+        }
+        else {
+            navigation.navigate('LoginScreen');
+        }
+    };
     
     return (
         <View style={styles.mainBody}>
@@ -62,7 +73,7 @@ function MainScreen({ navigation}) {
                             <Text>문의하기</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.transImgBtn}
-                            onPress={() => navigation.navigate("ChargeMoney")}>
+                            onPress={onChargeBtnClick}>
                             <Image source={require("../assets/burger.png")}
                                     style={styles.img} resizeMode={"contain"}/>
                             <Text>충전하기</Text>

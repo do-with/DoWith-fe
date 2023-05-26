@@ -6,6 +6,7 @@ import { Variables } from "../components/Variables";
 import { ipAddress } from "../ipAddress";
 import { AuthContext } from '../contexts/AuthContext';
 import axios from 'axios';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -67,15 +68,19 @@ function LoginScreen({ navigation }) {
           </View>
 
           <View style={styles.basicBtnLoginSubmit}>
-            <Pressable style={styles.btnLoginBox}
-              onPress={onClickLoginBtn}>
-              <Text style={styles.whiteText}>로그인</Text>
-            </Pressable>
+            <LinearGradient
+              colors={["#4A6BAC", "#1B3974"]}
+              style={styles.btnLoginBox}>
+              <Pressable 
+                onPress={onClickLoginBtn}>
+                <Text style={styles.loginText}>로그인</Text>
+              </Pressable>
+            </LinearGradient>
           </View>
           <View style={styles.basicBtnJoinTrans}>
-            <Pressable style={styles.btnJoinBox}
+            <Pressable
               onPress={() => navigation.navigate("JoinScreen")}>
-              <Text>회원가입</Text>
+              <Text style={styles.joinText}>회원가입</Text>
             </Pressable>
           </View>
       </View>
@@ -110,6 +115,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '94%',
     position: 'relative',
+    marginTop: '3%',
     right: '3%',
   },
   basicBtnLoginSubmit: {
@@ -121,31 +127,31 @@ const styles = StyleSheet.create({
     height: '12%',
   },
   btnLoginBox:{
-    width: windowWidth * 0.8,
-    height: windowHeight * 0.06,
-    backgroundColor: Variables.btnColor,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  btnJoinBox: {
-    width: windowWidth * 0.2,
-    height: windowHeight * 0.03,
+    width: '83%',
+    height: windowHeight * 0.07,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  whiteText: {
-    color: 'white',
+  loginText: {
+    fontWeight: 700,
+    fontSize: 19,
+    lineHeight: 28,
+    letterSpacing: 0.2,
+    color: '#fff',
   },
   basicBtnJoinTrans: {
     position: 'relative',
     display: 'flex',
-    // boxSizing: 'border-box',
-    paddingLeft: '7%',
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: '2%',
+    paddingRight: '10%',
   },
-  img: {
-    width: 170,
-    height: 80,
+  joinText: {
+    fontWeight: 700,
+    fontSize: 17,
+    lineHeight: 26,
+    color: '#003C7C',
   },
 });

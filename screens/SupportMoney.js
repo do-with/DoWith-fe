@@ -7,7 +7,6 @@ import {
   TextInput,
   Image,
 } from "react-native";
-import { Variables } from "../components/Variables";
 import { LinearGradient } from "expo-linear-gradient";
 
 export default function SupportMoney({ navigation }) {
@@ -41,7 +40,8 @@ export default function SupportMoney({ navigation }) {
   return (
     <View style={styles.joinBody}>
       <View style={styles.joinContent}>
-        <Pressable onPress={onSubmit} style={styles.next}>
+        <Pressable onPress={()=>navigation.goBack()}
+          style={styles.next}>
           <Text style={styles.nextText}>다음에 하기</Text>
         </Pressable>
         <View style={styles.supportMoneyTitleView}>
@@ -102,11 +102,12 @@ const styles = StyleSheet.create({
   },
   joinContent: {
     width: "87%",
-    height: "100%",
+    height: "90%",
     position: "relative",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-around",
+    top: '7%',
   },
   supportMoneyTitleView: {
     height: "22%",
@@ -135,7 +136,7 @@ const styles = StyleSheet.create({
     position: "relative",
     display: "flex",
     flexDirection: "column",
-    marginVertical: "4%",
+    // marginVertical: "4%",
   },
   inputTitle: {
     height: "100%",
@@ -154,15 +155,6 @@ const styles = StyleSheet.create({
     marginTop: "2%",
     height: "100%",
     width: "60%",
-  },
-  supportMoneyBtnView: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "80%",
-    height: "6%",
-    backgroundColor: Variables.btnColor,
-    borderRadius: 5,
   },
   supportMoneyBtnText: {
     color: "#fff",
@@ -202,7 +194,7 @@ const styles = StyleSheet.create({
   hightBlock: {
     position: "relaabtive",
     display: "flex",
-    width: "80%",
+    width: "66%",
     height: "10%",
     backgroundColor: "rgba(178, 213, 255, 0.83)",
     zIndex: 0,

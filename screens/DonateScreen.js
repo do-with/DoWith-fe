@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, View, TextInput, Text, Pressable } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
 import { LinearGradient } from "expo-linear-gradient";
 import DropDownPicker from "react-native-dropdown-picker";
-
+import { AuthContext } from '../contexts/AuthContext';
+    
 export default function DonateScreen({ navigation }) {
   const [category, setCategory] = useState("");
 
@@ -31,11 +32,13 @@ export default function DonateScreen({ navigation }) {
     { label: "청소 & 환경 위생용품류", value: "18" },
   ]);
 
+  const { user } = useContext(AuthContext);
+
   return (
     <View style={styles.registerBody}>
       <ScreenHeader headerTitle="기부하기" />
       <View style={styles.registerContent}>
-        <Text style={styles.personalizeText}>지영 님 마음 전달 중 ...♥</Text>
+        <Text style={styles.personalizeText}>{user.name} 님 마음 전달 중 ...♥</Text>
         <View style={styles.registerBox}>
           <View style={styles.registerDonate1}>
             <Text style={styles.text}>대분류 선택 *</Text>

@@ -126,8 +126,14 @@ export default function Join1({navigation}){
                         </View>
 
                         <View>
-                            <CustomCheckBox value={isAgreed1} onValueChange={setIsAgreed1} text="[필수]이용 약관과 개인 정보 수집 및 이용에 동의 합니다" />
-                            <CustomCheckBox value={isAgreed2} onValueChange={setIsAgreed2} text="이메일 SNS 마케팅 정보 수신 동의합니다" />
+                            <CustomCheckBox 
+                                value={isAgreed1} 
+                                onValueChange={setIsAgreed1}
+                                text="[필수]이용 약관과 개인 정보 수집 및 이용에 동의 합니다" />
+                            <CustomCheckBox
+                                value={isAgreed2}
+                                onValueChange={setIsAgreed2}
+                                text="이메일 SNS 마케팅 정보 수신 동의합니다" />
                         </View>
                         
                         <View style={styles.joinBtnView}>
@@ -213,7 +219,6 @@ const styles = StyleSheet.create({
         borderColor: '#A3A2A2',
         borderRadius: 5,
         color: '#ABABAB',
-        // boxSizing: 'border-box',
         paddingLeft: '5%',
         fontSize: 16,
     },
@@ -235,7 +240,6 @@ const styles = StyleSheet.create({
         borderColor: '#A3A2A2',
         borderRadius: 5,
         color: '#ABABAB',
-        boxSizing: 'border-box',
         paddingLeft: '5%',
         fontSize: 14,
     },
@@ -248,7 +252,7 @@ const styles = StyleSheet.create({
         backgroundColor: Variables.btnColor,
         borderRadius: 5,
         width: '100%',
-        height: '30%',
+        height: '32%',
         justifyContent: 'center',
         alignItems: 'center',
     },

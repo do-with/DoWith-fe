@@ -45,7 +45,7 @@ export default function MyPage({navigation}){
                     <View style={styles.myPageBtnView}>
                         <LinearGradient colors={['#d7eeff','#ffffff']}
                             style={styles.myPageBtn}>
-                            <Pressable onPress={()=>navigation.navigate()}>
+                            <Pressable onPress={()=>navigation.navigate('SupportMoney')}>
                                 <Text style={styles.text}>토큰 발행하기</Text>
                             </Pressable>
                         </LinearGradient>
@@ -62,7 +62,9 @@ export default function MyPage({navigation}){
                         </Pressable>
                     </View>
                     <Pressable onPress={()=>onClickLogoutBtn()}>
-                        <Text>로그아웃</Text>
+                        <View style={styles.myProfile}>
+                            <Text style={styles.profileText}>로그아웃</Text>
+                        </View>
                     </Pressable>
                 </View>
                 )}
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         // justifyContent: 'space-around',
         width: '100%',
-        height: '55%',
+        height: '50%',
         backgroundColor: '#fff',
     },
     myList: {
