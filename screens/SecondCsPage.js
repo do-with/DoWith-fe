@@ -1,28 +1,42 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   View,
   ScrollView,
   Text,
   Pressable,
-  TouchableOpacity,
 } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { BoardList } from "../components/BoardList";
 import { ipAddress } from "../ipAddress";
+import { AuthContext } from "../contexts/AuthContext";
 import BtnSm from "../components/BtnSm";
 import Moment from "moment";
 import axios from "axios";
 
 function SecondCsPage({ navigation, route }) {
+  const { user } = useContext(AuthContext);
   const [post, setPost] = useState([]);
   const id = route.params.id;
-  useEffect(() => {
+
+  const loadPosts = () => {
     axios
       .get(`http://${ipAddress}:8080/post/board/${id}`)
-      .then((response) => setPost(response.data))
+      .then((response) => {
+        const loadedPosts = response.data;
+        setPost([...loadedPosts]);
+      })
       .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    // 컴포넌트가 마운트될 때 게시글 목록 로딩
+    loadPosts();
   }, []);
+
+  const reloadPosts = () => {
+    loadPosts();
+  };
 
   return (
     <View style={styles.joinBody}>
@@ -52,14 +66,17 @@ function SecondCsPage({ navigation, route }) {
               }
               return "";
             };
+            console.log(user.id, post.user_id);
             return (
               <View style={{ alignItems: "center" }} key={post.id}>
                 <BoardList
-                  postId={id}
+                  postId={postId}
                   onClickList={onClickList}
                   title={post.title}
                   createdAt={formattedDate}
                   answerYn={getAnserYn(post.answer_yn.toString())}
+                  compare={user.id === post.user_id}
+                  reloadPosts={reloadPosts}
                 />
               </View>
             );

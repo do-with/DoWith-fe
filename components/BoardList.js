@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { StyleSheet, View, Pressable, Text, Alert } from "react-native";
 import { ipAddress } from "../ipAddress";
+import { Ionicons } from '@expo/vector-icons';
 import axios from "axios";
 
-export const BoardList = ({ onClickList, id, title, createdAt, answerYn }) => {
+export const BoardList = ({ onClickList, postId, title, createdAt, answerYn, compare, reloadPosts }) => {
+  const isSameId = compare;
+
   const onDelete = () => {
-    const post_id = id;
     axios
-      .delete(`http://${ipAddress}:8080/post/${post_id}`, {})
-      .then(() => {
+      .delete(`http://${ipAddress}:8080/post/${postId}`, {})
+      .then((response) => {
         // 게시글 목록을 다시 로딩합니다.
+        reloadPosts();
       })
       .catch((error) => {
         console.log(error);
@@ -18,7 +21,7 @@ export const BoardList = ({ onClickList, id, title, createdAt, answerYn }) => {
 
   const onDeleteConfirm = () => {
     Alert.alert(
-      "글 삭제",
+      "문의글 삭제",
       "정말로 삭제하시겠습니까?",
       [
         {
@@ -40,21 +43,23 @@ export const BoardList = ({ onClickList, id, title, createdAt, answerYn }) => {
       style={(pressed) => [styles.csBoardList, styles.csBoardListBtn]}
     >
       <View style={styles.boardListTitle}>
-        <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between", marginLeft: '5%'}}>
           <View
             style={{ width: "80%", height: "200%", wordBreak: "break-all" }}
           >
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row"}}>
               <Text>Q. </Text>
               <Text>{title}</Text>
             </View>
           </View>
+          {isSameId && (
           <Pressable onPress={onDeleteConfirm} style={styles.deleteBtn}>
-            <Text>x</Text>
+              <Ionicons name="ios-trash-outline" size={21} color="black" />
           </Pressable>
+          )}
         </View>
       </View>
-      <View style={{ borderWidth: 1, width: "100%", height: "30%" }}>
+      <View style={{ width: "100%", height: "30%", marginLeft: '10%'}}>
         <Text>{createdAt}</Text>
         <Text>{answerYn}</Text>
       </View>
@@ -99,7 +104,6 @@ const styles = StyleSheet.create({
   },
   deleteBtn: {
     width: 40,
-    borderWidth: 2,
   },
   boardListSubTitle: {
     width: "100%",
