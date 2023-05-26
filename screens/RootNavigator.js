@@ -21,8 +21,6 @@ import Static from "./Static";
 import AfterDonate from "./AfterDonate";
 import LocalTrade from "./LocalTrade";
 import DonationList from "./DonationList";
-import ChargeMoney from "./ChargeMoney";
-import ChangePoint from "./ChangePoint";
 import DonateScreen2 from "./DonateScreen2";
 import Announce2 from "./Announce2";
 import RegisterLocalTrade from "./RegisterLocalTrade";
@@ -50,16 +48,6 @@ export default function RootNavigator() {
           name="LoginScreen"
           options={{ headerShown: false }}
           component={LoginScreen}
-        />
-        <Stack.Screen
-          name="ChargeMoney"
-          options={{ headerShown: false }}
-          component={ChargeMoney}
-        />
-        <Stack.Screen
-          name="ChangePoint"
-          options={{ headerShown: false }}
-          component={ChangePoint}
         />
         <Stack.Screen
           name="DonationList"
