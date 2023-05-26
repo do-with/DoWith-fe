@@ -108,8 +108,7 @@ const styles = StyleSheet.create({
     width: "87%",
     height: "45%",
     position: "relative",
-    justifyContent: "center",
-    marginTop: "53%",
+    top: '14%',
   },
   input: {
     height: "75%",
@@ -149,7 +148,7 @@ const styles = StyleSheet.create({
     color: "white",
     boxShadow: "2px 3px 3px rgba(117, 147, 106, 0.2)",
     width: "37%",
-    height: "17%",
+    height: "15%",
     marginTop: "13%",
     left: "64%",
   },

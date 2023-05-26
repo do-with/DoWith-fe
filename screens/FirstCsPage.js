@@ -12,8 +12,7 @@ function FirstCsPage({ navigation }) {
                 <Text style={styles.h3}>전화 연결</Text>
                 <View style={styles.csCallView}>
                     <View style={styles.csCallBtn}>
-                        <TransImgBtn 
-                            onPress={()=>navigation.navigate("NearByStore")}
+                        <TransImgBtn
                             url={require("../assets/mass-donation.png")}
                             title="대량 기부"
                             subtitle="약 5000kg 이상" 
@@ -21,7 +20,6 @@ function FirstCsPage({ navigation }) {
                     </View>
                     <View style={styles.csCallBtn}>
                         <TransImgBtn 
-                            onPress={()=>navigation.navigate("NearByStore")}
                             url={require("../assets/small-donation.png")}
                             title="소량 기부"
                             subtitle="가까운 푸드뱅크 연결" 

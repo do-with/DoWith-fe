@@ -11,10 +11,10 @@ function SecondCsPage({ navigation, route }) {
     const id =  route.params.id;
     
     let postdate = postConetent.created_at;
-    const formattedPostDate = Moment(postdate).format('yyyy-M-d');
+    const formattedPostDate = Moment(postdate).format('yyyy-M-D');
 
     let commentDate = commentList.created_at;
-    const formattedCommentDate = Moment(commentDate).format('M.d');
+    const formattedCommentDate = Moment(commentDate).format('M.D');
 
     useEffect(() => {
         axios.get(`http://${ipAddress}:8080/post/${id}`)
