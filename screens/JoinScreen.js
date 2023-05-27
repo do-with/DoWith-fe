@@ -7,6 +7,7 @@ import {
   Pressable,
   TextInput,
   Alert,
+  Modal,
 } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
@@ -25,11 +26,84 @@ export default function Join1({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
-  const [birth, setBirth] = useState("");
+
+  const [area, setArea] = useState("제주");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedButtonIndex, setSelectedButtonIndex] = useState(null); // 선택된 버튼의 인덱스 저장
 
   // 체크박스 폼
   const [isAgreed1, setIsAgreed1] = useState(false); // 개인정보수집이용 동의 여부
   const [isAgreed2, setIsAgreed2] = useState(false); // 마케팅 정보 수신
+
+  const areaMappings = {
+    서울: 2,
+    부산: 3,
+    대구: 4,
+    인천: 5,
+    광주: 6,
+    대전: 7,
+    울산: 8,
+    경기: 9,
+    강원: 10,
+    충북: 11,
+    충남: 12,
+    전북: 13,
+    전남: 14,
+    경북: 15,
+    경남: 16,
+    제주: 17,
+    세종: 20,
+  };
+
+  const areas = [
+    "서울",
+    "부산",
+    "대구",
+    "인천",
+    "광주",
+    "대전",
+    "울산",
+    "경기",
+    "강원",
+    "충북",
+    "충남",
+    "전북",
+    "전남",
+    "경북",
+    "경남",
+    "제주",
+    "세종",
+  ];
+
+  const openSelectModal = () => {
+    setModalVisible(true);
+  };
+
+  const onPressArea = (area) => {
+    const areaNumber = areaMappings[area];
+    alert(areaNumber);
+    setArea(area);
+    setModalVisible(false);
+    setSelectedButtonIndex(area);
+  };
+
+  const chunk = (arr, size) => {
+    const chunks = [];
+    const numChunks = Math.ceil(arr.length / size);
+
+    for (let i = 0; i < size; i++) {
+      const chunk = [];
+      for (let j = 0; j < numChunks; j++) {
+        const element = arr[j * size + i];
+        if (element !== undefined) {
+          chunk.push(element);
+        }
+      }
+      chunks.push(chunk);
+    }
+
+    return chunks;
+  };
 
   const clickJoin = () => {
     if (password !== checkPassword) {
@@ -136,12 +210,65 @@ export default function Join1({ navigation }) {
             <View style={styles.inputPhoneText}>
               <Text style={styles.inputTitle}>생년월일 *</Text>
               <DatePicker />
-              {/* <TextInput
-                                value={birth}
-                                onChangeText={setBirth}    
-                                style={styles.birthForm}
-                            />    */}
             </View>
+
+            <View style={styles.inputText}>
+              <Text style={styles.inputTitle}>거주 지역 *</Text>
+              <Pressable onPress={openSelectModal} style={styles.areaName}>
+                <Text
+                  style={{ fontWeight: 700, fontSize: 17, color: "#3a3a3a" }}
+                >
+                  {area}
+                </Text>
+              </Pressable>
+            </View>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}
+              onRequestClose={() => {
+                setModalVisible(!modalVisible);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text>거주 지역을 선택해주세요</Text>
+                  <View style={styles.modalBtnView}>
+                    {chunk(areas, 4).map((chunk, index) => (
+                      <View key={index}>
+                        {chunk.map((area, index) => (
+                          <View key={index}>
+                            <Pressable
+                              onPress={() => onPressArea(area)}
+                              style={[
+                                styles.modalBtn,
+                                selectedButtonIndex === area &&
+                                  styles.selectedModalBtn,
+                              ]}
+                            >
+                              <Text
+                                style={
+                                  selectedButtonIndex === area &&
+                                  styles.selectedModalBtnText
+                                }
+                              >
+                                {area}
+                              </Text>
+                            </Pressable>
+                          </View>
+                        ))}
+                      </View>
+                    ))}
+                  </View>
+                  <Pressable
+                    onPress={() => setModalVisible(!modalVisible)}
+                    style={styles.button}
+                  >
+                    <Text style={styles.textStyle}>닫기</Text>
+                  </Pressable>
+                </View>
+              </View>
+            </Modal>
 
             <View>
               <CustomCheckBox
@@ -282,5 +409,72 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 19,
     fontWeight: 700,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    padding: "3%",
+    backgroundColor: "white",
+    borderRadius: 20,
+    width: "90%",
+    height: "50%",
+    justifyContent: "space-around",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 10,
+    padding: "3%",
+    width: "20%",
+    elevation: 2,
+    backgroundColor: Variables.btnColor,
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalBtnView: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
+    height: "75%",
+  },
+  modalBtn: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    width: 55,
+    height: 35,
+    marginBottom: "20%",
+    borderStyle: "solid",
+    borderWidth: 1,
+    borderColor: "#B5B5B5",
+    borderRadius: 4,
+  },
+  selectedModalBtn: {
+    backgroundColor: Variables.btnColor, // 선택된 버튼의 색상
+    borderWidth: 0,
+  },
+  selectedModalBtnText: {
+    color: "white", // 선택된 버튼의 글자색
+  },
+  areaName: {
+    borderBottomWidth: 1,
+    borderBottomColor: "#d7d7d7",
+    paddingBottom: "2%",
   },
 });
