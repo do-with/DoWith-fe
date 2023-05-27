@@ -11,6 +11,7 @@
   "dependencies": {
     "@actbase/react-daum-postcode": "^1.0.4",
     "@expo/webpack-config": "^18.0.1",
+    "@react-native-community/datetimepicker": "^7.1.0",
     "@react-native-community/geolocation": "^3.0.6",
     "@react-navigation/material-top-tabs": "^6.6.2",
     "@react-navigation/native": "^6.1.6",
@@ -29,9 +30,9 @@
     "react-dom": "18.2.0",
     "react-is": "^18.2.0",
     "react-native": "0.71.4",
-    "react-native-dropdown-picker": "^5.4.6",
-    "react-native-communications": "^2.2.1",
     "react-native-chart-kit": "^6.12.0",
+    "react-native-communications": "^2.2.1",
+    "react-native-dropdown-picker": "^5.4.6",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "~2.9.0",
     "react-native-modal": "^13.0.1",
@@ -42,7 +43,8 @@
     "react-native-viewport-units": "^0.0.5",
     "react-native-web": "~0.18.10",
     "react-native-webview": "^11.26.1",
-    "react-router-native": "^6.9.0"
+    "react-router-native": "^6.9.0",
+    "string-hash-64": "^1.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
