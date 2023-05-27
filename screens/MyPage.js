@@ -52,7 +52,7 @@ export default function MyPage({navigation}){
                     </View>
                     <View style={styles.myListView}>
                         <Pressable style={styles.myList}>
-                            <Text style={styles.text}>나의 물픔 내역</Text>
+                            <Text style={styles.text}>나의 물품 내역</Text>
                         </Pressable>
                         <Pressable style={styles.myList}>
                             <Text style={styles.text}>알림 목록 조회</Text>

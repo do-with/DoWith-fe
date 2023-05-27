@@ -34,7 +34,7 @@ function LoginScreen({ navigation }) {
           console.log(user);
 
           authContext.login(user);
-          navigation.navigate('MainScreen');
+          navigation.replace('MainScreen');
       })
       .catch(error => {
         console.log(error);

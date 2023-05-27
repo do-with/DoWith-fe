@@ -7,7 +7,6 @@ import MainScreen from "./MainScreen";
 import DonateScreen from "./DonateScreen";
 import FirstCsPage from "./FirstCsPage";
 import SecondCsPage from "./SecondCsPage";
-import ThirdCsPage from "./ThirdCsPage";
 import NearByStore from "./NearByStore";
 import AboutScreen from "./AboutScreen";
 import Announce1 from "./Announce1";
@@ -71,11 +70,6 @@ export default function RootNavigator() {
           name="SecondCsPage"
           options={{ headerShown: false }}
           component={SecondCsPage}
-        />
-        <Stack.Screen
-          name="ThirdCsPage"
-          options={{ headerShown: false }}
-          component={ThirdCsPage}
         />
         <Stack.Screen
           name="WritePost"

@@ -2,10 +2,16 @@ import React, { useState, useContext, useEffect } from "react";
 import { StyleSheet, View, Pressable, Text, Alert } from "react-native";
 import { ipAddress } from "../ipAddress";
 import { Ionicons } from '@expo/vector-icons';
+import { CommentBottomSheet } from './CommentBottomSheet';
 import axios from "axios";
 
 export const BoardList = ({ onClickList, postId, title, createdAt, answerYn, compare, reloadPosts }) => {
   const isSameId = compare;
+  const [ modalVisible, setModalVisible ] = useState(false);
+
+  const onPressList = () => {
+      setModalVisible(true);
+  };
 
   const onDelete = () => {
     axios
@@ -39,7 +45,7 @@ export const BoardList = ({ onClickList, postId, title, createdAt, answerYn, com
 
   return (
     <Pressable
-      onPress={() => onClickList()}
+      onPress={onPressList}
       style={(pressed) => [styles.csBoardList, styles.csBoardListBtn]}
     >
       <View style={styles.boardListTitle}>
@@ -63,7 +69,14 @@ export const BoardList = ({ onClickList, postId, title, createdAt, answerYn, com
         <Text>{createdAt}</Text>
         <Text>{answerYn}</Text>
       </View>
-    </Pressable>
+
+      <CommentBottomSheet
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          postId={postId}
+      />
+    </Pressable>      
+
   );
 };
 
