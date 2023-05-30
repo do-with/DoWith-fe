@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -12,14 +12,20 @@ import { Variables } from "../components/Variables";
 import { LinearGradient } from "expo-linear-gradient";
 import Postcode from "@actbase/react-daum-postcode";
 import Modal from "react-native-modal";
+import { AuthContext } from "../contexts/AuthContext";
+import { ipAddress } from "../ipAddress";
+import axios from "axios";
 
-export default function DonateScreen2({ navigation }) {
-  const [postcode, setPostcode] = useState("");
-  const [address, setAddress] = useState("");
-  const [detailAddress, setDetailAddress] = useState("");
+export default function DonateScreen2({ navigation, route }) {
+  const { category, itemTitle, amount, donatorName } = route.params;
+
+  const [postcode, setPostcode] = useState(""); // 우편번호
+  const [address, setAddress] = useState(""); // 주소(자동 입력)
+  const [detailAddress, setDetailAddress] = useState(""); // 상세주소
+
   const [isModal, setModal] = useState(false);
 
-  const [selectedMethod, setSelectedMethod] = useState("");
+  const [selectedMethod, setSelectedMethod] = useState(""); // 기부방법
 
   const handleMethodSelect = (method) => {
     setSelectedMethod(method);
@@ -41,11 +47,42 @@ export default function DonateScreen2({ navigation }) {
       methodDescription = "기부 방법을 선택해주세요.";
   }
 
+  const { user } = useContext(AuthContext);
+
+  const onSubmit = () => {
+    if (user.name &&
+      selectedMethod &&
+      amount &&
+      address && detailAddress &&
+      donatorName) {
+        const data = {
+          name: itemTitle,
+          donate_way: selectedMethod,
+          // pass_yn: false,
+          amount: parseInt(amount, 10), 
+          address: address + " " + detailAddress,
+          donator_name: donatorName,
+          //rejection_reason,
+        };
+        console.log(data);
+        axios
+          .post(`http://${ipAddress}:8080/item/category/${category}/user/${user.id}`, data, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then(() => {
+            navigation.navigate("AfterDonate");
+          })
+          .catch((error) => console.log(error));
+      }
+  };
+
   return (
     <View style={styles.registerBody}>
       <ScreenHeader headerTitle="기부하기" />
       <View style={styles.registerContent}>
-        <Text style={styles.personalizeText}>지영 님 마음 전달 중 ...♥</Text>
+        <Text style={styles.personalizeText}>{user.name} 님 마음 전달 중 ...♥</Text>
         <View style={styles.registerBox}>
           <View style={styles.registerDonate1}>
             <View style={styles.registerAddress}>
@@ -131,7 +168,7 @@ export default function DonateScreen2({ navigation }) {
             colors={["#3b5998", "#3b5998", "#003C7C"]}
             style={styles.registerBtn}
           >
-            <Pressable onPress={() => navigation.navigate("AfterDonate")}>
+            <Pressable onPress={()=>onSubmit()}>
               <Text style={styles.registerBtnText}>완료</Text>
             </Pressable>
           </LinearGradient>

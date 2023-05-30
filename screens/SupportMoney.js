@@ -136,11 +136,10 @@ const styles = StyleSheet.create({
     position: "relative",
     display: "flex",
     flexDirection: "column",
-    // marginVertical: "4%",
   },
   inputTitle: {
     height: "100%",
-    marginVer: "5%",
+    marginVertical: "5%",
     color: "grey",
     fontSize: 14,
     lineHeight: 20,

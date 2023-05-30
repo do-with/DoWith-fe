@@ -7,33 +7,35 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { AuthContext } from '../contexts/AuthContext';
     
 export default function DonateScreen({ navigation }) {
-  const [category, setCategory] = useState("");
-
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(null); // 대분류
   const [items, setItems] = useState([
-    { label: "제과류", value: "1" },
-    { label: "즉석식품", value: "2" },
-    { label: "냉동식품", value: "3" },
-    { label: "통조림", value: "4" },
-    { label: "장류", value: "5" },
-    { label: "소스류", value: "6" },
-    { label: "기름류", value: "7" },
-    { label: "음료류", value: "8" },
-    { label: "육가공류", value: "9" },
-    { label: "농산물", value: "10" },
-    { label: "제빵류", value: "11" },
-    { label: "세제류", value: "12" },
-    { label: "휴지류", value: "13" },
-    { label: "수건류", value: "14" },
-    { label: "기저귀류", value: "15" },
-    { label: "신체 위생용품류", value: "16" },
-    { label: "여성 위생용품류", value: "17" },
-    { label: "청소 & 환경 위생용품류", value: "18" },
+    { label: "제과류", value: 1 },
+    { label: "즉석식품", value: 2 },
+    { label: "냉동식품", value: 3 },
+    { label: "통조림", value: 4 },
+    { label: "장류", value: 5 },
+    { label: "소스류", value: 6 },
+    { label: "기름류", value: 7 },
+    { label: "음료류", value: 8 },
+    { label: "육가공류", value: 9 },
+    { label: "농산물", value: 10 },
+    { label: "제빵류", value: 11 },
+    { label: "세제류", value: 12 },
+    { label: "휴지류", value: 13 },
+    { label: "수건류", value: 14 },
+    { label: "기저귀류", value: 15 },
+    { label: "신체/위생용품류", value: 16 },
+    { label: "여성/위생용품류", value: 17 },
+    { label: "청소/환경 위생용품류", value: 18 },
   ]);
 
   const { user } = useContext(AuthContext);
 
+  const [itemTitle, setItemTitle] = useState("");// 대표 물품명
+  const [amount, setAmount] = useState(); // 수량
+  const [donatorName, setDonatorName] = useState(); // 기부자명
+  
   return (
     <View style={styles.registerBody}>
       <ScreenHeader headerTitle="기부하기" />
@@ -76,22 +78,22 @@ export default function DonateScreen({ navigation }) {
           <View style={styles.registerDonate2}>
             <Text style={styles.text}>대표 물품명 *</Text>
             <TextInput
-              value={category}
-              onChangeText={setCategory}
+              value={itemTitle}
+              onChangeText={setItemTitle}
               placeholder="대표 물품을 입력해주세요"
               style={styles.inputText}
             />
             <Text style={styles.text}>수량 *</Text>
             <TextInput
-              value={category}
-              onChangeText={setCategory}
+              value={amount}
+              onChangeText={setAmount}
               placeholder="총 수량을 입력해주세요"
               style={styles.inputText}
             />
             <Text style={styles.text}>기부자명 *</Text>
             <TextInput
-              value={category}
-              onChangeText={setCategory}
+              value={donatorName}
+              onChangeText={setDonatorName}
               placeholder="기부자 닉네임을 적어주세요"
               style={styles.inputText}
             />
@@ -100,7 +102,12 @@ export default function DonateScreen({ navigation }) {
             colors={["#3b5998", "#3b5998", "#003C7C"]}
             style={styles.registerBtn}
           >
-            <Pressable onPress={() => navigation.navigate("DonateScreen2")}>
+            <Pressable onPress={() => navigation.navigate("DonateScreen2", {
+                category: value,
+                itemTitle: itemTitle,
+                amount: amount,
+                donatorName: donatorName,
+            })}>
               <Text style={styles.registerBtnText}>다음</Text>
             </Pressable>
           </LinearGradient>
