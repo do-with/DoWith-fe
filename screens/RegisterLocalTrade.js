@@ -23,69 +23,67 @@ export default function RegisterLocalTrade({ navigation }) {
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState(null);
   const [content, setContent] = useState("");
-
-  //   const user_id = 1;
+  const githubURLs =[];
+  
 
   useEffect(() => {
     console.log(imageUris);
   }, [imageUris]);
 
-  const createFile = async (imageUris) => {
+
+const createFile = async (imageUris) => {
+    console.log("createFile 함수 실행");
     const token = "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";
     const repository = "whgus613/jinji";
     const commitMessage = "upload image";
-
+  
     try {
-      const files = [];
-
       for (let i = 0; i < imageUris.length; i++) {
         const imageUri = imageUris[i];
         const fileInfo = await FileSystem.getInfoAsync(imageUri.uri);
+        const currentTime = new Date().toISOString().replace(/:/g, "-").replace(/\s+/g, "");
         const fileContent = await FileSystem.readAsStringAsync(fileInfo.uri, {
           encoding: "base64",
         });
-
-        files.push({
-          filePath: `path/to/file${i + 1}.jpg`,
-          content: fileContent,
-        });
-      }
-
-      for (const file of files) {
-        const url = `https://api.github.com/repos/${repository}/contents/${file.filePath}`;
+  
+        const filePath = `path/to/file${currentTime}-${i + 1}.jpg`;
+        const url = `https://api.github.com/repos/${repository}/contents/${filePath}`;
         const headers = {
           Authorization: `token ${token}`,
           Accept: "application/vnd.github.v3+json",
         };
-
-        const existingFileResponse = await axios.get(url, { headers });
-
-        if (existingFileResponse.status === 200) {
-          const sha = existingFileResponse.data.sha;
+  
+        try {
           const response = await axios.put(
             url,
             {
               message: commitMessage,
-              content: file.content,
-              sha: sha, // 수정된 부분: sha 추가
+              content: fileContent,
             },
             { headers }
           );
-
-          if (response.data) {
-            console.log("File created or updated:", response.data);
+  
+          if (response.status === 201) {
+            console.log("File created:", response.data);
+            const downloadUrl = response.data.content.download_url;
+            githubURLs.push(downloadUrl);
           } else {
-            console.error("Response data is undefined:", response);
+            console.error("Failed to create file:", response);
           }
-        } else {
-          console.error("Failed to get existing file:", existingFileResponse);
+        } catch (error) {
+          console.error("An error occurred:", error.response.data);
         }
       }
+  
+      // 업로드된 이미지 파일의 다운로드 URL 활용 또는 필요한 작업 수행
+      console.log("GitHub URLs:", githubURLs);
+  
     } catch (error) {
       console.error("An error occurred:", error.response.data);
     }
   };
-
+  
+  
   const selectImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (status !== "granted") {
@@ -109,7 +107,7 @@ export default function RegisterLocalTrade({ navigation }) {
       }));
       newImageUris.push(...additionalImageUris); // 추가 이미지를 기존 이미지 배열에 추가
       setImageUris(newImageUris);
-      console.log(imageUris);
+    //   console.log(imageUris);
     }
   };
 
@@ -117,50 +115,61 @@ export default function RegisterLocalTrade({ navigation }) {
     const updatedImageUris = [...imageUris];
     updatedImageUris.splice(index, 1);
     setImageUris(updatedImageUris);
-    console.log(imageUris);
+    // console.log(imageUris);
   };
 
-  const onRegister = async () => {
-    // if (title && price && content) {
-    //     const created_at = new Date();
-    //     const data = {
-    //         user_id: user_id,
-    //         title: title,
-    //         content: content,
-    //         email: created_at,
-    //     };
-    //     axios.post(`http://${ipAddress}:8080/post/board/${board_id}/user/${user_id}`, data,
-    //         {
-    //             headers: {
-    //                 'Content-Type': 'application/json'
-    //             }
-    //         })
-    //         .then(() => {
-    //             // 데이터가 성공적으로 전송되면 FirstCsPage 이동합니다.
-    //             navigation.navigate('FirstCsPage');
-    //         })
-    //         .catch(error => console.log(error));
-    // }
+//   const onRegister = async () => {
+      
+//     await createFile(imageUris);
 
-    await createFile(imageUris);
+//     const user_id = 1;
+//     const data = {
+//         name : title,
+//         price : price,
+//         describe : content,
+//         sold_yn : false,
+//         image1GitHubURL : githubURLs[0],
+//         image2GitHubURL : githubURLs[1]
+//     }
+//     axios
+//       .post(`http://${ipAddress}:8080/local-trade/user/${user_id}/create`, data)
+//       .then((response) => {
+//         // console.log(response);
+//         navigation.navigate("MainScreen");
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//   };
 
-    const formData = new FormData();
-
-    formData.append("image1", imageUris[0]);
-    formData.append("image2", imageUris[1]);
-    console.log(formData);
-    const user_id = 1;
-    axios
-      .post(`http://${ipAddress}:8080/local-trade/user/${user_id}`, formData)
-      .then((response) => {
-        console.log(response);
-        navigation.navigate("MainScreen");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+const onRegister = async () => {
+    try {
+      await createFile(imageUris);
+  
+      const user_id = 1;
+      const data = {
+        name: title,
+        price: price,
+        describe: content,
+        sold_yn: false,
+        image1GitHubURL: githubURLs[0] || null,
+        image2GitHubURL: githubURLs[1] || null,
+      };
+  
+      axios
+        .post(`http://${ipAddress}:8080/local-trade/user/${user_id}/create`, data)
+        .then((response) => {
+          // console.log(response);
+          navigation.navigate("MainScreen");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
   };
-
+  
   return (
     <View style={styles.joinBody}>
       <ScreenHeader headerTitle="기부 거래" />
