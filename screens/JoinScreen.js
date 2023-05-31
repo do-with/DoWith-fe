@@ -26,7 +26,7 @@ export default function Join1({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
-
+  const [birth, setBirth] = useState("");
   const [area, setArea] = useState("제주");
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedButtonIndex, setSelectedButtonIndex] = useState(null); // 선택된 버튼의 인덱스 저장
@@ -103,6 +103,10 @@ export default function Join1({ navigation }) {
     }
 
     return chunks;
+  };
+
+  const handleDateChange = (selectedDate) => {
+    setBirth(selectedDate);
   };
 
   const clickJoin = () => {
@@ -209,7 +213,7 @@ export default function Join1({ navigation }) {
 
             <View style={styles.inputPhoneText}>
               <Text style={styles.inputTitle}>생년월일 *</Text>
-              <DatePicker />
+              <DatePicker onDateChange={handleDateChange} />
             </View>
 
             <View style={styles.inputText}>

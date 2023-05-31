@@ -17,9 +17,9 @@ function MainScreen({ navigation}) {
             .catch(error => console.log(error))
     }, []);
 
-    const onChargeBtnClick = () => {
+    const onNavigateBtnClick = (page) => {
         if (isAuthenticated) {
-            navigation.navigate('');
+            navigation.navigate(page);
         }
         else {
             navigation.navigate('LoginScreen');
@@ -73,7 +73,7 @@ function MainScreen({ navigation}) {
                             <Text>문의하기</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.transImgBtn}
-                            onPress={onChargeBtnClick}>
+                            onPress={()=>onNavigateBtnClick('SupportMoney')}>
                             <Image source={require("../assets/burger.png")}
                                     style={styles.img} resizeMode={"contain"}/>
                             <Text>충전하기</Text>
@@ -91,7 +91,7 @@ function MainScreen({ navigation}) {
                     </LinearGradient>
 
                     <Pressable style={styles.donationBtn}
-                        onPress={() => navigation.navigate('DonateScreen')}>
+                        onPress={() => onNavigateBtnClick('DonateScreen')}>
                         <Text style={styles.donationBtnText}>5분 만에</Text>
                         <Text style={styles.donationBtnText}>기부 접수</Text>
                         <Image source={require('../assets/image18.png')} resizeMode='contain' />
