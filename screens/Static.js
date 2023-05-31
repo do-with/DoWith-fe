@@ -39,11 +39,45 @@ export default function Static({navigation}){
           },
         ],
     };
-      
-    const areas = ['제주', '부산', '울산', '대구', '인천',
-         '대전', '광주', '서울', '2', '5',
-         '어쩌구', '3', '6', '8', '10',
-         '1', '4', '7', '9', '11'
+
+    const areaMappings = {
+        서울: 2,
+        부산: 3,
+        대구: 4,
+        인천: 5,
+        광주: 6,
+        대전: 7,
+        울산: 8,
+        경기: 9,
+        강원: 10,
+        충북: 11,
+        충남: 12,
+        전북: 13,
+        전남: 14,
+        경북: 15,
+        경남: 16,
+        제주: 17,
+        세종: 20,
+    };
+    
+    const areas = [
+        "서울",
+        "부산",
+        "대구",
+        "인천",
+        "광주",
+        "대전",
+        "울산",
+        "경기",
+        "강원",
+        "충북",
+        "충남",
+        "전북",
+        "전남",
+        "경북",
+        "경남",
+        "제주",
+        "세종",
     ];
 
     const openSelectModal = () => {
@@ -57,9 +91,21 @@ export default function Static({navigation}){
     };
 
     const chunk = (arr, size) => {
-        return Array.from({ length: Math.ceil(arr.length / size) }, (_, i) =>
-          arr.slice(i * size, i * size + size)
-        );
+        const chunks = [];
+        const numChunks = Math.ceil(arr.length / size);
+    
+        for (let i = 0; i < size; i++) {
+          const chunk = [];
+          for (let j = 0; j < numChunks; j++) {
+            const element = arr[j * size + i];
+            if (element !== undefined) {
+              chunk.push(element);
+            }
+          }
+          chunks.push(chunk);
+        }
+    
+        return chunks;
     };
 
     return(
@@ -268,7 +314,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 20,
         width: '90%',
-        height: '50%',
+        height: '55%',
         justifyContent: 'space-around',
         alignItems: "center",
         shadowColor: "#000",
@@ -285,6 +331,7 @@ const styles = StyleSheet.create({
         padding: '3%',
         width: '20%',
         elevation: 2,
+        marginTop: '5%',
         backgroundColor: Variables.btnColor,
     },
     textStyle: {

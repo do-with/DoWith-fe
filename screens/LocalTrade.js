@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Variables } from '../components/Variables';
 import { ipAddress } from '../ipAddress';
 import axios from 'axios';
+import Moment from "moment";
 
 export default function LocalTrade({navigation}){
     const [money, setMoney] = useState(null); // 기부금 get
@@ -38,25 +39,25 @@ export default function LocalTrade({navigation}){
                 </View>
 
                 <View style={styles.countBoxView}>
-                    <LinearGradient colors={['#fbfbfb57', '#fbfbfba1', '#ffffff']}
+                    <LinearGradient colors={['#fbfbfb57', '#fbfbfba1', '#ffffffd7']}
                         style={styles.countBox}>
-                        <View>
-                            <Text>지역 거래 기부금 현재</Text>
-                            <Text>{money}원</Text>
+                        <View style={{alignItems: 'center'}}>
+                            <Text style={styles.bold}>지역 거래 기부금 현재</Text>
+                            <Text style={styles.bold}>512,000{money}원</Text>
                         </View>
                     </LinearGradient>
-                    <LinearGradient colors={['#fbfbfb57', '#fbfbfba1', '#ffffff']}
+                    <LinearGradient colors={['#fbfbfb57', '#fbfbfba1', '#ffffffd7']}
                         style={styles.countBox}>
-                        <View>
-                            <Text>{count}명이</Text>
-                            <Text>함께 해주셨어요</Text>
+                        <View style={{alignItems: 'center'}}>
+                            <Text style={styles.bold}>525{count}명이</Text>
+                            <Text style={styles.bold}>함께 해주셨어요</Text>
                         </View>
                     </LinearGradient>
                 </View>
 
-                {localTradeList && (
+                {true && (
                 <View style={styles.tradeBoardView}>
-                    <ScrollView>
+                    <ScrollView style={{position: 'absolute', borderWidth: 2, borderColor: 'yellow'}}>
                         <View>
                         {chunk(localTradeList, 2).map((chunk, index) => (
                             <View style={styles.tradeBoardRow} key={index}>
@@ -64,12 +65,13 @@ export default function LocalTrade({navigation}){
                                 <View key={index}>
                                     <Pressable style={styles.tradeBoard}>
                                         <Image source={require('../assets/local-trade1.png')}
-                                            resizeMode={'contain'} />
+                                            resizeMode={'contain'}
+                                            style={{borderWidth:1}} />
                                         <View>
-                                            <Text>{localTrade.name}</Text>
-                                            <Text>{localTrade.create_at}</Text>
-                                            <Text>{localTrade.price}</Text>
-
+                                            <Text style={styles.nameText}>{localTrade.name}</Text>
+                                            <Text style={styles.dateText}>
+                                                {Moment(localTrade.created_at).format('M.D')}</Text>
+                                            <Text style={styles.priceText}>{localTrade.price}원</Text>
                                         </View>
                                     </Pressable>
                                 </View>
@@ -78,17 +80,17 @@ export default function LocalTrade({navigation}){
                         ))}
                         </View>
                     </ScrollView>
+                    <View style={styles.submitBtnView}>
+                        <LinearGradient colors={['#003c7cf0', '#003c7cd1', '#003c7cc2']}
+                            style={styles.submitBtn}>
+                            <Pressable style={styles.submitBtn}
+                                onPress={()=>navigation.navigate('RegisterLocalTrade')}>
+                                <Text style={styles.submitBtnText}>올리기</Text>
+                            </Pressable>
+                        </LinearGradient>
+                    </View>
                 </View>
                 )}
-                
-                <View style={styles.submitBtnView}>
-                    <LinearGradient colors={['#003c7cf0', '#003c7cd1', '#003c7cc2']}
-                        style={styles.submitBtn}>
-                        <Pressable onPress={()=>navigation.navigate('RegisterLocalTrade')}>
-                            <Text style={styles.submitBtnText}>올리기</Text>
-                        </Pressable>
-                    </LinearGradient>
-                </View>
             </View>
         </View>
     );
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
     joinBody: {
         width: '100%',
         height: '100%',
-        backgroundColor: Variables.mainColor,
+        // backgroundColor: Variables.mainColor,
         wordBreak: 'break-all',
     },
     joinContent: {
@@ -132,14 +134,14 @@ const styles = StyleSheet.create({
         display: 'flex',
         backgroundColor: 'rgba(178, 213, 255, 0.83)',
         zIndex: 0,
-        marginTop: 14,
     },
     countBoxView: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
         // alignItems: 'center',
-        height: '15%',
+        height: '12%',
+        backgroundColor: 'rgba(0,0,0,0)',
     },
     countBox: {
         display: 'flex',
@@ -150,12 +152,18 @@ const styles = StyleSheet.create({
         marginBottom: '2%',
         borderRadius: 8,
     },
+    bold: {
+        fontWeight: 700,
+    },
     submitBtnView: {
-        position: 'absolute',
+        position: 'fixed',
         width: '40%',
-        height: '10%',
+        height: '15%',
+        backgroundColor: 'rgba(0,0,0,0)',
+        borderWidth:3,
     },
     submitBtn: {
+        borderWidth:2,
         width: '100%',
         height: '100%',
         display: 'flex',
@@ -185,32 +193,38 @@ const styles = StyleSheet.create({
         textShadowRadius: 4,
     },
     tradeBoardView: {
-        display: 'flex',
+        top: '20%',
         width: '100%',
         height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'absolute',
+        backgroundColor: 'rgba(0,0,0,0)',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        borderWidth: 1,
+        borderColor: 'red',
     },
     tradeBoardRow: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
-        // alignItems: 'center',
+        alignItems: 'center',
         width: '100%',
+        height: '17%',
         borderWidth: 1,
-        borderColor: 'red',
     },
     tradeBoard: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        paddingHorizontal: 55,
+        marginRight: 100,
         width: '100%',
-        // height: '80%',
+        height: '90%',
         marginBottom: '2%',
-        borderWidth: 1,
-        borderColor: '#D6D6D6',
         borderRadius: 8,
         backgroundColor: 'rgba(251, 251, 251, 0.35)',
-        shadowColor: '#c9c9c9',
+        shadowColor: "#c9c9c9",
         shadowOffset: {
             width: 0,
             height: 4,
@@ -218,5 +232,23 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.26,
         shadowRadius: 4,
         borderRadius: 10,
+    },
+    nameText: {
+        fontWeight: 600,
+        fontSize: 13,
+        lineHeight: 16,
+        color: 'rgba(0, 0, 0, 0.75)',
+    },
+    dateText: {
+        fontWeight: 400,
+        fontSize: 13,
+        lineHeight: 16,
+        color: 'rgba(0, 0, 0, 0.55)',
+    },
+    priceText: {
+        fontWeight: 600,
+        fontSize: 16,
+        lineHeight: 19,
+        color: 'rgba(0, 0, 0, 0.8)',
     },
 });
