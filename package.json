@@ -36,15 +36,18 @@
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-geolocation-service": "^5.3.1",
     "react-native-gesture-handler": "~2.9.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-modal": "^13.0.1",
     "react-native-permissions": "^3.8.0",
     "react-native-picker-select": "^8.0.4",
     "react-native-reanimated": "~2.14.4",
+    "react-native-snap-carousel": "^3.9.1",
     "react-native-splash-screen": "^3.3.0",
     "react-native-viewport-units": "^0.0.5",
     "react-native-web": "~0.18.10",
     "react-native-webview": "^11.26.1",
     "react-router-native": "^6.9.0",
+    "rn-fetch-blob": "^0.12.0",
     "string-hash-64": "^1.0.3"
   },
   "devDependencies": {

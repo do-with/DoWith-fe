@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useRef } from "react";
 import {
   StyleSheet,
   View,
@@ -6,17 +6,22 @@ import {
   Text,
   Pressable,
   TextInput,
+  Keyboard,
+  KeyboardAvoidingView,
 } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { ipAddress } from "../ipAddress";
 import { Variables } from "../components/Variables";
 import axios from "axios";
 import { LinearGradient } from "expo-linear-gradient";
+import { AuthContext } from "../contexts/AuthContext";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function WritePost({ navigation, route }) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const user_id = 1;
+
+  const { user } = useContext(AuthContext);
 
   const board_id = route.params.board_id;
 
@@ -24,14 +29,14 @@ export default function WritePost({ navigation, route }) {
     if (title && content) {
       const created_at = new Date();
       const data = {
-        user_id: user_id,
+        user_id: user.id,
         title: title,
         content: content,
         email: created_at,
       };
       axios
         .post(
-          `http://${ipAddress}:8080/post/board/${board_id}/user/${user_id}`,
+          `http://${ipAddress}:8080/post/board/${board_id}/user/${user.id}`,
           data,
           {
             headers: {
@@ -56,43 +61,46 @@ export default function WritePost({ navigation, route }) {
   };
 
   return (
-    <View style={styles.joinBody}>
-      <ScreenHeader headerTitle="문의하기" />
-      <View style={styles.writePostContent}>
-        <View style={styles.boardTitle}>
-          <Text style={{ fontWeight: 600, fontSize: 15 }}>게시판 글쓰기</Text>
-          <Text>{getBoardName(board_id)}</Text>
-        </View>
-        <View>
-          <View>
-            <Text style={styles.text}>제목</Text>
-            <TextInput
-              value={title}
-              onChangeText={setTitle}
-              placeholder="제목"
-              style={styles.titleInput}
-            />
+    <Pressable onPress={Keyboard.dismiss}>
+      <View style={styles.joinBody}>
+        <ScreenHeader headerTitle="문의하기" />
+        <View style={styles.writePostContent}>
+          <View style={styles.boardTitle}>
+            <Text style={{ fontWeight: 600, fontSize: 15 }}>게시판 글쓰기</Text>
+            <Text>{getBoardName(board_id)}</Text>
           </View>
           <View>
-            <Text style={styles.text}>내용</Text>
-            <TextInput
-              value={content}
-              onChangeText={setContent}
-              placeholder="내용을 입력해주세요"
-              style={styles.input}
-            />
+            <View>
+              <Text style={styles.text}>제목</Text>
+              <TextInput
+                value={title}
+                onChangeText={setTitle}
+                placeholder="제목"
+                style={styles.titleInput}
+              />
+            </View>
+            <View>
+              <Text style={styles.text}>내용</Text>
+              <TextInput
+                value={content}
+                onChangeText={setContent}
+                placeholder="내용을 입력해주세요"
+                style={styles.input}
+                multiline={true}
+              />
+            </View>
           </View>
+          <LinearGradient
+            colors={["#4A6BAC", "#1B3974"]}
+            style={styles.imgBackground}
+          >
+            <Pressable style={styles.imgBackground1} onPress={onSubmit}>
+              <Text style={styles.submitBtnText}>완료</Text>
+            </Pressable>
+          </LinearGradient>
         </View>
-        <LinearGradient
-          colors={["#4A6BAC", "#1B3974"]}
-          style={styles.imgBackground}
-        >
-          <Pressable style={styles.imgBackgroundBtn} onPress={onSubmit}>
-            <Text style={styles.submitBtnText}>완료</Text>
-          </Pressable>
-        </LinearGradient>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -108,7 +116,7 @@ const styles = StyleSheet.create({
     width: "87%",
     height: "45%",
     position: "relative",
-    top: '14%',
+    top: "14%",
   },
   input: {
     height: "75%",
@@ -116,6 +124,8 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginTop: "2%",
     paddingHorizontal: "5%",
+    paddingTop: "5%",
+    paddingBottom: "5%",
   },
   submitBtn: {
     display: "flex",
@@ -152,6 +162,18 @@ const styles = StyleSheet.create({
     marginTop: "13%",
     left: "64%",
   },
+  imgBackground1: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: "700",
+    fontSize: 13,
+    textAlign: "center",
+    color: "white",
+    boxShadow: "2px 3px 3px rgba(117, 147, 106, 0.2)",
+    width: "100%",
+    height: "100%",
+  },
   imgBackgroundBtn: {
     flex: 1,
     alignItems: "center",
@@ -167,7 +189,7 @@ const styles = StyleSheet.create({
   },
   boardTitle: {
     flexDirection: "row",
-    width: "60%",
+    width: "47%",
     justifyContent: "space-between",
     marginVertical: "10%",
     alignItems: "flex-end",

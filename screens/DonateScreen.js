@@ -1,11 +1,20 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, View, TextInput, Text, Pressable } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  Text,
+  Pressable,
+  Keyboard,
+  KeyboardAvoidingView,
+} from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
 import { LinearGradient } from "expo-linear-gradient";
 import DropDownPicker from "react-native-dropdown-picker";
-import { AuthContext } from '../contexts/AuthContext';
-    
+import { AuthContext } from "../contexts/AuthContext";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
 export default function DonateScreen({ navigation }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null); // 대분류
@@ -32,88 +41,110 @@ export default function DonateScreen({ navigation }) {
 
   const { user } = useContext(AuthContext);
 
-  const [itemTitle, setItemTitle] = useState("");// 대표 물품명
+  const [itemTitle, setItemTitle] = useState(""); // 대표 물품명
   const [amount, setAmount] = useState(); // 수량
   const [donatorName, setDonatorName] = useState(); // 기부자명
-  
-  return (
-    <View style={styles.registerBody}>
-      <ScreenHeader headerTitle="기부하기" />
-      <View style={styles.registerContent}>
-        <Text style={styles.personalizeText}>{user.name} 님 마음 전달 중 ...♥</Text>
-        <View style={styles.registerBox}>
-          <View style={styles.registerDonate1}>
-            <Text style={styles.text}>대분류 선택 *</Text>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-              placeholder="물품 분류를 선택해주세요"
-              listMode="MODAL"
-              modalProps={{
-                animationType: "fade",
-              }}
-              modalTitle="물품 분류 선택"
-              style={{
-                borderWidth: 0.5,
-                minHeight: "20%",
-              }}
-            />
-            <View style={styles.donateItemPic}>
-              <Text style={{ color: "red", fontSize: 13 }}>
-                유통기한이 있다면 보이게 찍어주세요
-              </Text>
-              <Pressable style={styles.itemPicBtn}>
-                <Text style={{ fontWeight: 700 }}>기부 물품 찍기</Text>
-              </Pressable>
-              <Text style={{ color: "grey", fontSize: 13 }}>
-                여러 개인 경우 전체적인 모습을 찍어주세요
-              </Text>
-            </View>
-          </View>
 
-          <View style={styles.registerDonate2}>
-            <Text style={styles.text}>대표 물품명 *</Text>
-            <TextInput
-              value={itemTitle}
-              onChangeText={setItemTitle}
-              placeholder="대표 물품을 입력해주세요"
-              style={styles.inputText}
-            />
-            <Text style={styles.text}>수량 *</Text>
-            <TextInput
-              value={amount}
-              onChangeText={setAmount}
-              placeholder="총 수량을 입력해주세요"
-              style={styles.inputText}
-            />
-            <Text style={styles.text}>기부자명 *</Text>
-            <TextInput
-              value={donatorName}
-              onChangeText={setDonatorName}
-              placeholder="기부자 닉네임을 적어주세요"
-              style={styles.inputText}
-            />
-          </View>
-          <LinearGradient
-            colors={["#3b5998", "#3b5998", "#003C7C"]}
-            style={styles.registerBtn}
-          >
-            <Pressable onPress={() => navigation.navigate("DonateScreen2", {
-                category: value,
-                itemTitle: itemTitle,
-                amount: amount,
-                donatorName: donatorName,
-            })}>
-              <Text style={styles.registerBtnText}>다음</Text>
-            </Pressable>
-          </LinearGradient>
+  return (
+    <Pressable onPress={Keyboard.dismiss}>
+      <View style={styles.registerBody}>
+        <ScreenHeader headerTitle="기부하기" />
+        <View style={styles.registerContent}>
+          <Text style={styles.personalizeText}>
+            {user.name} 님 마음 전달 중 ...♥
+          </Text>
+          <KeyboardAwareScrollView contentContainerStyle={{ height: "100%" }}>
+            <View style={styles.registerBox}>
+              <View style={styles.registerDonate1}>
+                <View style={{ flexDirection: "row" }}>
+                  <Text>대분류 선택 </Text>
+                  <Text style={{ color: "#FF1919" }}>*</Text>
+                </View>
+                <DropDownPicker
+                  open={open}
+                  value={value}
+                  items={items}
+                  setOpen={setOpen}
+                  setValue={setValue}
+                  setItems={setItems}
+                  placeholder="물품 분류를 선택해주세요"
+                  listMode="MODAL"
+                  modalProps={{
+                    animationType: "fade",
+                  }}
+                  modalTitle="물품 분류 선택"
+                  style={{
+                    borderWidth: 0.5,
+                    minHeight: "20%",
+                  }}
+                />
+                <View style={styles.donateItemPic}>
+                  <Text style={{ color: "red", fontSize: 13 }}>
+                    유통기한이 있다면 보이게 찍어주세요
+                  </Text>
+                  <Pressable style={styles.itemPicBtn}>
+                    <Text style={{ fontWeight: 700 }}>기부 물품 찍기</Text>
+                  </Pressable>
+                  <Text style={{ color: "grey", fontSize: 13 }}>
+                    여러 개인 경우 전체적인 모습을 찍어주세요
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.registerDonate2}>
+                <View style={{ flexDirection: "row" }}>
+                  <Text>대표 물품명 </Text>
+                  <Text style={{ color: "#FF1919" }}>*</Text>
+                </View>
+                <TextInput
+                  value={itemTitle}
+                  onChangeText={setItemTitle}
+                  placeholder="대표 물품을 입력해주세요"
+                  style={styles.inputText}
+                />
+                <View style={{ flexDirection: "row" }}>
+                  <Text>수량 </Text>
+                  <Text style={{ color: "#FF1919" }}>*</Text>
+                </View>
+                <TextInput
+                  value={amount}
+                  onChangeText={setAmount}
+                  placeholder="총 수량을 입력해주세요"
+                  style={styles.inputText}
+                />
+                <View style={{ flexDirection: "row" }}>
+                  <Text>기부자명 </Text>
+                  <Text style={{ color: "#FF1919" }}>*</Text>
+                </View>
+                <TextInput
+                  value={donatorName}
+                  onChangeText={setDonatorName}
+                  placeholder="기부자 닉네임을 적어주세요"
+                  style={styles.inputText}
+                />
+              </View>
+              <LinearGradient
+                colors={["#3b5998", "#3b5998", "#003C7C"]}
+                style={styles.registerBtn}
+              >
+                <Pressable
+                  onPress={() =>
+                    navigation.navigate("DonateScreen2", {
+                      category: value,
+                      itemTitle: itemTitle,
+                      amount: amount,
+                      donatorName: donatorName,
+                    })
+                  }
+                  style={styles.registerBtn1}
+                >
+                  <Text style={styles.registerBtnText}>다음</Text>
+                </Pressable>
+              </LinearGradient>
+            </View>
+          </KeyboardAwareScrollView>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -138,6 +169,7 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     color: "#2D4C89",
     marginLeft: "8%",
+    marginBottom: "2%",
   },
   registerBox: {
     width: "100%",
@@ -156,7 +188,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.16,
     borderRadius: 8,
     width: "91%",
-    height: "45%",
+    height: "40%",
     display: "flex",
     flexDirection: "column",
     position: "relative",
@@ -226,14 +258,30 @@ const styles = StyleSheet.create({
     left: "30%",
     marginTop: "4%",
   },
+  registerBtn1: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+    boxSizing: "border-box",
+    backgroundBlendMode: "soft-light, normal",
+    shadowColor: "rgba(166, 171, 189, 0.8)",
+    shadowOffset: {
+      width: 5,
+      height: 5,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 10,
+    borderRadius: 5,
+    color: "white",
+    width: "100%",
+    height: "100%",
+  },
   registerBtnText: {
     fontSize: 16,
     fontWeight: "700",
     letterSpacing: 2,
     color: "#fff",
-  },
-  text: {
-    // paddingVertical: "3%",
   },
   itemPicBtn: {
     borderRadius: 5,

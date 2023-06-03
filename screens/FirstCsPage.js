@@ -1,67 +1,73 @@
-import React, { useContext } from 'react';
+import React, { useContext } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { TransImgBtn } from "../components/TransImgBtn";
 import { Variables } from "../components/Variables";
 import { AuthContext } from "../contexts/AuthContext";
+import Communications from "react-native-communications";
 
 function FirstCsPage({ navigation }) {
-    const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
-    const onNavigateBtnClick = (boardId) => {
-        if (isAuthenticated) {
-            navigation.push("SecondCsPage", {id: boardId})
-        }
-        else {
-            navigation.navigate('LoginScreen');
-        }
-    };
+  const onNavigateBtnClick = (boardId) => {
+    if (isAuthenticated) {
+      navigation.push("SecondCsPage", { id: boardId });
+    } else {
+      navigation.navigate("LoginScreen");
+    }
+  };
+
+  const makePhoneCall = (phoneNumber) => {
+    Communications.phonecall(phoneNumber, true);
+  };
+
   return (
     <View style={styles.csFirstPageBody}>
-        <ScreenHeader headerTitle="문의하기" />
-        <View style={styles.csFirstPageContent}>
-            <View style={styles.csCall}>
-                <Text style={styles.h3}>전화 연결</Text>
-                <View style={styles.csCallView}>
-                    <View style={styles.csCallBtn}>
-                        <TransImgBtn
-                            url={require("../assets/mass-donation.png")}
-                            title="대량 기부"
-                            subtitle="약 5000kg 이상" 
-                        />
-                    </View>
-                    <View style={styles.csCallBtn}>
-                        <TransImgBtn 
-                            url={require("../assets/small-donation.png")}
-                            title="소량 기부"
-                            subtitle="가까운 푸드뱅크 연결" 
-                        />
-                    </View>
-                </View>
+      <ScreenHeader headerTitle="문의하기" />
+      <View style={styles.csFirstPageContent}>
+        <View style={styles.csCall}>
+          <Text style={styles.h3}>전화 연결</Text>
+          <View style={styles.csCallView}>
+            <View style={styles.csCallBtn}>
+              <TransImgBtn
+                onPress={() => makePhoneCall("027131377")}
+                url={require("../assets/mass-donation.png")}
+                title="대량 기부"
+                subtitle="약 5000kg 이상"
+              />
             </View>
-            <View style={styles.csBoardsView}>
-                <Text style={styles.csBoardsTitle}>문의 게시판</Text>
-                <View style={styles.csBoards}>
-                    <View style={styles.csBoardsBtn}>
-                        <TransImgBtn 
-                            onPress={() => onNavigateBtnClick(1)}
-                            url={require("../assets/donator-cs.png")}
-                            title="기부자 문의"
-                            subtitle="기부하는 것에 대한 질문이 있으신가요?" 
-                        />
-                    </View>
-                    <View style={styles.csBoardsBtn}>
-                        <TransImgBtn 
-                            onPress={() => onNavigateBtnClick(2)}
-                            url={require("../assets/other-cs.png")}
-                            title="기타 문의"
-                            subtitle="좋은 의견이나, 개선하고 싶은 것이 있으신가요?"
-                        />
-                    </View>
-                </View>
+            <View style={styles.csCallBtn}>
+              <TransImgBtn
+                onPress={() => makePhoneCall("16881377")}
+                url={require("../assets/small-donation.png")}
+                title="소량 기부"
+                subtitle="가까운 푸드뱅크 연결"
+              />
             </View>
-            
+          </View>
         </View>
+        <View style={styles.csBoardsView}>
+          <Text style={styles.csBoardsTitle}>문의 게시판</Text>
+          <View style={styles.csBoards}>
+            <View style={styles.csBoardsBtn}>
+              <TransImgBtn
+                onPress={() => onNavigateBtnClick(1)}
+                url={require("../assets/donator-cs.png")}
+                title="기부자 문의"
+                subtitle="기부하는 것에 대한 질문이 있으신가요?"
+              />
+            </View>
+            <View style={styles.csBoardsBtn}>
+              <TransImgBtn
+                onPress={() => onNavigateBtnClick(2)}
+                url={require("../assets/other-cs.png")}
+                title="기타 문의"
+                subtitle="좋은 의견이나, 개선하고 싶은 것이 있으신가요?"
+              />
+            </View>
+          </View>
+        </View>
+      </View>
     </View>
   );
 }
@@ -69,86 +75,85 @@ function FirstCsPage({ navigation }) {
 export default FirstCsPage;
 
 const styles = StyleSheet.create({
-    csFirstPageBody: {
-        flex: 1,
-        alignItems: 'center',
-        backgroundColor: Variables.mainColor,
-    },
-    csFirstPageContent: {
-        height: '90%',
-        width: '95%',
-        top: '18%',
-        position: 'relative',
-    },
-    csCallView: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        height: '80%',
-        marginBottom: '15%',
-    },
-    csCall: {
-        width: '100%',
-        height: '27%',
-        justifyContent: 'space-around',
-        borderBottomWidth: 2,
-        borderBottomColor: 'white',
-    },
-    csCallBtn: {
-        backgroundColor: '#FFFFFF',
-        borderTopWidth: 1,
-        borderRightWidth: 2,
-        borderBottomWidth: 2,
-        borderLeftWidth: 1,
-        borderStyle: 'solid',
-        borderColor: 'rgba(133, 133, 133, 0.09)',
-        boxShadow: '2px 2px 1px rgba(116, 116, 116, 0.03)',
-        borderRadius: 10,
-        width: '42%',
-        height: '100%',
-        marginHorizontal: 10,
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    h3: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: Variables.btnColor,
-        marginLeft: '4%',
-        marginBottom: '20%',
-    },
-    csBoardsView:{
-        top: '5%',
-    },
-    csBoardsTitle: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: Variables.btnColor,
-        marginLeft: '4%',
-        marginBottom: '8%',
-    },
-    csBoards: {
-        width: '100%',
-        height: '90%',
-        display: 'flex',
-        // top: '5%',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    csBoardsBtn: {
-        width: '88%',
-        marginVertical: 8,
-        height: '20%',
-        backgroundColor: '#FFFFFF',
-        borderTopWidth: 1,
-        borderRightWidth: 2,
-        borderBottomWidth: 2,
-        borderLeftWidth: 1,
-        borderStyle: 'solid',
-        borderColor: 'rgba(133, 133, 133, 0.09)',
-        boxShadow: '2px 2px 1px rgba(116, 116, 116, 0.03)',
-        borderRadius: 10,
-        
-    },
+  csFirstPageBody: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: Variables.mainColor,
+  },
+  csFirstPageContent: {
+    height: "90%",
+    width: "95%",
+    top: "18%",
+    position: "relative",
+  },
+  csCallView: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    height: "80%",
+    marginBottom: "15%",
+  },
+  csCall: {
+    width: "100%",
+    height: "27%",
+    justifyContent: "space-around",
+    borderBottomWidth: 2,
+    borderBottomColor: "white",
+  },
+  csCallBtn: {
+    backgroundColor: "#FFFFFF",
+    borderTopWidth: 1,
+    borderRightWidth: 2,
+    borderBottomWidth: 2,
+    borderLeftWidth: 1,
+    borderStyle: "solid",
+    borderColor: "rgba(133, 133, 133, 0.09)",
+    boxShadow: "2px 2px 1px rgba(116, 116, 116, 0.03)",
+    borderRadius: 10,
+    width: "42%",
+    height: "100%",
+    marginHorizontal: 10,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  h3: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: Variables.btnColor,
+    marginLeft: "4%",
+    marginBottom: "20%",
+  },
+  csBoardsView: {
+    top: "5%",
+  },
+  csBoardsTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: Variables.btnColor,
+    marginLeft: "4%",
+    marginBottom: "8%",
+  },
+  csBoards: {
+    width: "100%",
+    height: "90%",
+    display: "flex",
+    // top: '5%',
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  csBoardsBtn: {
+    width: "88%",
+    marginVertical: 8,
+    height: "20%",
+    backgroundColor: "#FFFFFF",
+    borderTopWidth: 1,
+    borderRightWidth: 2,
+    borderBottomWidth: 2,
+    borderLeftWidth: 1,
+    borderStyle: "solid",
+    borderColor: "rgba(133, 133, 133, 0.09)",
+    boxShadow: "2px 2px 1px rgba(116, 116, 116, 0.03)",
+    borderRadius: 10,
+  },
 });

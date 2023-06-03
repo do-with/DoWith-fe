@@ -1,11 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import {
-  StyleSheet,
-  View,
-  ScrollView,
-  Text,
-  Pressable,
-} from "react-native";
+import { StyleSheet, View, ScrollView, Text, Pressable } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { BoardList } from "../components/BoardList";
 import { ipAddress } from "../ipAddress";
@@ -44,43 +38,47 @@ function SecondCsPage({ navigation, route }) {
       <View style={styles.csSecondPageContent}>
         <ScrollView>
           <View style={styles.btnSmView}>
-            <BtnSm primary title="최신순" color="white" />
+            <BtnSm title="최신순" />
             <BtnSm
+              primary
+              color={"white"}
               title="글쓰기"
               onPress={() => navigation.push("WritePost", { board_id: id })}
             />
           </View>
-          {post.map((post) => {
-            let date = post.created_at.toString();
-            const formattedDate = Moment(date).format("M.D");
-            const onClickList = () => {
-              navigation.push("ThirdCsPage", { id: post.id });
-            };
-            const postId = post.id;
-            const answerYn = post.answer_yn.toString();
-            const getAnserYn = (answerYn) => {
-              if (post.answer_yn === "false") {
+          {post
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            .map((post) => {
+              let date = post.created_at.toString();
+              const formattedDate = Moment(date).format("MM.DD");
+              const onClickList = () => {
+                navigation.push("ThirdCsPage", { id: post.id });
+              };
+              const postId = post.id;
+              const answerYn = post.answer_yn.toString();
+              const getAnserYn = (answerYn) => {
+                if (answerYn === "false") {
+                  return "답변 대기";
+                } else if (answerYn === "true") {
+                  return "답변 완료";
+                }
                 return "";
-              } else if (post.answer_yn === "true") {
-                return "답변 완료";
-              }
-              return "";
-            };
-            console.log(user.id, post.user_id);
-            return (
-              <View style={{ alignItems: "center" }} key={post.id}>
-                <BoardList
-                  postId={postId}
-                  onClickList={onClickList}
-                  title={post.title}
-                  createdAt={formattedDate}
-                  answerYn={getAnserYn(post.answer_yn.toString())}
-                  compare={user.id === post.user_id}
-                  reloadPosts={reloadPosts}
-                />
-              </View>
-            );
-          })}
+              };
+              console.log(user.id, post.user_id);
+              return (
+                <View style={{ alignItems: "center" }} key={post.id}>
+                  <BoardList
+                    postId={postId}
+                    onClickList={onClickList}
+                    title={post.title}
+                    createdAt={formattedDate}
+                    answerYn={getAnserYn(answerYn)}
+                    compare={user.id === post.user_id}
+                    reloadPosts={reloadPosts}
+                  />
+                </View>
+              );
+            })}
         </ScrollView>
       </View>
     </View>
