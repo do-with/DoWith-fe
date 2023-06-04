@@ -6,6 +6,7 @@ import {
   Text,
   Button,
   Pressable,
+  Keyboard,
 } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
@@ -50,131 +51,156 @@ export default function DonateScreen2({ navigation, route }) {
   const { user } = useContext(AuthContext);
 
   const onSubmit = () => {
-    if (user.name &&
+    if (
+      user.name &&
       selectedMethod &&
       amount &&
-      address && detailAddress &&
-      donatorName) {
-        const data = {
-          name: itemTitle,
-          donate_way: selectedMethod,
-          // pass_yn: false,
-          amount: parseInt(amount, 10), 
-          address: address + " " + detailAddress,
-          donator_name: donatorName,
-          //rejection_reason,
-        };
-        console.log(data);
-        axios
-          .post(`http://${ipAddress}:8080/item/category/${category}/user/${user.id}`, data, {
+      address &&
+      detailAddress &&
+      donatorName
+    ) {
+      const data = {
+        name: itemTitle,
+        donate_way: selectedMethod,
+        // pass_yn: false,
+        amount: parseInt(amount, 10),
+        address: address + " " + detailAddress,
+        donator_name: donatorName,
+        //rejection_reason,
+      };
+      console.log(data);
+      axios
+        .post(
+          `http://${ipAddress}:8080/item/category/${category}/user/${user.id}`,
+          data,
+          {
             headers: {
               "Content-Type": "application/json",
             },
-          })
-          .then(() => {
-            navigation.navigate("AfterDonate");
-          })
-          .catch((error) => console.log(error));
-      }
+          }
+        )
+        .then(() => {
+          navigation.navigate("AfterDonate");
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   return (
-    <View style={styles.registerBody}>
-      <ScreenHeader headerTitle="기부하기" />
-      <View style={styles.registerContent}>
-        <Text style={styles.personalizeText}>{user.name} 님 마음 전달 중 ...♥</Text>
-        <View style={styles.registerBox}>
-          <View style={styles.registerDonate1}>
-            <View style={styles.registerAddress}>
-              <Modal isVisible={isModal}>
-                <Postcode
-                  style={{ width: "120%", height: "80%", marginLeft: "-10%" }}
-                  jsOptions={{ animation: true, hideMapBtn: true }}
-                  onSelected={(data) => {
-                    // alert(JSON.stringify(data));
-                    setModal(false);
-                    setPostcode(data.zonecode);
-                    setAddress(data.roadAddress);
-                  }}
-                />
-              </Modal>
-              <View style={styles.findAddress}>
-                <Text style={styles.text}>우편번호 *</Text>
-                <View>
-                  <Pressable
-                    onPress={() => setModal(true)}
-                    style={styles.addressBtn}
-                  >
-                    <Text>주소찾기</Text>
-                  </Pressable>
+    <Pressable onPress={Keyboard.dismiss}>
+      <View style={styles.registerBody}>
+        <ScreenHeader headerTitle="기부하기" />
+        <View style={styles.registerContent}>
+          <Text style={styles.personalizeText}>
+            {user.name} 님 마음 전달 중 ...♥
+          </Text>
+          <View style={styles.registerBox}>
+            <View style={styles.registerDonate1}>
+              <View style={styles.registerAddress}>
+                <Modal isVisible={isModal}>
+                  <Postcode
+                    style={{ width: "120%", height: "80%", marginLeft: "-10%" }}
+                    jsOptions={{ animation: true, hideMapBtn: true }}
+                    onSelected={(data) => {
+                      // alert(JSON.stringify(data));
+                      setModal(false);
+                      setPostcode(data.zonecode);
+                      setAddress(data.roadAddress);
+                    }}
+                  />
+                </Modal>
+                <View style={styles.findAddress}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text>우편번호 </Text>
+                    <Text style={{ color: "#FF1919" }}>*</Text>
+                  </View>
+                  <View>
+                    <Pressable
+                      onPress={() => setModal(true)}
+                      style={styles.addressBtn}
+                    >
+                      <Text style={{ fontSize: 13, letterSpacing: 1 }}>
+                        주소찾기
+                      </Text>
+                    </Pressable>
+                  </View>
                 </View>
+                <TextInput
+                  value={postcode}
+                  onChangeText={setPostcode}
+                  placeholder="우편번호"
+                  style={styles.inputText}
+                />
+                <View style={{ flexDirection: "row" }}>
+                  <Text>주소 </Text>
+                  <Text style={{ color: "#FF1919" }}>*</Text>
+                </View>
+                <TextInput
+                  value={address}
+                  onChangeText={setAddress}
+                  placeholder="주소"
+                  style={styles.inputText}
+                />
+                <View style={{ flexDirection: "row" }}>
+                  <Text>상세 주소 </Text>
+                  <Text style={{ color: "#FF1919" }}>*</Text>
+                </View>
+                <TextInput
+                  value={detailAddress}
+                  onChangeText={setDetailAddress}
+                  placeholder="상세 주소"
+                  style={styles.inputText}
+                />
               </View>
-              <TextInput
-                value={postcode}
-                onChangeText={setPostcode}
-                placeholder="우편번호"
-                style={styles.inputText}
-              />
-              <Text style={styles.text}>주소 *</Text>
-              <TextInput
-                value={address}
-                onChangeText={setAddress}
-                placeholder="주소"
-                style={styles.inputText}
-              />
-              <Text style={styles.text}>상세 주소 *</Text>
-              <TextInput
-                value={detailAddress}
-                onChangeText={setDetailAddress}
-                placeholder="상세 주소"
-                style={styles.inputText}
-              />
             </View>
-          </View>
-          <View style={[styles.registerDonate1, styles.registerDonate1Sm]}>
-            <Text>기부 방법을 선택해주세요 *</Text>
-            <View style={styles.howToDonateBtn}>
-              <Pressable
-                style={[
-                  styles.itemPicBtn,
-                  selectedMethod === "택배" && styles.selectedButton,
-                ]}
-                onPress={() => handleMethodSelect("택배")}
-              >
-                <Text>택배</Text>
-              </Pressable>
-              <Pressable
-                style={[
-                  styles.itemPicBtn,
-                  selectedMethod === "수거" && styles.selectedButton,
-                ]}
-                onPress={() => handleMethodSelect("수거")}
-              >
-                <Text>수거</Text>
-              </Pressable>
-              <Pressable
-                style={[
-                  styles.itemPicBtn,
-                  selectedMethod === "방문" && styles.selectedButton,
-                ]}
-                onPress={() => handleMethodSelect("방문")}
-              >
-                <Text>방문</Text>
-              </Pressable>
+            <View style={[styles.registerDonate1, styles.registerDonate1Sm]}>
+              <View style={{ flexDirection: "row" }}>
+                <Text>기부 방법을 선택해주세요 </Text>
+                <Text style={{ color: "#FF1919" }}>*</Text>
+              </View>
+              <View style={styles.howToDonateBtn}>
+                <Pressable
+                  style={[
+                    styles.itemPicBtn,
+                    selectedMethod === "택배" && styles.selectedButton,
+                  ]}
+                  onPress={() => handleMethodSelect("택배")}
+                >
+                  <Text>택배</Text>
+                </Pressable>
+                <Pressable
+                  style={[
+                    styles.itemPicBtn,
+                    selectedMethod === "수거" && styles.selectedButton,
+                  ]}
+                  onPress={() => handleMethodSelect("수거")}
+                >
+                  <Text>수거</Text>
+                </Pressable>
+                <Pressable
+                  style={[
+                    styles.itemPicBtn,
+                    selectedMethod === "방문" && styles.selectedButton,
+                  ]}
+                  onPress={() => handleMethodSelect("방문")}
+                >
+                  <Text>방문</Text>
+                </Pressable>
+              </View>
+              <Text style={styles.methodDescription}>{methodDescription}</Text>
             </View>
-            <Text style={styles.methodDescription}>{methodDescription}</Text>
+            <LinearGradient
+              colors={["#3b5998", "#3b5998", "#003C7C"]}
+              style={styles.registerBtn}
+            >
+              <Pressable onPress={() => onSubmit()} style={styles.registerBtn1}>
+                <Text style={styles.registerBtnText}>완료</Text>
+              </Pressable>
+            </LinearGradient>
           </View>
-          <LinearGradient
-            colors={["#3b5998", "#3b5998", "#003C7C"]}
-            style={styles.registerBtn}
-          >
-            <Pressable onPress={()=>onSubmit()}>
-              <Text style={styles.registerBtnText}>완료</Text>
-            </Pressable>
-          </LinearGradient>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -243,7 +269,7 @@ const styles = StyleSheet.create({
     // marginBottom: "4%",
   },
   registerDonate1Sm: {
-    height: "35%",
+    height: "30%",
     alignItems: "flex-start",
     paddingHorizontal: "5%",
   },
@@ -276,6 +302,25 @@ const styles = StyleSheet.create({
     left: "30%",
     marginTop: "4%",
   },
+  registerBtn1: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+    boxSizing: "border-box",
+    backgroundBlendMode: "soft-light, normal",
+    shadowColor: "rgba(166, 171, 189, 0.8)",
+    shadowOffset: {
+      width: 5,
+      height: 5,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 10,
+    borderRadius: 5,
+    color: "white",
+    width: "100%",
+    height: "100%",
+  },
   registerBtnText: {
     fontSize: 16,
     fontWeight: "700",
@@ -284,13 +329,14 @@ const styles = StyleSheet.create({
   },
   itemPicBtn: {
     borderRadius: 5,
-    height: "80%",
+    height: "60%",
     width: "32%",
     borderWidth: 0.5,
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: "3%",
     borderColor: "black",
+    marginTop: "3%",
   },
   inputText: {
     width: "100%",
@@ -307,13 +353,14 @@ const styles = StyleSheet.create({
     borderColor: "#A3A2A2",
     borderRadius: 5,
     width: "120%",
-    height: "110%",
+    height: "80%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
   selectedButton: {
     borderColor: "red",
+    borderWidth: 1,
   },
   methodDescription: {
     color: "gray",

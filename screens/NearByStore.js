@@ -151,7 +151,7 @@ export default function NearByStore() {
             style={styles.imgBackground}
           >
             <Pressable
-              style={styles.imgBackgroundBtn}
+              style={styles.imgBackground}
               onPress={getCurrentLocation}
             >
               <Text style={{ color: "white" }}>현위치</Text>
