@@ -9,12 +9,12 @@ import {
   Dimensions,
   PanResponder,
   Image,
+  ScrollView,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { ipAddress } from "../ipAddress";
 import axios from "axios";
-import Moment from "moment";
-import { ScrollView } from "react-native-gesture-handler";
+// import { ScrollView } from "react-native-gesture-handler";
 
 export const CommentBottomSheet = (props, {}) => {
   const { modalVisible, setModalVisible, postId } = props;
@@ -82,6 +82,7 @@ export const CommentBottomSheet = (props, {}) => {
       .then((response) => setCommentList(response.data))
       .catch((error) => console.log(error));
   }, []);
+
 
   const Content = () => {
     return (
@@ -187,8 +188,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
   },
   boardListView: {
-    justifyContent: "center",
-    height: "90%",
+    justifyContent: "space-evenly",
+    height: "80%",
     marginTop: "3%",
   },
   postTitleView: {
@@ -220,7 +221,7 @@ const styles = StyleSheet.create({
   commentView: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     alignItems: "center",
     width: "70%",
     height: "60%",

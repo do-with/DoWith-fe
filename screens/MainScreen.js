@@ -40,7 +40,7 @@ function MainScreen({ navigation }) {
         <View style={styles.mainContentTotalDonor}>
           <View style={styles.highlightSentence}>
             <View style={styles.hightBlock}>
-              <Text style={{ fontSize: 15, fontWeight: 600 }}>
+              <Text style={{ fontSize: 15, fontWeight: 600, lineHeight: 18, }}>
                 " 많은 사람들이 푸드뱅크 기부에 참여하고 있어요 "
               </Text>
             </View>
@@ -58,7 +58,7 @@ function MainScreen({ navigation }) {
                 style={styles.img}
                 resizeMode={"contain"}
               />
-              <Text>가까운 매장</Text>
+              <Text style={styles.menuText}>가까운 매장</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.transImgBtn}
@@ -69,7 +69,7 @@ function MainScreen({ navigation }) {
                 style={styles.img}
                 resizeMode={"contain"}
               />
-              <Text>알림 마당</Text>
+              <Text style={styles.menuText}>알림 마당</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.transImgBtn}
@@ -80,7 +80,7 @@ function MainScreen({ navigation }) {
                 style={styles.img}
                 resizeMode={"contain"}
               />
-              <Text>기부 현황</Text>
+              <Text style={styles.menuText}>기부 현황</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.contentCategory}>
@@ -93,7 +93,7 @@ function MainScreen({ navigation }) {
                 style={styles.img}
                 resizeMode={"contain"}
               />
-              <Text>이용 방법</Text>
+              <Text style={styles.menuText}>이용 방법</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.transImgBtn}
@@ -104,7 +104,7 @@ function MainScreen({ navigation }) {
                 style={styles.img}
                 resizeMode={"contain"}
               />
-              <Text>문의하기</Text>
+              <Text style={styles.menuText}>문의하기</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.transImgBtn}
@@ -115,7 +115,7 @@ function MainScreen({ navigation }) {
                 style={styles.img}
                 resizeMode={"contain"}
               />
-              <Text>충전하기</Text>
+              <Text style={styles.menuText}>후원하기</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -125,15 +125,20 @@ function MainScreen({ navigation }) {
             style={styles.localTradeBtn}
           >
             <Pressable
-              onPress={() => navigation.navigate("LocalTrade")}
+              onPress={() => onNavigateBtnClick("LocalTrade")}
               style={styles.localTradeBtn1}
             >
-              <Text style={styles.localTradeBtnText}>우리 동네</Text>
-              <Text style={styles.localTradeBtnText}>기부 거래</Text>
-              <Image
-                source={require("../assets/local-trade1.png")}
-                resizeMode="contain"
-              />
+              <View style={styles.bigBtnText}>
+                <Text style={styles.localTradeBtnText}>우리 동네</Text>
+                <Text style={styles.localTradeBtnText}>기부 거래</Text>
+              </View>
+              <View style={styles.bigBtnImg}>
+                <Image
+                  source={require("../assets/local-trade1.png")}
+                  resizeMode="contain"
+                  style={{width: 65, height: 65}}
+                />
+              </View>
             </Pressable>
           </LinearGradient>
 
@@ -141,16 +146,21 @@ function MainScreen({ navigation }) {
             style={styles.donationBtn}
             onPress={() => onNavigateBtnClick("DonateScreen")}
           >
-            <Text style={styles.donationBtnText}>5분 만에</Text>
-            <Text style={styles.donationBtnText}>기부 접수</Text>
-            <Image
-              source={require("../assets/image18.png")}
-              resizeMode="contain"
-            />
+            <View style={styles.bigBtnText}>
+              <Text style={styles.donationBtnText}>5분 만에</Text>
+              <Text style={styles.donationBtnText}>기부 접수</Text>
+            </View>
+            <View style={styles.bigBtnImg}>
+              <Image
+                source={require("../assets/image18.png")}
+                resizeMode="contain"
+                style={{width: 55, height: 55}}
+              />
+            </View>
           </Pressable>
         </View>
 
-        <View style={styles.tokenDonateView}>
+        {/* <View style={styles.tokenDonateView}>
           <LinearGradient
             colors={["#b2d5ffd4", "#D7EEFF"]}
             style={styles.tokenDonate}
@@ -162,7 +172,7 @@ function MainScreen({ navigation }) {
               <Text style={styles.supportMoneyBtn}>포인트 기부하기</Text>
             </Pressable>
           </LinearGradient>
-        </View>
+        </View> */}
       </View>
     </View>
   );
@@ -186,6 +196,12 @@ const styles = StyleSheet.create({
   img: {
     width: 55,
     height: 55,
+  },
+  menuText: {
+    fontWeight: 500,
+    fontSize: 16,
+    lineHeight: 23,
+    color: 'rgba(0, 0, 0, 0.68)',
   },
   mainContent: {
     height: "95%",
@@ -218,6 +234,7 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: 600,
     lineHeight: 33,
+    color: 'rgba(0, 0, 0, 0.77)',
   },
   hightBlock: {
     position: "relative",
@@ -254,21 +271,51 @@ const styles = StyleSheet.create({
   contentMine: {
     position: "relative",
     width: "100%",
-    height: "29%",
+    height: "35%",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-evenly",
     flexDirection: "row",
   },
+  localTradeBtn: {
+    display: "flex",
+    flexDirection: "column",
+    width: "45%",
+    height: "70%",
+    justifyContent: "center",
+    borderRadius: 8,
+    color: "rgba(0, 0, 0, 0.63)",
+    shadowColor: "rgba(166, 171, 189, 0.51)",
+    shadowOffset: { width: 5, height: 4 },
+    shadowOpacity: 1,
+    shadowRadius: 10,
+  },
+  localTradeBtn1: {
+    width: "100%",
+    height: "88%",
+    marginTop: "5%",
+    justifyContent: "space-around",
+  },
+  localTradeBtnText: {
+    color: "#fff",
+    fontWeight: 700,
+    fontSize: 21,
+    lineHeight: 30,
+  },
+  bigBtnText: {
+    width: '100%',
+    marginLeft: '10%',
+  },
+  bigBtnImg: {
+    alignItems: "center",
+  },
   donationBtn: {
     display: "flex",
     flexDirection: "column",
     width: "45%",
-    height: "65%",
-    boxSizing: "border-box",
+    height: "70%",
     borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: "space-evenly",
     shadowColor: "#B6B6B6",
     shadowOffset: {
       width: 1,
@@ -279,43 +326,11 @@ const styles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 3,
   },
-  localTradeBtn: {
-    display: "flex",
-    flexDirection: "column",
-    width: "45%",
-    height: "65%",
-    justifyContent: "center",
-    alignItems: "center",
-    color: "rgba(0, 0, 0, 0.63)",
-    border: "none",
-    boxShadow: "1px 2px 2px 1px rgba(182, 182, 182, 0.179)",
-    borderRadius: "8px",
-    backgroundColor: "white",
-    fontSize: "16px",
-    fontWeight: 700,
-    // letterSpacing: '2px',
-  },
-  localTradeBtn1: {
-    display: "flex",
-    flexDirection: "column",
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    alignItems: "center",
-    color: "rgba(0, 0, 0, 0.63)",
-    boxShadow: "1px 2px 2px 1px rgba(182, 182, 182, 0.179)",
-    borderRadius: "8px",
-    fontSize: "16px",
-    fontWeight: 700,
-  },
-  localTradeBtnText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 20,
-  },
   donationBtnText: {
-    fontWeight: "bold",
-    fontSize: 20,
+    color: '#646464',
+    fontWeight: 700,
+    fontSize: 21,
+    lineHeight: 30,
   },
   contentBtn: {
     width: "40%",

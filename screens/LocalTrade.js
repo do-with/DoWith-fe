@@ -101,7 +101,7 @@ export default function LocalTrade({ navigation }) {
         <View style={styles.highlightSentenceView}>
           <View style={styles.highlightSentence}>
             <View style={styles.hightBlock}>
-              <Text style={{ fontSize: 14, fontWeight: 600 }}>
+              <Text style={{ fontSize: 14, lineHeight: 17, fontWeight: 600, color: '#181818' }}>
                 " 판매 금액이 어디로 전달되는지 보러가기 "
               </Text>
             </View>
@@ -151,7 +151,7 @@ export default function LocalTrade({ navigation }) {
 
             <View style={styles.submitBtnView}>
               <LinearGradient
-                colors={["#003c7cf0", "#003c7cd1", "#003c7cc2"]}
+                colors={["#003c7c", "#003c7c", "#003c7cc2"]}
                 style={styles.submitBtn}
               >
                 <Pressable
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   joinBody: {
     width: "100%",
     height: "100%",
-    // backgroundColor: Variables.mainColor,
+    backgroundColor: Variables.mainColor,
     wordBreak: "break-all",
   },
   joinContent: {
@@ -230,18 +230,10 @@ const styles = StyleSheet.create({
   },
   submitBtnView: {
     position: "absolute",
-    width: "35%",
+    width: "40%",
     height: "8%",
-    backgroundColor: "rgba(0,0,0,0)",
     right: "5%",
-    top: "55%",
-  },
-  submitBtn: {
-    width: "100%",
-    height: "100%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    bottom: "36%",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -250,13 +242,20 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 2,
+  },
+  submitBtn: {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 20,
   },
   submitBtnText: {
-    fontWeight: "700",
+    fontWeight: 700,
     fontSize: 23,
     lineHeight: 28,
-    letterSpacing: 0.06,
+    letterSpacing: 3,
     color: "#FFFFFF",
     textShadowColor: "rgba(0, 0, 0, 0.36)",
     textShadowOffset: {
