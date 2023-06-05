@@ -20,36 +20,36 @@ import * as FileSystem from "expo-file-system";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AuthContext } from "../contexts/AuthContext";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Alert } from "react-native";
 
 export default function RegisterLocalTrade({ navigation }) {
   const [imageUris, setImageUris] = useState([]);
-  const [selectedClassify, setSelectedClassify] = useState("");
+  const [selectedClassify, setSelectedClassify] = useState(null);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState(null);
   const [content, setContent] = useState("");
   const githubURLs = [];
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null); // 대분류
   const [items, setItems] = useState([
-    { label: "제과류", value: 1 },
-    { label: "즉석식품", value: 2 },
-    { label: "냉동식품", value: 3 },
-    { label: "통조림", value: 4 },
-    { label: "장류", value: 5 },
-    { label: "소스류", value: 6 },
-    { label: "기름류", value: 7 },
-    { label: "음료류", value: 8 },
-    { label: "육가공류", value: 9 },
-    { label: "농산물", value: 10 },
-    { label: "제빵류", value: 11 },
-    { label: "세제류", value: 12 },
-    { label: "휴지류", value: 13 },
-    { label: "수건류", value: 14 },
-    { label: "기저귀류", value: 15 },
-    { label: "신체/위생용품류", value: 16 },
-    { label: "여성/위생용품류", value: 17 },
-    { label: "청소/환경 위생용품류", value: 18 },
+    { label: "디지털기기", value: 1 },
+    { label: "가구/인테리어", value: 2 },
+    { label: "유아동", value: 3 },
+    { label: "여성의류", value: 4 },
+    { label: "여성잡화", value: 5 },
+    { label: "남성패션", value: 6 },
+    { label: "남성잡화", value: 7 },
+    { label: "생활가전", value: 8 },
+    { label: "생활/주방", value: 9 },
+    { label: "가공식품", value: 10 },
+    { label: "스포츠/레저", value: 11 },
+    { label: "취미/게임/음반", value: 12 },
+    { label: "뷰티/미용", value: 13 },
+    { label: "반려동물용품", value: 14 },
+    { label: "티켓/교환권", value: 15 },
+    { label: "도서", value: 16 },
+    { label: "유아도서", value: 17 },
+    { label: "기타 중고물품", value: 18 },
   ]);
 
   useEffect(() => {
@@ -58,6 +58,7 @@ export default function RegisterLocalTrade({ navigation }) {
 
   const { user } = useContext(AuthContext);
   const user_id = user.id;
+  const user_region = user.region;
 
   const createFile = async (imageUris) => {
     console.log("createFile 함수 실행");
@@ -147,30 +148,6 @@ export default function RegisterLocalTrade({ navigation }) {
     // console.log(imageUris);
   };
 
-  //   const onRegister = async () => {
-
-  //     await createFile(imageUris);
-
-  //     const user_id = 1;
-  //     const data = {
-  //         name : title,
-  //         price : price,
-  //         describe : content,
-  //         sold_yn : false,
-  //         image1GitHubURL : githubURLs[0],
-  //         image2GitHubURL : githubURLs[1]
-  //     }
-  //     axios
-  //       .post(`http://${ipAddress}:8080/local-trade/user/${user_id}/create`, data)
-  //       .then((response) => {
-  //         // console.log(response);
-  //         navigation.navigate("MainScreen");
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   };
-
   const handlePriceChange = (text) => {
     // 숫자 이외의 문자 제거
     const cleanedText = text.replace(/[^0-9]/g, "");
@@ -179,33 +156,54 @@ export default function RegisterLocalTrade({ navigation }) {
   };
 
   const onRegister = async () => {
-    try {
-      await createFile(imageUris);
+    if (imageUris.length === 0) {
+      Alert.alert("물품 이미지를 업로드해주세요");
+    } else if (imageUris.length === 1) {
+      Alert.alert("물품 이미지를 한 장 더 업로드해주세요");
+    } else if (selectedClassify === null) {
+      Alert.alert("물품 분류를 선택해주세요");
+    } else if (title === "") {
+      Alert.alert("물품명을 설정해주세요");
+    } else if (price === null) {
+      Alert.alert("물품 가격을 설정해주세요");
+    } else if (content === "") {
+      Alert.alert("물품 설명을 기재해주세요");
+    } else if (
+      imageUris.length === 2 &&
+      price &&
+      title &&
+      selectedClassify &&
+      content
+    )
+      try {
+        await createFile(imageUris);
 
-      const data = {
-        name: title,
-        price: price,
-        describe: content,
-        sold_yn: false,
-        image1GitHubURL: githubURLs[0] || null,
-        image2GitHubURL: githubURLs[1] || null,
-      };
+        const data = {
+          name: title,
+          price: price,
+          describe: content,
+          sold_yn: false,
+          image1GitHubURL: githubURLs[0] || null,
+          image2GitHubURL: githubURLs[1] || null,
+          category: selectedClassify,
+          region: user_region,
+        };
 
-      axios
-        .post(
-          `http://${ipAddress}:8080/local-trade/user/${user_id}/create`,
-          data
-        )
-        .then((response) => {
-          // console.log(response);
-          navigation.navigate("LocalTrade");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
+        axios
+          .post(
+            `http://${ipAddress}:8080/local-trade/user/${user_id}/create`,
+            data
+          )
+          .then((response) => {
+            // console.log(response);
+            navigation.navigate("LocalTrade", { key: Date.now() });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
   };
 
   return (
@@ -217,7 +215,7 @@ export default function RegisterLocalTrade({ navigation }) {
           <KeyboardAwareScrollView
             contentContainerStyle={{ width: "100%", height: "100%" }}
           >
-            <Text style={styles.localTradeTitle}>기부상품 등록하기</Text>
+            <Text style={styles.localTradeTitle}>기부물품 등록하기</Text>
             <View style={styles.selectedImagesView}>
               <Pressable onPress={selectImage} style={styles.selectImageBtn}>
                 <Ionicons name="camera-outline" size={33} color="white" />
@@ -249,10 +247,10 @@ export default function RegisterLocalTrade({ navigation }) {
                 </View>
                 <DropDownPicker
                   open={open}
-                  value={value}
+                  value={selectedClassify}
                   items={items}
                   setOpen={setOpen}
-                  setValue={setValue}
+                  setValue={setSelectedClassify}
                   setItems={setItems}
                   placeholder="물품 분류를 선택해주세요"
                   listMode="MODAL"
@@ -268,7 +266,7 @@ export default function RegisterLocalTrade({ navigation }) {
               </View>
               <View>
                 <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>상품명 </Text>
+                  <Text style={styles.inputTitle}>물품명 </Text>
                   <Text style={{ color: "#FF1919" }}>*</Text>
                 </View>
                 <TextInput
@@ -293,13 +291,13 @@ export default function RegisterLocalTrade({ navigation }) {
               </View>
               <View>
                 <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>상품 설명 </Text>
+                  <Text style={styles.inputTitle}>물품 설명 </Text>
                   <Text style={{ color: "#FF1919" }}>*</Text>
                 </View>
                 <TextInput
                   value={content}
                   onChangeText={setContent}
-                  placeholder="상품 설명을 적어주세요"
+                  placeholder="물품 설명을 적어주세요"
                   style={[styles.detailInput]}
                   multiline={true}
                 />

@@ -146,12 +146,13 @@ export default function Join1({ navigation }) {
 
     if (isEmailValid(email)) {
       try {
+        Alert.alert("이메일 전송이 완료되었습니다.");
         const queryParams = new URLSearchParams({ email });
         await axios.post(
           `http://${ipAddress}:8080/email/verification?${queryParams}`
         );
         setIsCodeSent(true);
-        Alert.alert("이메일 전송이 완료되었습니다.");
+        // Alert.alert("이메일 전송이 완료되었습니다.");
       } catch (error) {
         // Alert.alert(error.message);
         Alert.alert("이메일 전송에 실패했습니다. 다시 시도해주세요.");

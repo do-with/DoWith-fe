@@ -14,6 +14,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AuthContext } from "../contexts/AuthContext";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Ionicons } from "@expo/vector-icons";
 
 export default function DonateScreen({ navigation }) {
   const [open, setOpen] = useState(false);
@@ -79,14 +80,19 @@ export default function DonateScreen({ navigation }) {
                   }}
                 />
                 <View style={styles.donateItemPic}>
-                  <Text style={{ color: "red", fontSize: 13 }}>
-                    유통기한이 있다면 보이게 찍어주세요
-                  </Text>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text>기부 물품 찍기 </Text>
+                    <Text style={{ color: "#FF1919" }}>*</Text>
+                  </View>
+                  {/* <Text style={{ color: "red", fontSize: 13 }}>
+                     찍어주세요
+                  </Text> */}
                   <Pressable style={styles.itemPicBtn}>
                     <Text style={{ fontWeight: 700 }}>기부 물품 찍기</Text>
                   </Pressable>
                   <Text style={{ color: "grey", fontSize: 13 }}>
-                    여러 개인 경우 전체적인 모습을 찍어주세요
+                    물품의 전체적인 모습을 찍어주세요.{"\n"}유통기한이 30일 이상
+                    남은 물품만 기부 가능합니다.
                   </Text>
                 </View>
               </View>

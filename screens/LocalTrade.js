@@ -16,9 +16,23 @@ import Moment from "moment";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function LocalTrade({ navigation }) {
-  const [money, setMoney] = useState(null); // 기부금 get
-  const [count, setCount] = useState(null); // 참여자 수 get
+  const [money, setMoney] = useState(0); // 기부금 get
+  const [count, setCount] = useState(0); // 참여자 수 get
   const [localTradeList, setLocalTradeList] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`http://${ipAddress}:8080/local-trade/user-count`)
+      .then((response) => setCount(response.data))
+      .catch((error) => console.log(error));
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`http://${ipAddress}:8080/local-trade/price-count`)
+      .then((response) => setMoney(response.data))
+      .catch((error) => console.log(error));
+  }, []);
 
   useEffect(() => {
     axios
@@ -76,7 +90,7 @@ export default function LocalTrade({ navigation }) {
                 }}
               />
 
-              <View style={{ paddingTop: "3%" }}>
+              <View style={{ paddingTop: "5%", paddingLeft: "3%" }}>
                 <Text style={styles.nameText}>{localTrade.name}</Text>
                 <Text style={styles.dateText}>
                   {Moment(localTrade.created_at).format("MM.DD")}
@@ -84,7 +98,12 @@ export default function LocalTrade({ navigation }) {
                 {localTrade.sold_yn ? (
                   <Text style={styles.priceText}>판매완료</Text>
                 ) : (
-                  <Text style={styles.priceText}>{localTrade.price}원</Text>
+                  <Text style={styles.priceText}>
+                    {localTrade.price
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    원
+                  </Text>
                 )}
               </View>
             </View>
@@ -94,7 +113,7 @@ export default function LocalTrade({ navigation }) {
     ));
   };
 
-  const {isAuthenticated} = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
   const onNavigateBtnClick = (page) => {
     if (isAuthenticated) {
@@ -111,7 +130,14 @@ export default function LocalTrade({ navigation }) {
         <View style={styles.highlightSentenceView}>
           <View style={styles.highlightSentence}>
             <View style={styles.hightBlock}>
-              <Text style={{ fontSize: 14, lineHeight: 17, fontWeight: 600, color: '#181818' }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  lineHeight: 17,
+                  fontWeight: 600,
+                  color: "#181818",
+                }}
+              >
                 " 판매 금액이 어디로 전달되는지 보러가기 "
               </Text>
             </View>
@@ -125,7 +151,9 @@ export default function LocalTrade({ navigation }) {
           >
             <View style={{ alignItems: "center" }}>
               <Text style={styles.bold}>지역 거래 기부금 현재</Text>
-              <Text style={styles.bold}>512,000{money}원</Text>
+              <Text style={styles.bold}>
+                {money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+              </Text>
             </View>
           </LinearGradient>
           <LinearGradient
@@ -133,7 +161,9 @@ export default function LocalTrade({ navigation }) {
             style={styles.countBox}
           >
             <View style={{ alignItems: "center" }}>
-              <Text style={styles.bold}>525{count}명이</Text>
+              <Text style={styles.bold}>
+                {count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}명이
+              </Text>
               <Text style={styles.bold}>함께 해주셨어요</Text>
             </View>
           </LinearGradient>
