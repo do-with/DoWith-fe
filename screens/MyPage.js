@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { StyleSheet, View, Text, Pressable, Image, Alert } from 'react-native';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,10 +6,9 @@ import { Variables } from '../components/Variables';
 import { AuthContext } from '../contexts/AuthContext';
 
 export default function MyPage({navigation}){
-    const { user, isAuthenticated, logout, updateIsAuthenticated } = useContext(AuthContext);
+    const { user, isAuthenticated, logout } = useContext(AuthContext);
 
     useEffect(() => {
-        // setIsAuthenticated(isAuthenticated);
         console.log(isAuthenticated);
     }, [isAuthenticated]);
 
@@ -26,7 +25,6 @@ export default function MyPage({navigation}){
               text: "확인",
               onPress: () => {
                 logout();
-                navigation.replace('MainScreen');
               },
             },
           ],
@@ -48,8 +46,8 @@ export default function MyPage({navigation}){
                     <View>
                         <View style={styles.myProfile}>
                             <Text style={styles.profileText}>프로필</Text>
-                            {user.name && (
-                            <Text style={styles.profileText}>{user.name}</Text>
+                            {user && (
+                                <Text style={styles.profileText}>{user.name}</Text>
                             )}
                         </View>
                         <View style={styles.myInfoBoardView}>
