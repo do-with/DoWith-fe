@@ -21,7 +21,7 @@ function App(){
   //   <View style={styles.loadingView}>
   //     <Image
   //           resizeMode={"cover"}
-  //           source={require("./assets/splash.jpg")}
+  //           source={require("./assets/splash.png")}
   //           style={styles.imageStyle}></Image>
   //   </View>
   // ):(

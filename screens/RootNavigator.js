@@ -24,7 +24,8 @@ import DonateScreen2 from "./DonateScreen2";
 import Announce2 from "./Announce2";
 import RegisterLocalTrade from "./RegisterLocalTrade";
 import DetailLocalTrade from "./DetailLocalTrade";
-
+import CheckDonation from "./CheckDonation";
+import CheckToken from "./CheckToken";
 // import Nginx from "./Nginx";
 
 const Stack = createNativeStackNavigator();
@@ -58,6 +59,17 @@ export default function RootNavigator() {
           options={{ headerShown: false }}
           component={DonationList}
         />
+        <Stack.Screen
+          name="CheckToken"
+          options={{ headerShown: false }}
+          component={CheckToken}
+        />
+        <Stack.Screen
+          name="CheckDonation"
+          options={{ headerShown: false }}
+          component={CheckDonation}
+        />
+
 
         <Stack.Screen
           name="MainScreen"

@@ -62,7 +62,7 @@ function LoginScreen({ navigation }) {
             <CustomInput
               value={email}
               setValue={setEmail}
-              placeholder="아이디 입력"
+              placeholder="이메일 입력"
             />
             <CustomInput
               value={password}
