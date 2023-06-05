@@ -51,42 +51,50 @@ export default function MyPage({navigation}){
                             )}
                         </View>
                         <View style={styles.myInfoBoardView}>
-                        <View style={styles.myInfoBoard}>
-                            <Text style={styles.boardText}>토큰</Text>
-                            <Image source={require('../assets/token.png')}
-                                resizeMode={'contain'}/>
-                        </View>
-                        <View style={styles.myInfoBoard}>
-                            <Text style={styles.boardText}>기부 횟수</Text>
-                            <Image source={require('../assets/pride.png')}
-                                resizeMode={'contain'}/>
-                        </View>
-                    </View>
-                    <View style={styles.myPageBtnView}>
-                        <LinearGradient colors={['#d7eeff','#ffffff']}
-                            style={styles.myPageBtn}>
-                            <Pressable onPress={()=>navigation.navigate('SupportMoney')}>
-                                <Text style={styles.text}>토큰 발행하기</Text>
+                            <Pressable style={styles.myInfoBoard}
+                                onPress={()=>navigation.navigate('CheckToken')}>
+                                <Text style={styles.boardText}>토큰</Text>
+                                <Image source={require('../assets/token.png')}
+                                    resizeMode={'contain'}
+                                    style={styles.img}
+                                />
+                                <Text style={styles.text}>5000</Text>
                             </Pressable>
-                        </LinearGradient>
-                    </View>
-                    <View style={styles.myListView}>
-                        <Pressable style={styles.myList}>
-                            <Text style={styles.text}>나의 물품 내역</Text>
-                        </Pressable>
-                        <Pressable style={styles.myList}>
-                            <Text style={styles.text}>알림 목록 조회</Text>
-                        </Pressable>
-                        <Pressable style={styles.myList}>
-                            <Text style={styles.text}>나의 문의 내역</Text>
-                        </Pressable>
-                    </View>
-                    <Pressable onPress={()=>onClickLogoutBtn()}>
-                        <View style={styles.myProfile}>
-                            <Text style={styles.profileText}>로그아웃</Text>
+                            <Pressable style={styles.myInfoBoard}
+                                onPress={()=>navigation.navigate('CheckDonation')}>
+                                <Text style={styles.boardText}>기부 횟수</Text>
+                                <Image source={require('../assets/pride.png')}
+                                    resizeMode={'contain'}
+                                    style={styles.img}
+                                />
+                                <Text style={styles.text}>5회</Text>
+                            </Pressable>
                         </View>
-                    </Pressable>
-                </View>
+                        <View style={styles.myPageBtnView}>
+                            <LinearGradient colors={['#d7eeff','#ffffff']}
+                                style={styles.myPageBtn}>
+                                <Pressable onPress={()=>navigation.navigate('SupportMoney')}>
+                                    <Text style={styles.myPageText}>토큰 발행하기</Text>
+                                </Pressable>
+                            </LinearGradient>
+                        </View>
+                        <View style={styles.myListView}>
+                            <Pressable style={styles.myList}>
+                                <Text style={styles.text}>나의 물품 내역</Text>
+                            </Pressable>
+                            <Pressable style={styles.myList}>
+                                <Text style={styles.text}>알림 목록 조회</Text>
+                            </Pressable>
+                            <Pressable style={styles.myList}>
+                                <Text style={styles.text}>나의 문의 내역</Text>
+                            </Pressable>
+                        </View>
+                        <Pressable onPress={()=>onClickLogoutBtn()}>
+                            <View style={styles.myProfile}>
+                                <Text style={styles.profileText}>로그아웃</Text>
+                            </View>
+                        </Pressable>
+                    </View>
                 )}
             </View>
         </View>
@@ -103,7 +111,7 @@ const styles = StyleSheet.create({
         backgroundColor: Variables.mainColor,
     },
     joinContent: {
-        width: '95%',
+        width: '100%',
         height: '100%',
         position: 'relative',
         top: '14%',
@@ -130,11 +138,12 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-around',
+        alignItems: 'center',
     },
     myInfoBoard: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         alignItems: 'center',
         width: '48%',
         height: 103,
@@ -145,38 +154,53 @@ const styles = StyleSheet.create({
         fontWeight: 400,
         fontSize: 16,
     },
+    img: {
+        width: 35,
+        height: 35,
+    },
     myPageBtnView: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     myPageBtn: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center',
-        width: '100%',
+        width: '95%',
         height: 70,
         marginBottom: '2%',
         borderRadius: 8,
+    },
+    myPageText: {
+        fontWeight: 500,
+        fontSize: 19,
+        lineHeight: 28,
+        letterSpacing: 0.055,
+        color: '#050505',
     },
     myListView: {
         display: 'flex',
         flexDirection: 'column',
         // justifyContent: 'space-around',
         width: '100%',
-        height: '50%',
+        height: '48%',
         backgroundColor: '#fff',
     },
     myList: {
         borderBottomWidth: 1,
         borderBottomColor: '#ddd',
         justifyContent: 'center',
-        height: '15%',
+        height: '16%',
     },
     text: {
         fontWeight: 500,
         fontSize: 17,
+        lineHeight: 25,
         marginLeft: '5%',
+        letterSpacing: 0.15,
+        // color: '#414141',
     },
 });

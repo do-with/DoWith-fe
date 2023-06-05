@@ -87,7 +87,7 @@ export const CommentBottomSheet = (props, {}) => {
   const Content = () => {
     return (
       <View style={styles.csSecondPageContent}>
-        <ScrollView>
+        <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'space-around' }}>
           <View style={styles.boardListView}>
             <View style={styles.postTitleView}>
               <Text style={styles.postText}>Q. {postConetent.title}</Text>
@@ -133,7 +133,7 @@ export const CommentBottomSheet = (props, {}) => {
               </View>
             )}
           </View>
-        </ScrollView>
+        </View>
       </View>
     );
   };
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomSheetContainer: {
-    height: 400,
+    height: 480,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
@@ -181,16 +181,16 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   csSecondPageContent: {
-    width: "85%",
+    width: "88%",
     height: "100%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-around",
+    justifyContent: 'space-between',
   },
   boardListView: {
-    justifyContent: "space-evenly",
-    height: "80%",
-    marginTop: "3%",
+    // justifyContent: "space-around",
+    height: "55%",
+    marginTop: "5%",
   },
   postTitleView: {
     width: "100%",
@@ -211,20 +211,20 @@ const styles = StyleSheet.create({
     color: "rgba(35, 35, 35, 0.6)",
   },
   img: {
-    width: 100,
-    height: 100,
+    width: 80,
+    height: 80,
   },
   commentContainer: {
     flexDirection: "row",
-    width: "100%",
+    height: '20%',
   },
   commentView: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-evenly",
     alignItems: "center",
-    width: "70%",
-    height: "60%",
+    width: "75%",
+    height: "100%",
     padding: 10,
     borderRadius: 8,
   },
