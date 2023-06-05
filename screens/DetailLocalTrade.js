@@ -54,7 +54,7 @@ const DetailLocalTrade = ({ route }) => {
             <Image source={require('../assets/user.png')}
               resizeMode={'contain'}
               style={{width: 45, height: 45, marginRight: '3%',}}/>
-            <Text style={styles.profileText}>한진주 님</Text>
+            <Text style={styles.profileText}>한진주</Text>
           </View>
 
           <View style={styles.itemView}>

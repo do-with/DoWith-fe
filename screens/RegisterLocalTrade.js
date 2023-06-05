@@ -198,7 +198,7 @@ export default function RegisterLocalTrade({ navigation }) {
         )
         .then((response) => {
           // console.log(response);
-          navigation.navigate("MainScreen");
+          navigation.navigate("LocalTrade");
         })
         .catch((error) => {
           console.log(error);

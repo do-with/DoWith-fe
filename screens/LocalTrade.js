@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   StyleSheet,
   View,
@@ -13,6 +13,7 @@ import { Variables } from "../components/Variables";
 import { ipAddress } from "../ipAddress";
 import axios from "axios";
 import Moment from "moment";
+import { AuthContext } from "../contexts/AuthContext";
 
 export default function LocalTrade({ navigation }) {
   const [money, setMoney] = useState(null); // 기부금 get
@@ -69,7 +70,6 @@ export default function LocalTrade({ navigation }) {
                 }}
                 resizeMode="contain"
                 style={{
-                  // flex: 1,
                   aspectRatio: 1,
                   borderTopLeftRadius: 8,
                   borderTopRightRadius: 8,
@@ -92,6 +92,16 @@ export default function LocalTrade({ navigation }) {
         ))}
       </View>
     ));
+  };
+
+  const {isAuthenticated} = useContext(AuthContext);
+
+  const onNavigateBtnClick = (page) => {
+    if (isAuthenticated) {
+      navigation.navigate(page);
+    } else {
+      navigation.navigate("LoginScreen");
+    }
   };
 
   return (
@@ -156,7 +166,7 @@ export default function LocalTrade({ navigation }) {
               >
                 <Pressable
                   style={styles.submitBtn}
-                  onPress={() => navigation.navigate("RegisterLocalTrade")}
+                  onPress={() => onNavigateBtnClick("RegisterLocalTrade")}
                 >
                   <Text style={styles.submitBtnText}>올리기</Text>
                 </Pressable>

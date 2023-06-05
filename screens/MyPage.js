@@ -1,19 +1,39 @@
-import React, { useContext } from 'react';
-import { StyleSheet, View, Text, Pressable, Image } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { StyleSheet, View, Text, Pressable, Image, Alert } from 'react-native';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Variables } from '../components/Variables';
 import { AuthContext } from '../contexts/AuthContext';
 
 export default function MyPage({navigation}){
-    const { user, isAuthenticated } = useContext(AuthContext);
+    const { user, isAuthenticated, logout, updateIsAuthenticated } = useContext(AuthContext);
 
-    const authContext = useContext(AuthContext);
+    useEffect(() => {
+        // setIsAuthenticated(isAuthenticated);
+        console.log(isAuthenticated);
+    }, [isAuthenticated]);
 
     const onClickLogoutBtn = () => {
-        authContext.logout(user);
-        alert("로그아웃되었습니다");
+        Alert.alert(
+          "로그아웃",
+          "정말로 로그아웃하시겠습니까?",
+          [
+            {
+              text: "취소",
+              style: "cancel",
+            },
+            {
+              text: "확인",
+              onPress: () => {
+                logout();
+                navigation.replace('MainScreen');
+              },
+            },
+          ],
+          { cancelable: false }
+        );
     };
+
     return(
         <View style={styles.joinBody}>
             <ScreenHeader headerTitle="마이페이지"/>
@@ -28,7 +48,9 @@ export default function MyPage({navigation}){
                     <View>
                         <View style={styles.myProfile}>
                             <Text style={styles.profileText}>프로필</Text>
+                            {user.name && (
                             <Text style={styles.profileText}>{user.name}</Text>
+                            )}
                         </View>
                         <View style={styles.myInfoBoardView}>
                         <View style={styles.myInfoBoard}>

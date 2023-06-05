@@ -138,12 +138,11 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "90%",
     display: "flex",
-    // top: '5%',
     flexDirection: "column",
     alignItems: "center",
   },
   csBoardsBtn: {
-    width: "88%",
+    width: "93%",
     marginVertical: 8,
     height: "20%",
     backgroundColor: "#FFFFFF",
@@ -153,7 +152,13 @@ const styles = StyleSheet.create({
     borderLeftWidth: 1,
     borderStyle: "solid",
     borderColor: "rgba(133, 133, 133, 0.09)",
-    boxShadow: "2px 2px 1px rgba(116, 116, 116, 0.03)",
+    shadowColor: "#747474",
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.03,
+    shadowRadius: 1,
     borderRadius: 10,
   },
 });
