@@ -232,9 +232,10 @@ const styles = StyleSheet.create({
     backgroundColor: Variables.mainColor,
   },
   img: {
-    left: "1%",
-    position: "relative",
-    top: "4%",
+    width: 350,
+    height: 160,
+    top: "6%",
+    left: '2%',
   },
   imgBackground: {
     borderTopWidth: 1,

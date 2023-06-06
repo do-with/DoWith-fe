@@ -4,6 +4,7 @@ import { ScreenHeader } from '../components/ScreenHeader';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Variables } from '../components/Variables';
 import { AuthContext } from '../contexts/AuthContext';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function MyPage({navigation}){
     const { user, isAuthenticated, logout } = useContext(AuthContext);
@@ -43,7 +44,7 @@ export default function MyPage({navigation}){
                         </View>
                     </Pressable>
                 ) : (
-                    <View>
+                    <View style={{alignItems: 'center'}}>
                         <View style={styles.myProfile}>
                             <Text style={styles.profileText}>프로필</Text>
                             {user && (
@@ -71,7 +72,7 @@ export default function MyPage({navigation}){
                             </Pressable>
                         </View>
                         <View style={styles.myPageBtnView}>
-                            <LinearGradient colors={['#d7eeff','#ffffff']}
+                            <LinearGradient colors={['#d7eeff','#ffffff8a']}
                                 style={styles.myPageBtn}>
                                 <Pressable onPress={()=>navigation.navigate('SupportMoney')}>
                                     <Text style={styles.myPageText}>토큰 발행하기</Text>
@@ -79,20 +80,20 @@ export default function MyPage({navigation}){
                             </LinearGradient>
                         </View>
                         <View style={styles.myListView}>
-                            <Pressable style={styles.myList}>
-                                <Text style={styles.text}>나의 물품 내역</Text>
+                            <Pressable style={styles.myList}
+                                onPress={()=>navigation.navigate('MyLocalTradeList')}>
+                                <Text style={styles.listText}>지역거래 물품 내역</Text>
                             </Pressable>
-                            <Pressable style={styles.myList}>
-                                <Text style={styles.text}>알림 목록 조회</Text>
-                            </Pressable>
-                            <Pressable style={styles.myList}>
-                                <Text style={styles.text}>나의 문의 내역</Text>
+                            <Pressable style={styles.myList}
+                                onPress={()=>navigation.navigate('MyCsList')}>
+                                <Text style={styles.listText}>나의 문의 내역</Text>
                             </Pressable>
                         </View>
-                        <Pressable onPress={()=>onClickLogoutBtn()}>
-                            <View style={styles.myProfile}>
-                                <Text style={styles.profileText}>로그아웃</Text>
-                            </View>
+
+                        <Pressable onPress={()=>onClickLogoutBtn()}
+                            style={styles.logout}>
+                                <Ionicons name="log-out-outline" size={20} color="#808080" />
+                                <Text style={styles.logoutText}>로그아웃</Text>
                         </Pressable>
                     </View>
                 )}
@@ -143,10 +144,10 @@ const styles = StyleSheet.create({
     myInfoBoard: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'space-evenly',
         alignItems: 'center',
         width: '48%',
-        height: 103,
+        height: 115,
         marginBottom: '2%',
         backgroundColor: '#fff',
     },
@@ -186,7 +187,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         // justifyContent: 'space-around',
         width: '100%',
-        height: '48%',
+        height: '49%',
         backgroundColor: '#fff',
     },
     myList: {
@@ -199,8 +200,30 @@ const styles = StyleSheet.create({
         fontWeight: 500,
         fontSize: 17,
         lineHeight: 25,
-        marginLeft: '5%',
         letterSpacing: 0.15,
         // color: '#414141',
+    },
+    listText: {
+        fontWeight: 500,
+        fontSize: 17,
+        lineHeight: 25,
+        letterSpacing: 0.15,
+        marginLeft: '5%',
+    },
+    logout: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        width: '90%',
+        height: '7%',
+    },
+    logoutText: {
+        fontWeight: 500,
+        fontSize: 17,
+        lineHeight: 28,
+        letterSpacing: 0.055,
+        marginLeft: 5,
+        color: '#808080',
     },
 });

@@ -19,13 +19,14 @@ import AfterSupport from "./AfterSupport";
 import Static from "./Static";
 import AfterDonate from "./AfterDonate";
 import LocalTrade from "./LocalTrade";
-import DonationList from "./DonationList";
 import DonateScreen2 from "./DonateScreen2";
 import Announce2 from "./Announce2";
 import RegisterLocalTrade from "./RegisterLocalTrade";
 import DetailLocalTrade from "./DetailLocalTrade";
 import CheckDonation from "./CheckDonation";
 import CheckToken from "./CheckToken";
+import MyLocalTradeList from "./MyLoaclTradeList";
+import MyCsList from "./MyCsList";
 // import Nginx from "./Nginx";
 
 const Stack = createNativeStackNavigator();
@@ -55,9 +56,14 @@ export default function RootNavigator() {
           component={LoginScreen}
         />
         <Stack.Screen
-          name="DonationList"
+          name="MyLocalTradeList"
           options={{ headerShown: false }}
-          component={DonationList}
+          component={MyLocalTradeList}
+        />
+        <Stack.Screen
+          name="MyCsList"
+          options={{ headerShown: false }}
+          component={MyCsList}
         />
         <Stack.Screen
           name="CheckToken"
