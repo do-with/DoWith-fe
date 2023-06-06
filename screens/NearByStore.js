@@ -6,6 +6,7 @@ import {
   Pressable,
   Image,
   ScrollView,
+  ActivityIndicator
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { ScreenHeader } from "../components/ScreenHeader";
@@ -23,6 +24,7 @@ export default function NearByStore() {
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isloading, setIsLoading] = useState(false); // 로딩 아이콘을 위한 변수
 
   useEffect(() => {
     (async () => {
@@ -41,6 +43,7 @@ export default function NearByStore() {
   }, []);
 
   const getCurrentLocation = () => {
+    setIsLoading(true);
     if (errorMsg) {
       text = errorMsg;
     } else if (location) {
@@ -54,7 +57,10 @@ export default function NearByStore() {
     }
     axios
       .get(`http://${ipAddress}:8080/market/distance/${latitude}/${longitude}`)
-      .then((response) => setMarketList(response.data))
+      .then((response) => {
+        setMarketList(response.data)
+        setIsLoading(false);
+      })
       .catch((error) => console.log(error));
     console.log(marketList);
   };
@@ -91,6 +97,11 @@ export default function NearByStore() {
             </Pressable>
           </LinearGradient>
         </View>
+        {isloading ? (
+            <View style={{height: '60%', justifyContent: 'center', alignItems: 'center'}}>
+              <ActivityIndicator size="large" color="#808080" />
+            </View>
+        ): (
         <View style={styles.contentListWrapApi}>
           <ScrollView>
             {marketListById.map((market) => {
@@ -134,6 +145,7 @@ export default function NearByStore() {
             })}
           </ScrollView>
         </View>
+        )}
       </View>
     </View>
   ) : (

@@ -10,6 +10,7 @@ import {
   Modal,
   Keyboard,
   KeyboardAvoidingView,
+  ActivityIndicator
 } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
@@ -42,6 +43,8 @@ export default function Join1({ navigation }) {
   // 체크박스 폼
   const [isAgreed1, setIsAgreed1] = useState(false); // 개인정보수집이용 동의 여부
   const [isAgreed2, setIsAgreed2] = useState(false); // 마케팅 정보 수신
+
+  const [isloading, setIsLoading] = useState(false); // 로딩 아이콘을 위한 변수
 
   const areaMappings = {
     서울: 2,
@@ -197,7 +200,7 @@ export default function Join1({ navigation }) {
     } catch (error) {
       // 인증번호 확인 실패시 처리
       setIsCodeVerified(false);
-      Alert.alert(error.message);
+      // Alert.alert(error.message);
       Alert.alert("인증번호가 일치하지 않습니다.");
     }
   };
@@ -243,7 +246,7 @@ export default function Join1({ navigation }) {
         birth_date: birth,
         region: areaNum,
       };
-
+      setIsLoading(true);
       axios
         .post(`http://${ipAddress}:8080/user`, data, {
           headers: {
@@ -251,6 +254,7 @@ export default function Join1({ navigation }) {
           },
         })
         .then(() => {
+          setIsLoading(false);
           Alert.alert("회원가입에 성공하셨습니다! 다시 로그인해주세요");
           navigation.navigate("LoginScreen");
         })
@@ -267,6 +271,11 @@ export default function Join1({ navigation }) {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
+          {isloading ? (
+              <View style={{flex: 1, marginTop: '100%', justifyContent: 'center', alignItems: 'center'}}>
+                <ActivityIndicator size="large" color="#808080" />
+              </View>
+          ) : (
           <View style={styles.scrollView}>
             <View style={styles.inputInfo}>
               <View style={[styles.inputText, { marginBottom: "10%" }]}>
@@ -471,6 +480,7 @@ export default function Join1({ navigation }) {
               <View style={{ height: "40%" }}></View>
             </View>
           </View>
+          )}
         </KeyboardAwareScrollView>
       </View>
     </Pressable>

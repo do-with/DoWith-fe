@@ -8,6 +8,7 @@ import {
   TextInput,
   Keyboard,
   ActivityIndicator,
+  Alert
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -21,7 +22,6 @@ import * as FileSystem from "expo-file-system";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AuthContext } from "../contexts/AuthContext";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { Alert } from "react-native";
 
 export default function RegisterLocalTrade({ navigation }) {
   const [imageUris, setImageUris] = useState([]);
