@@ -62,7 +62,7 @@ export default function SupportMoney({ navigation }) {
           </Pressable>
           <View style={styles.supportMoneyTitleView}>
             <Image
-              source={require("../assets/donator.png")}
+              source={require("../assets/people.png")}
               style={styles.supportMoneyImg}
               resizeMode={"contain"}
             />
@@ -145,8 +145,9 @@ const styles = StyleSheet.create({
     height: "22%",
   },
   supportMoneyImg: {
-    width: 60,
-    height: 60,
+    width: 72,
+    height: 72,
+    marginBottom: '2%',
   },
   supportMoneyTitle: {
     fontSize: 22,

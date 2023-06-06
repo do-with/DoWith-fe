@@ -64,7 +64,6 @@ function SecondCsPage({ navigation, route }) {
                 }
                 return "";
               };
-              console.log(user.id, post.user_id);
               return (
                 <View style={{ alignItems: "center" }} key={post.id}>
                   <BoardList

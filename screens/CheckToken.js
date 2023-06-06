@@ -1,15 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, View, Text, Image, Pressable } from 'react-native';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { Variables } from '../components/Variables';
 
 export default function CheckToken({navigation}){
+    const [selectedTab, setSelectedTab] = useState('입금');
+    const [incomeTabStyle, setIncomeTabStyle] = useState(styles.myListRowBtnSelectedText);
+    const [outcomeTabStyle, setOutcomeTabStyle] = useState(styles.myListRowBtnText);
+
     const onClickTab = (tabName) => {
         if (tabName === '입금') {
             // 송금내역리스트
+            setSelectedTab(tabName);
+            setIncomeTabStyle(styles.myListRowBtnSelectedText);
+            setOutcomeTabStyle(styles.myListRowBtnText);
         }
         else if (tabName === "출금") {
             // 출금내역 리스트
+            setSelectedTab(tabName);
+            setIncomeTabStyle(styles.myListRowBtnText);
+            setOutcomeTabStyle(styles.myListRowBtnSelectedText);
         }
     };
 
@@ -17,7 +27,7 @@ export default function CheckToken({navigation}){
         <View style={styles.aboutBody}>
             <ScreenHeader headerTitle="토큰"/>
             <View style={styles.aboutContent}>
-                <View style={{height: '5%', justifyContent: 'center'}}>
+                <View style={{height: '8%', justifyContent: 'center'}}>
                     <Text style={styles.titleText}>토큰 발행 내역</Text>
                 </View>
                 <View style={styles.myTokenView}>
@@ -28,25 +38,26 @@ export default function CheckToken({navigation}){
                     />
                     <Text style={styles.variText}>5000</Text>
                 </View>
-            </View>
-            <View style={styles.myListView}>
-                <View style={styles.myListRow}>
-                    <Pressable style={styles.myListRowBtn}
-                        onPress={()=>onClickTab('입금')}>
-                        <Text style={styles.myListRowBtnText}>입금</Text>
-                    </Pressable>
-                    <Pressable style={styles.myListRowBtn}
-                        onPress={()=>onClickTab('출금')}>
-                        <Text style={styles.myListRowBtnText}>출금</Text>
-                    </Pressable>
-                </View>
-                {/* map으로 */}
-                <View style={styles.myListDetail}>
-                    <View>
-                        <Text style={styles.blueText}>입금</Text>
-                        <Text style={styles.grayText}>2023-06-05</Text>
+
+                <View style={styles.myListView}>
+                    <View style={styles.myListRow}>
+                        <Pressable style={[incomeTabStyle, styles.myListRowBtn]}
+                            onPress={()=>onClickTab('입금')}>
+                            <Text style={incomeTabStyle}>입금</Text>
+                        </Pressable>
+                        <Pressable style={[outcomeTabStyle, styles.myListRowBtn]}
+                            onPress={()=>onClickTab('출금')}>
+                            <Text style={outcomeTabStyle}>출금</Text>
+                        </Pressable>
                     </View>
-                    <Text style={styles.moneyText}>-150원</Text>
+                    {/* map으로 */}
+                    <View style={styles.myListDetail}>
+                        <View>
+                            <Text style={styles.blueText}>입금</Text>
+                            <Text style={styles.grayText}>2023-06-05</Text>
+                        </View>
+                        <Text style={styles.moneyText}>-150원</Text>
+                    </View>
                 </View>
             </View>
         </View>
@@ -57,7 +68,7 @@ const styles = StyleSheet.create({
     aboutBody: {
         width: '100%',
         height: '100%',
-        backgroundColor: Variables.mainColor,
+        backgroundColor: 'rgba(236, 247, 255, 0.25)',
         alignItems: 'center',
     },
     aboutContent: {
@@ -77,9 +88,10 @@ const styles = StyleSheet.create({
     },
     myTokenView: {
         width: '100%',
-        height: '19%',
+        height: '15%',
         justifyContent: 'space-evenly',
         alignItems: 'center',
+        marginBottom: '2%',
     },
     img: {
         width: 50,
@@ -102,19 +114,23 @@ const styles = StyleSheet.create({
     myListView: {
         width: '100%',
         height: '65%',
-        backgroundColor: '#fff',
     },
     myListRow: {
         height: '10%',
-        backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
-        borderWidth:1,
     },
     myListRowBtn: {
-        marginLeft: '7%',
+        marginHorizontal: '3%',
     },
     myListRowBtnText: {
+        fontWeight: 700,
+        fontSize: 17,
+        lineHeight: 25,
+        letterSpacing: 0.15,
+        color: '#aaa',
+    },
+    myListRowBtnSelectedText: {
         fontWeight: 700,
         fontSize: 17,
         lineHeight: 25,
@@ -122,12 +138,11 @@ const styles = StyleSheet.create({
         color: '#414141',
     },
     myListDetail: {
-        paddingHorizontal: '7%',
+        paddingHorizontal: '3%',
         height: '15%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        borderWidth:1,
     },
     blueText: {
         fontWeight: 700,
