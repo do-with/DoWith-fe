@@ -10,6 +10,7 @@ import {
   PanResponder,
   Image,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { ipAddress } from "../ipAddress";
@@ -83,18 +84,24 @@ export const CommentBottomSheet = (props, {}) => {
       .catch((error) => console.log(error));
   }, []);
 
-
   const Content = () => {
     return (
-      <View style={styles.csSecondPageContent}>
-        <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'space-around' }}>
+      <TouchableOpacity activeOpacity={1}>
+        <View
+          style={{
+            height: "100%",
+            width: "88%",
+            flexDirection: "column",
+            justifyContent: "space-around",
+            // marginTop: "6%",
+          }}
+        >
           <View style={styles.boardListView}>
             <View style={styles.postTitleView}>
               <Text style={styles.postText}>Q. {postConetent.title}</Text>
               <Text style={styles.greyText}>전국푸드뱅크</Text>
             </View>
-
-            <View>
+            <View style={styles.contentView}>
               <Text style={styles.greyText}>내용</Text>
               <Text style={styles.postText}>{postConetent.content}</Text>
             </View>
@@ -103,7 +110,14 @@ export const CommentBottomSheet = (props, {}) => {
           <View style={styles.commentContainer}>
             {commentList && commentList.length > 0 ? (
               commentList.map((comment) => (
-                <View style={{ flexDirection: "row" }} key={comment.id}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "flex-end",
+                    marginBottom: "20%",
+                  }}
+                  key={comment.id}
+                >
                   <Image
                     source={require("../assets/manager.png")}
                     style={styles.img}
@@ -118,7 +132,13 @@ export const CommentBottomSheet = (props, {}) => {
                 </View>
               ))
             ) : (
-              <View style={{ flexDirection: "row" }}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "flex-end",
+                  marginBottom: "20%",
+                }}
+              >
                 <Image
                   source={require("../assets/manager.png")}
                   style={styles.img}
@@ -134,7 +154,7 @@ export const CommentBottomSheet = (props, {}) => {
             )}
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -156,7 +176,14 @@ export const CommentBottomSheet = (props, {}) => {
           }}
           {...panResponders.panHandlers}
         >
-          <Content />
+          <ScrollView
+            style={{ height: 400 }}
+            contentContainerStyle={{
+              flexGrow: 1,
+            }}
+          >
+            <Content />
+          </ScrollView>
         </Animated.View>
       </View>
     </Modal>
@@ -173,7 +200,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomSheetContainer: {
-    height: 480,
+    height: 400,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "white",
@@ -182,20 +209,28 @@ const styles = StyleSheet.create({
   },
   csSecondPageContent: {
     width: "88%",
-    height: "100%",
+    height: 500,
+    flex: 1,
     display: "flex",
     flexDirection: "column",
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
+    borderWidth: 1,
   },
   boardListView: {
     // justifyContent: "space-around",
-    height: "55%",
-    marginTop: "5%",
+    height: "auto",
+    // marginTop: 20,
   },
   postTitleView: {
     width: "100%",
-    height: "25%",
-    marginBottom: "8%",
+    height: "auto",
+    marginTop: 30,
+    marginBottom: 20,
+  },
+  contentView: {
+    width: "100%",
+    height: "auto",
+    marginBottom: 20,
   },
   postText: {
     fontWeight: 500,
@@ -216,7 +251,7 @@ const styles = StyleSheet.create({
   },
   commentContainer: {
     flexDirection: "row",
-    height: '20%',
+    height: "auto",
   },
   commentView: {
     display: "flex",
@@ -224,7 +259,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "center",
     width: "75%",
-    height: "100%",
+    height: 110,
     padding: 10,
     borderRadius: 8,
   },
