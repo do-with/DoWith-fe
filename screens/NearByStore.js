@@ -93,7 +93,7 @@ export default function NearByStore() {
               style={styles.imgBackgroundBtn}
               onPress={getCurrentLocation}
             >
-              <Text style={{ color: "white" }}>현위치</Text>
+              <Text style={styles.text}>현위치</Text>
             </Pressable>
           </LinearGradient>
         </View>
@@ -166,7 +166,7 @@ export default function NearByStore() {
               style={styles.imgBackground}
               onPress={getCurrentLocation}
             >
-              <Text style={{ color: "white" }}>현위치</Text>
+              <Text style={styles.text}>현위치</Text>
             </Pressable>
           </LinearGradient>
         </View>
@@ -289,16 +289,23 @@ const styles = StyleSheet.create({
   },
   listBoxImgApi: {
     marginTop: "3%",
-    backgroundColor: "#FFFFFF",
+    marginLeft: "3%",
+    backgroundColor: "#fff",
     borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "rgba(199, 199, 199, 0.8)",
-    boxShadow: "1px 1px 4px rgba(189, 189, 189, 0.25)",
+    borderColor: '#ddd',
     borderRadius: 10,
     width: "95%",
     height: 105,
     wordBreak: "break-all",
-    marginLeft: "3%",
+    shadowColor: "#ddd",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.66,
+    shadowRadius: 4,
+    elevation: 4, // elevation 추가
+    overflow: "visible",
   },
   contentListText: {
     width: "100%",
@@ -325,5 +332,12 @@ const styles = StyleSheet.create({
     boxShadow:
       "0px 2px 3px rgba(0, 0, 0, 0.02), 0px 4px 50px rgba(0, 1, 1, 0.07)",
     borderRadius: 24,
+  },
+  text: {
+    fontWeight: 700,
+    fontSize: 15,
+    lineHeight: 22,
+    letterSpacing: 0.5,
+    color: '#FFFFFF',
   },
 });

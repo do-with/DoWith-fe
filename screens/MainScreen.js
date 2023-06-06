@@ -128,7 +128,7 @@ function MainScreen({ navigation }) {
             style={styles.localTradeBtn}
           >
             <Pressable
-              onPress={() => navigation.navigate("LocalTrade")}
+              onPress={() => onNavigateBtnClick("LocalTrade")}
               style={styles.localTradeBtn1}
             >
               <View style={styles.bigBtnText}>

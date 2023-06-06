@@ -16,6 +16,8 @@ import Moment from "moment";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function LocalTrade({ navigation }) {
+  const { user } = useContext(AuthContext);
+
   const [money, setMoney] = useState(0); // 기부금 get
   const [count, setCount] = useState(0); // 참여자 수 get
   const [localTradeList, setLocalTradeList] = useState("");
@@ -36,7 +38,7 @@ export default function LocalTrade({ navigation }) {
 
   useEffect(() => {
     axios
-      .get(`http://${ipAddress}:8080/local-trade`)
+      .get(`http://${ipAddress}:8080/local-trade/region/${user.region}`)
       .then((response) => {
         setLocalTradeList(response.data);
       })
@@ -111,15 +113,48 @@ export default function LocalTrade({ navigation }) {
       </View>
     ));
   };
+  const areaMappings = {
+    서울: 2,
+    부산: 3,
+    대구: 4,
+    인천: 5,
+    광주: 6,
+    대전: 7,
+    울산: 8,
+    경기: 9,
+    강원: 10,
+    충북: 11,
+    충남: 12,
+    전북: 13,
+    전남: 14,
+    경북: 15,
+    경남: 16,
+    제주: 17,
+    세종: 20,
+  };
 
-  const { isAuthenticated } = useContext(AuthContext);
+  const areas = [
+    "서울",
+    "부산",
+    "대구",
+    "인천",
+    "광주",
+    "대전",
+    "울산",
+    "경기",
+    "강원",
+    "충북",
+    "충남",
+    "전북",
+    "전남",
+    "경북",
+    "경남",
+    "제주",
+    "세종",
+  ];
 
-  const onNavigateBtnClick = (page) => {
-    if (isAuthenticated) {
-      navigation.navigate(page);
-    } else {
-      navigation.navigate("LoginScreen");
-    }
+  const getAreaString = (areaCode) => {
+    return areas.find((area) => areaMappings[area] === areaCode);
   };
 
   return (
@@ -130,7 +165,7 @@ export default function LocalTrade({ navigation }) {
           <View style={styles.hightlight}>
             <View style={styles.hightBlock}></View>
             <Text style={styles.hightText}>
-              “ 판매 금액이 어디로 전달되는지 보러가기 ”
+              “ {getAreaString(user.region)}에서 거래해요 ”
             </Text>
           </View>
         </View>
@@ -187,7 +222,7 @@ export default function LocalTrade({ navigation }) {
               >
                 <Pressable
                   style={styles.submitBtn}
-                  onPress={() => onNavigateBtnClick("RegisterLocalTrade")}
+                  onPress={() => navigation.navigate("RegisterLocalTrade")}
                 >
                   <Text style={styles.submitBtnText}>올리기</Text>
                 </Pressable>
@@ -229,14 +264,14 @@ const styles = StyleSheet.create({
   hightBlock: {
     position: "relative",
     display: "flex",
-    width: 280,
+    width: 160,
     height: "10%",
     backgroundColor: "rgba(178, 213, 255, 0.83)",
     zIndex: 0,
     paddingTop: "3%",
   },
   hightText: {
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: 700,
     position: "absolute",
     lineHeight: 17,
