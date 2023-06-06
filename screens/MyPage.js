@@ -5,39 +5,51 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Variables } from '../components/Variables';
 import { AuthContext } from '../contexts/AuthContext';
 import { Ionicons } from '@expo/vector-icons';
+import axios from "axios";
+import { ipAddress } from "../ipAddress";
 
-export default function MyPage({navigation}){
-    const { user, isAuthenticated, logout } = useContext(AuthContext);
+export default function MyPage({ navigation }) {
+  const { user, isAuthenticated, logout } = useContext(AuthContext);
+  const [count, setCount] = useState(0);
 
+  const user_id = user?.id;
+
+  useEffect(() => {
+    axios
+      .get(`http://${ipAddress}:8080/item/passed-item-count/${user_id}`)
+      .then((response) => setCount(response.data))
+      .catch((error) => console.log(error));
+  }, []);
+  
     useEffect(() => {
-        console.log(isAuthenticated);
-    }, [isAuthenticated]);
+    console.log(isAuthenticated);
+  }, [isAuthenticated]);
 
-    const onClickLogoutBtn = () => {
-        Alert.alert(
-          "로그아웃",
-          "정말로 로그아웃하시겠습니까?",
-          [
-            {
-              text: "취소",
-              style: "cancel",
-            },
-            {
-              text: "확인",
-              onPress: () => {
-                logout();
-              },
-            },
-          ],
-          { cancelable: false }
-        );
-    };
-
+  const onClickLogoutBtn = () => {
+    Alert.alert(
+      "로그아웃",
+      "정말로 로그아웃하시겠습니까?",
+      [
+        {
+          text: "취소",
+          style: "cancel",
+        },
+        {
+          text: "확인",
+          onPress: () => {
+            logout();
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+  };
+  
     return(
         <View style={styles.joinBody}>
             <ScreenHeader headerTitle="마이페이지"/>
             <View style={styles.joinContent}>
-                {!isAuthenticated ? (
+                {!isAuthenticated || !user || !user.id ? (
                     <Pressable onPress={()=>navigation.navigate('LoginScreen')}>
                         <View style={styles.myProfile}> 
                             <Text style={styles.profileText}>로그인이 필요합니다.</Text>
@@ -68,7 +80,9 @@ export default function MyPage({navigation}){
                                     resizeMode={'contain'}
                                     style={styles.img}
                                 />
-                                <Text style={styles.text}>5회</Text>
+                                <Text style={styles.text}>
+                                  {count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}회
+                                </Text>
                             </Pressable>
                         </View>
                         <View style={styles.myPageBtnView}>
@@ -99,8 +113,6 @@ export default function MyPage({navigation}){
                 )}
             </View>
         </View>
-    );
-};
 
 const styles = StyleSheet.create({
     joinBody: {

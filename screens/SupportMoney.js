@@ -236,7 +236,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   hightBlock: {
-    position: "relaabtive",
+    position: "relative",
     display: "flex",
     width: "66%",
     height: "10%",

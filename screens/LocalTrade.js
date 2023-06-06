@@ -16,9 +16,23 @@ import Moment from "moment";
 import { AuthContext } from "../contexts/AuthContext";
 
 export default function LocalTrade({ navigation }) {
-  const [money, setMoney] = useState(null); // 기부금 get
-  const [count, setCount] = useState(null); // 참여자 수 get
+  const [money, setMoney] = useState(0); // 기부금 get
+  const [count, setCount] = useState(0); // 참여자 수 get
   const [localTradeList, setLocalTradeList] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(`http://${ipAddress}:8080/local-trade/user-count`)
+      .then((response) => setCount(response.data))
+      .catch((error) => console.log(error));
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`http://${ipAddress}:8080/local-trade/price-count`)
+      .then((response) => setMoney(response.data))
+      .catch((error) => console.log(error));
+  }, []);
 
   useEffect(() => {
     axios
@@ -51,7 +65,7 @@ export default function LocalTrade({ navigation }) {
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
-          marginBottom: "10%",
+          marginBottom: "3%",
         }}
         key={columnIndex}
       >
@@ -63,7 +77,7 @@ export default function LocalTrade({ navigation }) {
               navigation.navigate("DetailLocalTrade", { localTrade })
             }
           >
-            <View style={{ width: "100%", height: "100%" }}>
+            <View style={{ width: "100%", height: "100%", padding: "5%" }}>
               <Image
                 source={{
                   uri: localTrade.image1,
@@ -71,12 +85,11 @@ export default function LocalTrade({ navigation }) {
                 resizeMode="contain"
                 style={{
                   aspectRatio: 1,
-                  borderTopLeftRadius: 8,
-                  borderTopRightRadius: 8,
+                  borderRadius: 8,
                 }}
               />
 
-              <View style={{ paddingTop: "3%" }}>
+              <View style={{ paddingTop: "5%", paddingLeft: "3%" }}>
                 <Text style={styles.nameText}>{localTrade.name}</Text>
                 <Text style={styles.dateText}>
                   {Moment(localTrade.created_at).format("MM.DD")}
@@ -84,7 +97,12 @@ export default function LocalTrade({ navigation }) {
                 {localTrade.sold_yn ? (
                   <Text style={styles.priceText}>판매완료</Text>
                 ) : (
-                  <Text style={styles.priceText}>{localTrade.price}원</Text>
+                  <Text style={styles.priceText}>
+                    {localTrade.price
+                      .toString()
+                      .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    원
+                  </Text>
                 )}
               </View>
             </View>
@@ -94,7 +112,7 @@ export default function LocalTrade({ navigation }) {
     ));
   };
 
-  const {isAuthenticated} = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
   const onNavigateBtnClick = (page) => {
     if (isAuthenticated) {
@@ -109,12 +127,11 @@ export default function LocalTrade({ navigation }) {
       <ScreenHeader headerTitle="기부 거래" />
       <View style={styles.joinContent}>
         <View style={styles.highlightSentenceView}>
-          <View style={styles.highlightSentence}>
-            <View style={styles.hightBlock}>
-              <Text style={{ fontSize: 14, lineHeight: 17, fontWeight: 600, color: '#181818' }}>
-                " 판매 금액이 어디로 전달되는지 보러가기 "
-              </Text>
-            </View>
+          <View style={styles.hightlight}>
+            <View style={styles.hightBlock}></View>
+            <Text style={styles.hightText}>
+              “ 판매 금액이 어디로 전달되는지 보러가기 ”
+            </Text>
           </View>
         </View>
 
@@ -125,7 +142,9 @@ export default function LocalTrade({ navigation }) {
           >
             <View style={{ alignItems: "center" }}>
               <Text style={styles.bold}>지역 거래 기부금 현재</Text>
-              <Text style={styles.bold}>512,000{money}원</Text>
+              <Text style={styles.bold}>
+                {money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
+              </Text>
             </View>
           </LinearGradient>
           <LinearGradient
@@ -133,7 +152,9 @@ export default function LocalTrade({ navigation }) {
             style={styles.countBox}
           >
             <View style={{ alignItems: "center" }}>
-              <Text style={styles.bold}>525{count}명이</Text>
+              <Text style={styles.bold}>
+                {count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}명이
+              </Text>
               <Text style={styles.bold}>함께 해주셨어요</Text>
             </View>
           </LinearGradient>
@@ -151,7 +172,7 @@ export default function LocalTrade({ navigation }) {
               <View
                 style={{
                   flexDirection: "column",
-                  width: "90%",
+                  width: "95%",
                   justifyContent: "center",
                 }}
               >
@@ -199,31 +220,34 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
   },
-  highlightSentence: {
-    display: "flex",
-    justifyContent: "center",
+  hightlight: {
+    marginTop: "3%",
+    height: "25%",
+    justifyContent: "flex-end",
     alignItems: "center",
-    position: "relative",
-    flexDirection: "column",
-    height: "30%",
-    boxSizing: "border-box",
   },
   hightBlock: {
     position: "relative",
     display: "flex",
-    alignItems: "center",
-    width: "75%",
-    height: 18,
-    display: "flex",
+    width: 280,
+    height: "10%",
     backgroundColor: "rgba(178, 213, 255, 0.83)",
     zIndex: 0,
+    paddingTop: "3%",
+  },
+  hightText: {
+    fontSize: 17,
+    fontWeight: 700,
+    position: "absolute",
+    lineHeight: 17,
+    color: "#181818",
   },
   countBoxView: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
     // alignItems: 'center',
-    height: "12%",
+    height: "9%",
     backgroundColor: "rgba(0,0,0,0)",
   },
   countBox: {
@@ -231,7 +255,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    width: "45%",
+    width: "46%",
     marginBottom: "2%",
     borderRadius: 8,
   },
@@ -240,8 +264,8 @@ const styles = StyleSheet.create({
   },
   submitBtnView: {
     position: "absolute",
-    width: "40%",
-    height: "8%",
+    width: "33%",
+    height: "7%",
     right: "5%",
     bottom: "36%",
     shadowColor: "#000",
@@ -277,19 +301,21 @@ const styles = StyleSheet.create({
   tradeBoard: {
     flexDirection: "row",
     alignItems: "center",
-    height: "110%",
+    height: "100%",
     width: "48%",
     marginBottom: "2%",
     borderRadius: 8,
-    backgroundColor: "rgba(251, 251, 251, 0.35)",
+    backgroundColor: "rgba(251, 251, 251, 0.85)",
     shadowColor: "#c9c9c9",
     shadowOffset: {
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.26,
+    shadowOpacity: 0.66,
     shadowRadius: 4,
     borderRadius: 10,
+    elevation: 4, // elevation 추가
+    overflow: "visible", // overflow 추가
   },
   nameText: {
     fontWeight: 600,

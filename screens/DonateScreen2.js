@@ -7,6 +7,7 @@ import {
   Button,
   Pressable,
   Keyboard,
+  Alert,
 } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
@@ -18,7 +19,7 @@ import { ipAddress } from "../ipAddress";
 import axios from "axios";
 
 export default function DonateScreen2({ navigation, route }) {
-  const { category, itemTitle, amount, donatorName } = route.params;
+  const { category, itemTitle, amount, donatorName, image } = route.params;
 
   const [postcode, setPostcode] = useState(""); // 우편번호
   const [address, setAddress] = useState(""); // 주소(자동 입력)
@@ -36,22 +37,30 @@ export default function DonateScreen2({ navigation, route }) {
 
   switch (selectedMethod) {
     case "택배":
-      methodDescription = "지정된 매장 주소로 택배를 보내주셔야 합니다.";
+      methodDescription = "지정된 매장 주소로 택배를 보내주셔야 합니다";
       break;
     case "수거":
-      methodDescription = "관리자와 연락해 수거 일정을 조율해주셔야 합니다.";
+      methodDescription = "관리자와 연락해 수거 일정을 조율해주셔야 합니다";
       break;
     case "방문":
-      methodDescription = "푸드 뱅크에 직접 방문해 물품을 전달해주셔야 합니다.";
+      methodDescription = "푸드 뱅크에 직접 방문해 물품을 전달해주셔야 합니다";
       break;
     default:
-      methodDescription = "기부 방법을 선택해주세요.";
+      methodDescription = "기부 방법을 선택해주세요";
   }
 
   const { user } = useContext(AuthContext);
 
   const onSubmit = () => {
-    if (
+    if (postcode === "") {
+      Alert.alert("우편번호를 입력해주세요");
+    } else if (address === "") {
+      Alert.alert("주소를 입력해주세요");
+    } else if (detailAddress === "") {
+      Alert.alert("상세 주소를 입력해주세요");
+    } else if (selectedMethod === "") {
+      Alert.alert("기부 방법을 선택해주세요");
+    } else if (
       user.name &&
       selectedMethod &&
       amount &&
@@ -62,11 +71,12 @@ export default function DonateScreen2({ navigation, route }) {
       const data = {
         name: itemTitle,
         donate_way: selectedMethod,
-        // pass_yn: false,
+        pass_yn: false,
         amount: parseInt(amount, 10),
         address: address + " " + detailAddress,
         donator_name: donatorName,
-        //rejection_reason,
+        rejection_reason: "",
+        image: image,
       };
       console.log(data);
       axios
@@ -95,11 +105,11 @@ export default function DonateScreen2({ navigation, route }) {
             {user.name} 님 마음 전달 중 ...♥
           </Text>
           <View style={styles.registerBox}>
-            <View style={styles.registerDonate1}>
+            <View style={[styles.registerDonate1, { paddingTop: "-10%" }]}>
               <View style={styles.registerAddress}>
-                <Modal isVisible={isModal}>
+                <Modal isVisible={isModal} style={{ alignItems: "center" }}>
                   <Postcode
-                    style={{ width: "120%", height: "80%", marginLeft: "-10%" }}
+                    style={{ width: "100%", height: "70%" }}
                     jsOptions={{ animation: true, hideMapBtn: true }}
                     onSelected={(data) => {
                       // alert(JSON.stringify(data));
@@ -109,7 +119,7 @@ export default function DonateScreen2({ navigation, route }) {
                     }}
                   />
                 </Modal>
-                <View style={styles.findAddress}>
+                <View style={[styles.findAddress, { alignItems: "flex-end" }]}>
                   <View style={{ flexDirection: "row" }}>
                     <Text>우편번호 </Text>
                     <Text style={{ color: "#FF1919" }}>*</Text>
@@ -129,10 +139,10 @@ export default function DonateScreen2({ navigation, route }) {
                   value={postcode}
                   onChangeText={setPostcode}
                   placeholder="우편번호"
-                  style={styles.inputText}
+                  style={[styles.inputText, { marginTop: "3%" }]}
                 />
                 <View style={{ flexDirection: "row" }}>
-                  <Text>주소 </Text>
+                  <Text style={{ marginBottom: "3%" }}>주소 </Text>
                   <Text style={{ color: "#FF1919" }}>*</Text>
                 </View>
                 <TextInput
@@ -142,7 +152,7 @@ export default function DonateScreen2({ navigation, route }) {
                   style={styles.inputText}
                 />
                 <View style={{ flexDirection: "row" }}>
-                  <Text>상세 주소 </Text>
+                  <Text style={{ marginBottom: "3%" }}>상세 주소 </Text>
                   <Text style={{ color: "#FF1919" }}>*</Text>
                 </View>
                 <TextInput
@@ -297,9 +307,9 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     borderRadius: 5,
     color: "white",
-    width: "30%",
-    height: "10%",
-    left: "30%",
+    width: "25%",
+    height: "9%",
+    left: "32%",
     marginTop: "4%",
   },
   registerBtn1: {
@@ -322,7 +332,7 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   registerBtnText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "700",
     letterSpacing: 2,
     color: "#fff",
@@ -340,7 +350,7 @@ const styles = StyleSheet.create({
   },
   inputText: {
     width: "100%",
-    height: "15%",
+    height: "10%",
     position: "relative",
     display: "flex",
     alignItems: "center",
@@ -359,8 +369,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   selectedButton: {
-    borderColor: "red",
-    borderWidth: 1,
+    borderColor: Variables.btnColor,
+    borderWidth: 2,
   },
   methodDescription: {
     color: "gray",

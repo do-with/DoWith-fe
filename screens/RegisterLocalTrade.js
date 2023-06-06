@@ -20,36 +20,36 @@ import * as FileSystem from "expo-file-system";
 import DropDownPicker from "react-native-dropdown-picker";
 import { AuthContext } from "../contexts/AuthContext";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { Alert } from "react-native";
 
 export default function RegisterLocalTrade({ navigation }) {
   const [imageUris, setImageUris] = useState([]);
-  const [selectedClassify, setSelectedClassify] = useState("");
+  const [selectedClassify, setSelectedClassify] = useState(null);
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState(null);
   const [content, setContent] = useState("");
   const githubURLs = [];
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null); // 대분류
   const [items, setItems] = useState([
-    { label: "제과류", value: 1 },
-    { label: "즉석식품", value: 2 },
-    { label: "냉동식품", value: 3 },
-    { label: "통조림", value: 4 },
-    { label: "장류", value: 5 },
-    { label: "소스류", value: 6 },
-    { label: "기름류", value: 7 },
-    { label: "음료류", value: 8 },
-    { label: "육가공류", value: 9 },
-    { label: "농산물", value: 10 },
-    { label: "제빵류", value: 11 },
-    { label: "세제류", value: 12 },
-    { label: "휴지류", value: 13 },
-    { label: "수건류", value: 14 },
-    { label: "기저귀류", value: 15 },
-    { label: "신체/위생용품류", value: 16 },
-    { label: "여성/위생용품류", value: 17 },
-    { label: "청소/환경 위생용품류", value: 18 },
+    { label: "디지털기기", value: 1 },
+    { label: "가구/인테리어", value: 2 },
+    { label: "유아동", value: 3 },
+    { label: "여성의류", value: 4 },
+    { label: "여성잡화", value: 5 },
+    { label: "남성패션", value: 6 },
+    { label: "남성잡화", value: 7 },
+    { label: "생활가전", value: 8 },
+    { label: "생활/주방", value: 9 },
+    { label: "가공식품", value: 10 },
+    { label: "스포츠/레저", value: 11 },
+    { label: "취미/게임/음반", value: 12 },
+    { label: "뷰티/미용", value: 13 },
+    { label: "반려동물용품", value: 14 },
+    { label: "티켓/교환권", value: 15 },
+    { label: "도서", value: 16 },
+    { label: "유아도서", value: 17 },
+    { label: "기타 중고물품", value: 18 },
   ]);
 
   useEffect(() => {
@@ -58,6 +58,7 @@ export default function RegisterLocalTrade({ navigation }) {
 
   const { user } = useContext(AuthContext);
   const user_id = user.id;
+  const user_region = user.region;
 
   const createFile = async (imageUris) => {
     console.log("createFile 함수 실행");
@@ -135,6 +136,13 @@ export default function RegisterLocalTrade({ navigation }) {
         uri: image.uri,
       }));
       newImageUris.push(...additionalImageUris); // 추가 이미지를 기존 이미지 배열에 추가
+
+      if (newImageUris.length > 2) {
+        // 이미지가 2개를 초과한 경우
+        Alert.alert("이미지는 두 장만 업로드할 수 있습니다.");
+        return;
+      }
+
       setImageUris(newImageUris);
       //   console.log(imageUris);
     }
@@ -147,30 +155,6 @@ export default function RegisterLocalTrade({ navigation }) {
     // console.log(imageUris);
   };
 
-  //   const onRegister = async () => {
-
-  //     await createFile(imageUris);
-
-  //     const user_id = 1;
-  //     const data = {
-  //         name : title,
-  //         price : price,
-  //         describe : content,
-  //         sold_yn : false,
-  //         image1GitHubURL : githubURLs[0],
-  //         image2GitHubURL : githubURLs[1]
-  //     }
-  //     axios
-  //       .post(`http://${ipAddress}:8080/local-trade/user/${user_id}/create`, data)
-  //       .then((response) => {
-  //         // console.log(response);
-  //         navigation.navigate("MainScreen");
-  //       })
-  //       .catch((error) => {
-  //         console.log(error);
-  //       });
-  //   };
-
   const handlePriceChange = (text) => {
     // 숫자 이외의 문자 제거
     const cleanedText = text.replace(/[^0-9]/g, "");
@@ -179,142 +163,159 @@ export default function RegisterLocalTrade({ navigation }) {
   };
 
   const onRegister = async () => {
-    try {
-      await createFile(imageUris);
+    if (imageUris.length === 0) {
+      Alert.alert("물품 이미지를 업로드해주세요");
+    } else if (imageUris.length === 1) {
+      Alert.alert("물품 이미지를 한 장 더 업로드해주세요");
+    } else if (selectedClassify === null) {
+      Alert.alert("물품 분류를 선택해주세요");
+    } else if (title === "") {
+      Alert.alert("물품명을 설정해주세요");
+    } else if (price === null) {
+      Alert.alert("물품 가격을 설정해주세요");
+    } else if (content === "") {
+      Alert.alert("물품 설명을 기재해주세요");
+    } else if (
+      imageUris.length === 2 &&
+      price &&
+      title &&
+      selectedClassify &&
+      content
+    )
+      try {
+        await createFile(imageUris);
 
-      const data = {
-        name: title,
-        price: price,
-        describe: content,
-        sold_yn: false,
-        image1GitHubURL: githubURLs[0] || null,
-        image2GitHubURL: githubURLs[1] || null,
-      };
+        const data = {
+          name: title,
+          price: price,
+          describe: content,
+          sold_yn: false,
+          image1GitHubURL: githubURLs[0] || null,
+          image2GitHubURL: githubURLs[1] || null,
+          category: selectedClassify,
+          region: user_region,
+        };
 
-      axios
-        .post(
-          `http://${ipAddress}:8080/local-trade/user/${user_id}/create`,
-          data
-        )
-        .then((response) => {
-          // console.log(response);
-          navigation.navigate("LocalTrade");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
+        axios
+          .post(
+            `http://${ipAddress}:8080/local-trade/user/${user_id}/create`,
+            data
+          )
+          .then((response) => {
+            // console.log(response);
+            navigation.navigate("LocalTrade", { key: Date.now() });
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
   };
 
   return (
     <Pressable onPress={Keyboard.dismiss}>
       <View style={styles.joinBody}>
         <ScreenHeader headerTitle="기부 거래" />
-
-        <View style={styles.writePostContent}>
-          <KeyboardAwareScrollView
-            contentContainerStyle={{ width: "100%", height: "100%" }}
-          >
-            <Text style={styles.localTradeTitle}>기부상품 등록하기</Text>
-            <View style={styles.selectedImagesView}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{
+            width: "100%",
+            height: "90%",
+          }}
+        >
+          <View style={styles.writePostContent}>
+            <Text style={styles.localTradeTitle}>물품 등록하기</Text>
+            <View style={{ flexDirection: "row", height: "18%" }}>
               <Pressable onPress={selectImage} style={styles.selectImageBtn}>
                 <Ionicons name="camera-outline" size={33} color="white" />
               </Pressable>
-              <View style={styles.selectedImagesContainer}>
-                {imageUris.map((uri, index) => (
-                  <View key={index} style={styles.selectedImageContainer}>
-                    <Image
-                      source={{ uri: uri.uri }}
-                      style={styles.selectedImage}
-                      resizeMode="contain"
+              {imageUris.map((uri, index) => (
+                <View key={index} style={styles.selectedImageContainer}>
+                  <Image
+                    source={{ uri: uri.uri }}
+                    style={styles.selectedImage}
+                    resizeMode="contain"
+                  />
+                  <Pressable
+                    onPress={() => removeImage(index)}
+                    style={styles.removeImageBtn}
+                  >
+                    <Ionicons
+                      name="close-circle-outline"
+                      size={24}
+                      color="grey"
                     />
-                    <Pressable
-                      onPress={() => removeImage(index)}
-                      style={styles.removeImageBtn}
-                    >
-                      <Ionicons name="close-circle" size={24} color="#fff" />
-                    </Pressable>
-                  </View>
-                ))}
-              </View>
+                  </Pressable>
+                </View>
+              ))}
             </View>
-
-            <View style={styles.inputTextView}>
-              <View style={{ height: "10%" }}>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>분류 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <DropDownPicker
-                  open={open}
-                  value={value}
-                  items={items}
-                  setOpen={setOpen}
-                  setValue={setValue}
-                  setItems={setItems}
-                  placeholder="물품 분류를 선택해주세요"
-                  listMode="MODAL"
-                  modalProps={{
-                    animationType: "fade",
-                  }}
-                  modalTitle="물품 분류 선택"
-                  style={{
-                    borderWidth: 0.5,
-                    minHeight: "20%",
-                  }}
-                />
-              </View>
-              <View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>상품명 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <TextInput
-                  value={title}
-                  onChangeText={setTitle}
-                  placeholder="제목을 입력해주세요"
-                  style={styles.input}
-                />
-              </View>
-              <View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>가격 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <TextInput
-                  value={price}
-                  onChangeText={handlePriceChange}
-                  placeholder="가격을 설정해주세요"
-                  style={styles.input}
-                  keyboardType="numeric"
-                />
-              </View>
-              <View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>상품 설명 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <TextInput
-                  value={content}
-                  onChangeText={setContent}
-                  placeholder="상품 설명을 적어주세요"
-                  style={[styles.detailInput]}
-                  multiline={true}
-                />
-              </View>
-              <LinearGradient
-                colors={["#4A6BAC", "#1B3974"]}
-                style={styles.submitBtn}
-              >
-                <Pressable onPress={onRegister} style={styles.submitBtn1}>
-                  <Text style={styles.submitBtnText}>상품 등록하기</Text>
-                </Pressable>
-              </LinearGradient>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={[styles.inputTitle, { marginBottom: "4%" }]}>
+                분류{" "}
+              </Text>
+              <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
             </View>
-          </KeyboardAwareScrollView>
-        </View>
+            <DropDownPicker
+              open={open}
+              value={selectedClassify}
+              items={items}
+              setOpen={setOpen}
+              setValue={setSelectedClassify}
+              setItems={setItems}
+              placeholder="물품 분류를 선택해주세요"
+              listMode="MODAL"
+              modalProps={{
+                animationType: "fade",
+              }}
+              modalTitle="물품 분류 선택"
+              style={{
+                borderWidth: 0.5,
+                minHeight: "8%",
+                marginBottom: "2%",
+              }}
+            />
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.inputTitle}>물품명 </Text>
+              <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
+            </View>
+            <TextInput
+              value={title}
+              onChangeText={setTitle}
+              placeholder="물품명을 입력해주세요"
+              style={styles.input}
+            />
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.inputTitle}>가격 </Text>
+              <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
+            </View>
+            <TextInput
+              value={price}
+              onChangeText={handlePriceChange}
+              placeholder="가격을 설정해주세요"
+              style={styles.input}
+              keyboardType="numeric"
+            />
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.inputTitle}>물품 설명 </Text>
+              <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
+            </View>
+            <TextInput
+              value={content}
+              onChangeText={setContent}
+              placeholder="물품 설명을 입력해주세요"
+              style={[styles.detailInput]}
+              multiline={true}
+            />
+          </View>
+          <LinearGradient
+            colors={["#4A6BAC", "#1B3974"]}
+            style={styles.submitBtn}
+          >
+            <Pressable onPress={onRegister} style={styles.submitBtn1}>
+              <Text style={styles.submitBtnText}>상품 등록하기</Text>
+            </Pressable>
+          </LinearGradient>
+        </KeyboardAwareScrollView>
       </View>
     </Pressable>
   );
@@ -324,15 +325,28 @@ const styles = StyleSheet.create({
   joinBody: {
     width: "100%",
     height: "100%",
-    backgroundColor: "white",
     wordBreak: "break-all",
     alignItems: "center",
+    backgroundColor: Variables.mainColor,
   },
   writePostContent: {
-    width: "90%",
-    height: "100%",
+    width: "93%",
+    height: "80%",
     position: "relative",
     top: "14%",
+    backgroundColor: "#fff",
+    paddingHorizontal: "7%",
+    borderWidth: 1,
+    borderColor: "#F5F5F5",
+    shadowColor: "#8B8B8B",
+    shadowOffset: { width: 2, height: 3 },
+    shadowOpacity: 0.16,
+    borderRadius: 8,
+    display: "flex",
+    flexDirection: "column",
+    marginTop: "3%",
+    boxSizing: "border-box",
+    paddingVertical: "3%",
   },
   localTradeTitle: {
     marginVertical: "6%",
@@ -340,25 +354,17 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 21,
   },
-  selectedImagesView: {
-    // display: 'flex',
-    flexDirection: "row",
-    height: "11%",
-  },
   selectImageBtn: {
     backgroundColor: "#ddd",
-    width: "27%",
+    width: "30%",
     marginRight: "3%",
-    height: "100%",
+    height: "85%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
-  selectedImagesContainer: {
-    flexDirection: "row",
-  },
   selectedImageContainer: {
-    marginRight: "5%",
+    marginRight: "3%",
   },
   removeImageBtn: {
     position: "absolute",
@@ -368,12 +374,6 @@ const styles = StyleSheet.create({
   selectedImage: {
     width: 93,
     height: 93,
-  },
-  inputTextView: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-evenly",
-    height: "68%",
   },
   input: {
     height: 48,
@@ -398,10 +398,12 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
-    height: "10%",
+    width: 135,
+    height: "7%",
     backgroundColor: Variables.btnColor,
     borderRadius: 5,
+    bottom: "-16%",
+    left: "60%",
   },
   submitBtn1: {
     justifyContent: "center",
@@ -413,9 +415,10 @@ const styles = StyleSheet.create({
   submitBtnText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 18,
   },
   inputTitle: {
+    marginTop: "3%",
     marginBottom: "2%",
     fontSize: 14,
   },

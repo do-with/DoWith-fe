@@ -39,12 +39,15 @@ function MainScreen({ navigation }) {
       <View style={styles.mainContent}>
         <View style={styles.mainContentTotalDonor}>
           <View style={styles.highlightSentence}>
-            <View style={styles.hightBlock}>
-              <Text style={{ fontSize: 15, fontWeight: 600, lineHeight: 18, }}>
-                " 많은 사람들이 푸드뱅크 기부에 참여하고 있어요 "
+            <View style={styles.hightlight}>
+              <View style={styles.hightBlock}></View>
+              <Text style={styles.hightText}>
+                “ 많은 사람들이 푸드뱅크 기부에 참여하고 있어요 ”
               </Text>
             </View>
-            <Text style={styles.totalDonorCount}>{count}명</Text>
+            <Text style={styles.totalDonorCount}>
+              {count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}명
+            </Text>
           </View>
         </View>
         <View style={styles.content}>
@@ -136,7 +139,7 @@ function MainScreen({ navigation }) {
                 <Image
                   source={require("../assets/local-trade1.png")}
                   resizeMode="contain"
-                  style={{width: 65, height: 65}}
+                  style={{ width: 65, height: 65 }}
                 />
               </View>
             </Pressable>
@@ -154,7 +157,7 @@ function MainScreen({ navigation }) {
               <Image
                 source={require("../assets/image18.png")}
                 resizeMode="contain"
-                style={{width: 55, height: 55}}
+                style={{ width: 55, height: 55 }}
               />
             </View>
           </Pressable>
@@ -201,7 +204,7 @@ const styles = StyleSheet.create({
     fontWeight: 500,
     fontSize: 16,
     lineHeight: 23,
-    color: 'rgba(0, 0, 0, 0.68)',
+    color: "rgba(0, 0, 0, 0.68)",
   },
   mainContent: {
     height: "95%",
@@ -234,18 +237,28 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: 600,
     lineHeight: 33,
-    color: 'rgba(0, 0, 0, 0.77)',
+    color: "rgba(0, 0, 0, 0.77)",
+  },
+  hightlight: {
+    marginTop: "5%",
+    height: "10%",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
   hightBlock: {
     position: "relative",
     display: "flex",
-    alignItems: "center",
-    width: "86%",
-    height: 18,
-    display: "flex",
+    width: 350,
+    height: "10%",
     backgroundColor: "rgba(178, 213, 255, 0.83)",
     zIndex: 0,
-    marginTop: 14,
+    paddingTop: "3%",
+  },
+  hightText: {
+    fontSize: 17,
+    fontWeight: 600,
+    lineHeight: 18,
+    position: "absolute",
   },
   content: {
     display: "flex",
@@ -303,8 +316,8 @@ const styles = StyleSheet.create({
     lineHeight: 30,
   },
   bigBtnText: {
-    width: '100%',
-    marginLeft: '10%',
+    width: "100%",
+    marginLeft: "10%",
   },
   bigBtnImg: {
     alignItems: "center",
@@ -327,7 +340,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   donationBtnText: {
-    color: '#646464',
+    color: "#646464",
     fontWeight: 700,
     fontSize: 21,
     lineHeight: 30,

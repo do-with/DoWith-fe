@@ -119,13 +119,25 @@ export default function Join1({ navigation }) {
   };
 
   const handlePhoneChange = (text) => {
-    // 숫자 이외의 문자 제거
-    const cleanedText = text.replace(/[^0-9]/g, "");
+    // 번호에서 '-' 기호 제거
+    const phoneNumber = text.replace(/-/g, "");
 
-    // 11자리 숫자인 경우에만 입력을 허용
-    if (cleanedText.length <= 11) {
-      setPhone(cleanedText);
+    // '-' 기호를 자동으로 추가하여 포맷팅
+    let formattedPhoneNumber = "";
+    if (phoneNumber.length > 3) {
+      formattedPhoneNumber += phoneNumber.slice(0, 3) + "-";
+      if (phoneNumber.length > 7) {
+        formattedPhoneNumber += phoneNumber.slice(3, 7) + "-";
+        formattedPhoneNumber += phoneNumber.slice(7, 11);
+      } else {
+        formattedPhoneNumber += phoneNumber.slice(3, 11);
+      }
+    } else {
+      formattedPhoneNumber = phoneNumber;
     }
+
+    // 변경된 번호 설정
+    setPhone(formattedPhoneNumber);
   };
 
   const isEmailValid = (email) => {
@@ -147,13 +159,23 @@ export default function Join1({ navigation }) {
     if (isEmailValid(email)) {
       try {
         const queryParams = new URLSearchParams({ email });
+        const duplicateCheckResponse = await axios.get(
+          `http://${ipAddress}:8080/user/checkDuplicate?${queryParams}`
+        );
+
+        if (duplicateCheckResponse.data.duplicate) {
+          Alert.alert("중복된 이메일입니다.");
+          return; // 중복된 이메일인 경우 함수 종료
+        }
+
+        // 중복 확인이 완료되면 이메일 전송 요청 수행
         await axios.post(
           `http://${ipAddress}:8080/email/verification?${queryParams}`
         );
+
         setIsCodeSent(true);
         Alert.alert("이메일 전송이 완료되었습니다.");
       } catch (error) {
-        // Alert.alert(error.message);
         Alert.alert("이메일 전송에 실패했습니다. 다시 시도해주세요.");
       }
     }
@@ -347,7 +369,7 @@ export default function Join1({ navigation }) {
                   placeholder="휴대전화 번호 입력"
                   style={styles.textForm}
                   keyboardType="numeric"
-                  maxLength={11}
+                  maxLength={13}
                 />
               </View>
               <View style={styles.inputText}>
