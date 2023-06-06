@@ -39,9 +39,10 @@ function MainScreen({ navigation }) {
       <View style={styles.mainContent}>
         <View style={styles.mainContentTotalDonor}>
           <View style={styles.highlightSentence}>
-            <View style={styles.hightBlock}>
-              <Text style={{ fontSize: 15, fontWeight: 600, lineHeight: 18 }}>
-                " 많은 사람들이 푸드뱅크 기부에 참여하고 있어요 "
+            <View style={styles.hightlight}>
+              <View style={styles.hightBlock}></View>
+              <Text style={styles.hightText}>
+                “ 많은 사람들이 푸드뱅크 기부에 참여하고 있어요 ”
               </Text>
             </View>
             <Text style={styles.totalDonorCount}>
@@ -238,16 +239,26 @@ const styles = StyleSheet.create({
     lineHeight: 33,
     color: "rgba(0, 0, 0, 0.77)",
   },
+  hightlight: {
+    marginTop: "5%",
+    height: "10%",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
   hightBlock: {
     position: "relative",
     display: "flex",
-    alignItems: "center",
-    width: "86%",
-    height: 18,
-    display: "flex",
+    width: 350,
+    height: "10%",
     backgroundColor: "rgba(178, 213, 255, 0.83)",
     zIndex: 0,
-    marginTop: 14,
+    paddingTop: "3%",
+  },
+  hightText: {
+    fontSize: 17,
+    fontWeight: 600,
+    lineHeight: 18,
+    position: "absolute",
   },
   content: {
     display: "flex",

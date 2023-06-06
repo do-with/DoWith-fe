@@ -128,19 +128,11 @@ export default function LocalTrade({ navigation }) {
       <ScreenHeader headerTitle="기부 거래" />
       <View style={styles.joinContent}>
         <View style={styles.highlightSentenceView}>
-          <View style={styles.highlightSentence}>
-            <View style={styles.hightBlock}>
-              <Text
-                style={{
-                  fontSize: 14,
-                  lineHeight: 17,
-                  fontWeight: 600,
-                  color: "#181818",
-                }}
-              >
-                " 판매 금액이 어디로 전달되는지 보러가기 "
-              </Text>
-            </View>
+          <View style={styles.hightlight}>
+            <View style={styles.hightBlock}></View>
+            <Text style={styles.hightText}>
+              “ 판매 금액이 어디로 전달되는지 보러가기 ”
+            </Text>
           </View>
         </View>
 
@@ -229,24 +221,27 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
   },
-  highlightSentence: {
-    display: "flex",
-    justifyContent: "center",
+  hightlight: {
+    marginTop: "5%",
+    height: "10%",
+    justifyContent: "flex-end",
     alignItems: "center",
-    position: "relative",
-    flexDirection: "column",
-    height: "30%",
-    boxSizing: "border-box",
   },
   hightBlock: {
     position: "relative",
     display: "flex",
-    alignItems: "center",
-    width: "75%",
-    height: 18,
-    display: "flex",
+    width: 280,
+    height: "10%",
     backgroundColor: "rgba(178, 213, 255, 0.83)",
     zIndex: 0,
+    paddingTop: "3%",
+  },
+  hightText: {
+    fontSize: 15,
+    fontWeight: 600,
+    position: "absolute",
+    lineHeight: 17,
+    color: "#181818",
   },
   countBoxView: {
     display: "flex",

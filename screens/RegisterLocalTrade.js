@@ -139,7 +139,7 @@ export default function RegisterLocalTrade({ navigation }) {
 
       if (newImageUris.length > 2) {
         // 이미지가 2개를 초과한 경우
-        Alert.alert("이미지는 2장만 업로드할 수 있습니다.");
+        Alert.alert("이미지는 두 장만 업로드할 수 있습니다.");
         return;
       }
 
