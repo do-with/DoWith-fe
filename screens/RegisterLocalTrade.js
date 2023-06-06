@@ -136,6 +136,13 @@ export default function RegisterLocalTrade({ navigation }) {
         uri: image.uri,
       }));
       newImageUris.push(...additionalImageUris); // 추가 이미지를 기존 이미지 배열에 추가
+
+      if (newImageUris.length > 2) {
+        // 이미지가 2개를 초과한 경우
+        Alert.alert("이미지는 2장만 업로드할 수 있습니다.");
+        return;
+      }
+
       setImageUris(newImageUris);
       //   console.log(imageUris);
     }
@@ -210,109 +217,105 @@ export default function RegisterLocalTrade({ navigation }) {
     <Pressable onPress={Keyboard.dismiss}>
       <View style={styles.joinBody}>
         <ScreenHeader headerTitle="기부 거래" />
-
-        <View style={styles.writePostContent}>
-          <KeyboardAwareScrollView
-            contentContainerStyle={{ width: "100%", height: "100%" }}
-          >
-            <Text style={styles.localTradeTitle}>기부물품 등록하기</Text>
-            <View style={styles.selectedImagesView}>
+        <KeyboardAwareScrollView
+          contentContainerStyle={{
+            width: "100%",
+            height: "90%",
+          }}
+        >
+          <View style={styles.writePostContent}>
+            <Text style={styles.localTradeTitle}>물품 등록하기</Text>
+            <View style={{ flexDirection: "row", height: "18%" }}>
               <Pressable onPress={selectImage} style={styles.selectImageBtn}>
                 <Ionicons name="camera-outline" size={33} color="white" />
               </Pressable>
-              <View style={styles.selectedImagesContainer}>
-                {imageUris.map((uri, index) => (
-                  <View key={index} style={styles.selectedImageContainer}>
-                    <Image
-                      source={{ uri: uri.uri }}
-                      style={styles.selectedImage}
-                      resizeMode="contain"
+              {imageUris.map((uri, index) => (
+                <View key={index} style={styles.selectedImageContainer}>
+                  <Image
+                    source={{ uri: uri.uri }}
+                    style={styles.selectedImage}
+                    resizeMode="contain"
+                  />
+                  <Pressable
+                    onPress={() => removeImage(index)}
+                    style={styles.removeImageBtn}
+                  >
+                    <Ionicons
+                      name="close-circle-outline"
+                      size={24}
+                      color="grey"
                     />
-                    <Pressable
-                      onPress={() => removeImage(index)}
-                      style={styles.removeImageBtn}
-                    >
-                      <Ionicons name="close-circle" size={24} color="#fff" />
-                    </Pressable>
-                  </View>
-                ))}
-              </View>
+                  </Pressable>
+                </View>
+              ))}
             </View>
-
-            <View style={styles.inputTextView}>
-              <View style={{ height: "10%" }}>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>분류 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <DropDownPicker
-                  open={open}
-                  value={selectedClassify}
-                  items={items}
-                  setOpen={setOpen}
-                  setValue={setSelectedClassify}
-                  setItems={setItems}
-                  placeholder="물품 분류를 선택해주세요"
-                  listMode="MODAL"
-                  modalProps={{
-                    animationType: "fade",
-                  }}
-                  modalTitle="물품 분류 선택"
-                  style={{
-                    borderWidth: 0.5,
-                    minHeight: "20%",
-                  }}
-                />
-              </View>
-              <View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>물품명 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <TextInput
-                  value={title}
-                  onChangeText={setTitle}
-                  placeholder="제목을 입력해주세요"
-                  style={styles.input}
-                />
-              </View>
-              <View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>가격 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <TextInput
-                  value={price}
-                  onChangeText={handlePriceChange}
-                  placeholder="가격을 설정해주세요"
-                  style={styles.input}
-                  keyboardType="numeric"
-                />
-              </View>
-              <View>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>물품 설명 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <TextInput
-                  value={content}
-                  onChangeText={setContent}
-                  placeholder="물품 설명을 적어주세요"
-                  style={[styles.detailInput]}
-                  multiline={true}
-                />
-              </View>
-              <LinearGradient
-                colors={["#4A6BAC", "#1B3974"]}
-                style={styles.submitBtn}
-              >
-                <Pressable onPress={onRegister} style={styles.submitBtn1}>
-                  <Text style={styles.submitBtnText}>상품 등록하기</Text>
-                </Pressable>
-              </LinearGradient>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={[styles.inputTitle, { marginBottom: "4%" }]}>
+                분류{" "}
+              </Text>
+              <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
             </View>
-          </KeyboardAwareScrollView>
-        </View>
+            <DropDownPicker
+              open={open}
+              value={selectedClassify}
+              items={items}
+              setOpen={setOpen}
+              setValue={setSelectedClassify}
+              setItems={setItems}
+              placeholder="물품 분류를 선택해주세요"
+              listMode="MODAL"
+              modalProps={{
+                animationType: "fade",
+              }}
+              modalTitle="물품 분류 선택"
+              style={{
+                borderWidth: 0.5,
+                minHeight: "8%",
+                marginBottom: "2%",
+              }}
+            />
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.inputTitle}>물품명 </Text>
+              <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
+            </View>
+            <TextInput
+              value={title}
+              onChangeText={setTitle}
+              placeholder="물품명을 입력해주세요"
+              style={styles.input}
+            />
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.inputTitle}>가격 </Text>
+              <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
+            </View>
+            <TextInput
+              value={price}
+              onChangeText={handlePriceChange}
+              placeholder="가격을 설정해주세요"
+              style={styles.input}
+              keyboardType="numeric"
+            />
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.inputTitle}>물품 설명 </Text>
+              <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
+            </View>
+            <TextInput
+              value={content}
+              onChangeText={setContent}
+              placeholder="물품 설명을 입력해주세요"
+              style={[styles.detailInput]}
+              multiline={true}
+            />
+          </View>
+          <LinearGradient
+            colors={["#4A6BAC", "#1B3974"]}
+            style={styles.submitBtn}
+          >
+            <Pressable onPress={onRegister} style={styles.submitBtn1}>
+              <Text style={styles.submitBtnText}>상품 등록하기</Text>
+            </Pressable>
+          </LinearGradient>
+        </KeyboardAwareScrollView>
       </View>
     </Pressable>
   );
@@ -322,15 +325,28 @@ const styles = StyleSheet.create({
   joinBody: {
     width: "100%",
     height: "100%",
-    backgroundColor: "white",
     wordBreak: "break-all",
     alignItems: "center",
+    backgroundColor: Variables.mainColor,
   },
   writePostContent: {
-    width: "90%",
-    height: "100%",
+    width: "93%",
+    height: "80%",
     position: "relative",
     top: "14%",
+    backgroundColor: "#fff",
+    paddingHorizontal: "7%",
+    borderWidth: 1,
+    borderColor: "#F5F5F5",
+    shadowColor: "#8B8B8B",
+    shadowOffset: { width: 2, height: 3 },
+    shadowOpacity: 0.16,
+    borderRadius: 8,
+    display: "flex",
+    flexDirection: "column",
+    marginTop: "3%",
+    boxSizing: "border-box",
+    paddingVertical: "3%",
   },
   localTradeTitle: {
     marginVertical: "6%",
@@ -338,25 +354,17 @@ const styles = StyleSheet.create({
     fontSize: 17,
     lineHeight: 21,
   },
-  selectedImagesView: {
-    // display: 'flex',
-    flexDirection: "row",
-    height: "11%",
-  },
   selectImageBtn: {
     backgroundColor: "#ddd",
-    width: "27%",
+    width: "30%",
     marginRight: "3%",
-    height: "100%",
+    height: "85%",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },
-  selectedImagesContainer: {
-    flexDirection: "row",
-  },
   selectedImageContainer: {
-    marginRight: "5%",
+    marginRight: "3%",
   },
   removeImageBtn: {
     position: "absolute",
@@ -366,12 +374,6 @@ const styles = StyleSheet.create({
   selectedImage: {
     width: 93,
     height: 93,
-  },
-  inputTextView: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-evenly",
-    height: "68%",
   },
   input: {
     height: 48,
@@ -396,10 +398,12 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
-    height: "10%",
+    width: 135,
+    height: "7%",
     backgroundColor: Variables.btnColor,
     borderRadius: 5,
+    bottom: "-16%",
+    left: "60%",
   },
   submitBtn1: {
     justifyContent: "center",
@@ -411,9 +415,10 @@ const styles = StyleSheet.create({
   submitBtnText: {
     color: "#fff",
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 18,
   },
   inputTitle: {
+    marginTop: "3%",
     marginBottom: "2%",
     fontSize: 14,
   },
