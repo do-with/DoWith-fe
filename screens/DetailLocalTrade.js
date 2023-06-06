@@ -1,9 +1,17 @@
 import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+} from "react-native";
 import Moment from "moment";
 import { ScreenHeader } from "../components/ScreenHeader";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 import { Variables } from "../components/Variables";
+import { AntDesign } from "@expo/vector-icons";
 
 const { width: windowWidth } = Dimensions.get("window");
 
@@ -67,15 +75,23 @@ const DetailLocalTrade = ({ route }) => {
             inactiveDotOpacity={1}
           />
         </View>
-
         <View style={styles.itemContainer}>
           <View style={styles.profileView}>
-            <Image
-              source={require("../assets/user.png")}
-              resizeMode={"contain"}
-              style={{ width: 45, height: 45, marginRight: "3%" }}
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                source={require("../assets/user.png")}
+                resizeMode={"contain"}
+                style={{ width: 45, height: 45 }}
+              />
+              <Text style={styles.profileText}>{localTrade.user_name}</Text>
+            </View>
+
+            <AntDesign
+              name="message1"
+              size={28}
+              color="rgba(0, 0, 0, 0.75)"
+              style={{ marginRight: "5%" }}
             />
-            <Text style={styles.profileText}>{localTrade.user_name}</Text>
           </View>
 
           <View style={styles.itemView}>
@@ -94,12 +110,12 @@ const DetailLocalTrade = ({ route }) => {
             </View>
           </View>
         </View>
-
         <View style={styles.bottomView}>
           <Text style={styles.priceText}>
             {localTrade.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             원
           </Text>
+
           <View style={styles.bottomBtnView}>
             <Text style={styles.bottomBtnText}>
               {localTrade.sold_yn ? "판매완료" : "판매 중"}
@@ -153,6 +169,7 @@ const styles = StyleSheet.create({
     marginVertical: "2%",
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
   },
   profileText: {
     fontWeight: 600,
