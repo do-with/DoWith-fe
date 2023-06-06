@@ -55,74 +55,81 @@ const DetailLocalTrade = ({ route }) => {
   return (
     <View style={styles.joinBody}>
       <ScreenHeader headerTitle="기부 거래" />
-      <View style={styles.joinContainer}>
-        <View style={styles.imageContainer}>
-          <Carousel
-            data={images}
-            renderItem={renderImage}
-            sliderWidth={windowWidth}
-            sliderHeight={windowWidth}
-            itemWidth={windowWidth}
-            onSnapToItem={(index) => setActiveIndex(index)}
-          />
-          <Pagination
-            dotsLength={2}
-            activeDotIndex={activeIndex}
-            containerStyle={styles.paginationContainer}
-            dotStyle={styles.dot}
-            inactiveDotStyle={styles.inactiveDot}
-            inactiveDotScale={1}
-            inactiveDotOpacity={1}
-          />
-        </View>
-        <View style={styles.itemContainer}>
-          <View style={styles.profileView}>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
-              <Image
-                source={require("../assets/user.png")}
-                resizeMode={"contain"}
-                style={{ width: 45, height: 45 }}
-              />
-              <Text style={styles.profileText}>{localTrade.user_name}</Text>
-            </View>
-
-            <AntDesign
-              name="message1"
-              size={28}
-              color="rgba(0, 0, 0, 0.75)"
-              style={{ marginRight: "5%" }}
+      <ScrollView
+        style={{ width: "100%" }}
+        contentContainerStyle={{ height: "100%" }}
+      >
+        <View style={styles.joinContainer}>
+          <View style={styles.imageContainer}>
+            <Carousel
+              data={images}
+              renderItem={renderImage}
+              sliderWidth={windowWidth}
+              sliderHeight={windowWidth}
+              itemWidth={windowWidth}
+              onSnapToItem={(index) => setActiveIndex(index)}
+            />
+            <Pagination
+              dotsLength={2}
+              activeDotIndex={activeIndex}
+              containerStyle={styles.paginationContainer}
+              dotStyle={styles.dot}
+              inactiveDotStyle={styles.inactiveDot}
+              inactiveDotScale={1}
+              inactiveDotOpacity={1}
             />
           </View>
+          <View style={styles.itemContainer}>
+            <View style={styles.profileView}>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <Image
+                  source={require("../assets/user.png")}
+                  resizeMode={"contain"}
+                  style={{ width: 45, height: 45 }}
+                />
+                <Text style={styles.profileText}>{localTrade.user_name}</Text>
+              </View>
 
-          <View style={styles.itemView}>
-            <View style={{ height: "15%" }}>
-              <Text style={styles.itemTitleText}>{localTrade.name}</Text>
+              <AntDesign
+                name="message1"
+                size={28}
+                color="rgba(0, 0, 0, 0.75)"
+                style={{ marginRight: "5%" }}
+              />
             </View>
 
-            <View style={styles.infoView}>
-              <Text style={styles.infoText}>
-                {categoryMapping[localTrade.category]} |{" "}
-                {Moment(localTrade.created_at).format("MM.DD")}
+            <View style={styles.itemView}>
+              <View style={{ height: "15%" }}>
+                <Text style={styles.itemTitleText}>{localTrade.name}</Text>
+              </View>
+
+              <View style={styles.infoView}>
+                <Text style={styles.infoText}>
+                  {categoryMapping[localTrade.category]} |{" "}
+                  {Moment(localTrade.created_at).format("MM.DD")}
+                </Text>
+              </View>
+              <View style={styles.detailView}>
+                <Text style={styles.detailText}>{localTrade.describe}</Text>
+              </View>
+            </View>
+          </View>
+          <View style={styles.bottomView}>
+            <Text style={styles.priceText}>
+              {localTrade.price
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              원
+            </Text>
+
+            <View style={styles.bottomBtnView}>
+              <Text style={styles.bottomBtnText}>
+                {localTrade.sold_yn ? "판매완료" : "판매 중"}
               </Text>
             </View>
-            <View style={styles.detailView}>
-              <Text style={styles.detailText}>{localTrade.describe}</Text>
-            </View>
           </View>
         </View>
-        <View style={styles.bottomView}>
-          <Text style={styles.priceText}>
-            {localTrade.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-            원
-          </Text>
-
-          <View style={styles.bottomBtnView}>
-            <Text style={styles.bottomBtnText}>
-              {localTrade.sold_yn ? "판매완료" : "판매 중"}
-            </Text>
-          </View>
-        </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };

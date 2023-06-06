@@ -65,7 +65,7 @@ export default function LocalTrade({ navigation }) {
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
-          marginBottom: "10%",
+          marginBottom: "3%",
         }}
         key={columnIndex}
       >
@@ -77,7 +77,7 @@ export default function LocalTrade({ navigation }) {
               navigation.navigate("DetailLocalTrade", { localTrade })
             }
           >
-            <View style={{ width: "100%", height: "100%" }}>
+            <View style={{ width: "100%", height: "100%", padding: "5%" }}>
               <Image
                 source={{
                   uri: localTrade.image1,
@@ -85,8 +85,7 @@ export default function LocalTrade({ navigation }) {
                 resizeMode="contain"
                 style={{
                   aspectRatio: 1,
-                  borderTopLeftRadius: 8,
-                  borderTopRightRadius: 8,
+                  borderRadius: 8,
                 }}
               />
 
@@ -173,7 +172,7 @@ export default function LocalTrade({ navigation }) {
               <View
                 style={{
                   flexDirection: "column",
-                  width: "90%",
+                  width: "95%",
                   justifyContent: "center",
                 }}
               >
@@ -222,8 +221,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   hightlight: {
-    marginTop: "5%",
-    height: "10%",
+    marginTop: "3%",
+    height: "25%",
     justifyContent: "flex-end",
     alignItems: "center",
   },
@@ -237,8 +236,8 @@ const styles = StyleSheet.create({
     paddingTop: "3%",
   },
   hightText: {
-    fontSize: 15,
-    fontWeight: 600,
+    fontSize: 17,
+    fontWeight: 700,
     position: "absolute",
     lineHeight: 17,
     color: "#181818",
@@ -248,7 +247,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     // alignItems: 'center',
-    height: "12%",
+    height: "9%",
     backgroundColor: "rgba(0,0,0,0)",
   },
   countBox: {
@@ -256,7 +255,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    width: "45%",
+    width: "46%",
     marginBottom: "2%",
     borderRadius: 8,
   },
@@ -265,8 +264,8 @@ const styles = StyleSheet.create({
   },
   submitBtnView: {
     position: "absolute",
-    width: "40%",
-    height: "8%",
+    width: "33%",
+    height: "7%",
     right: "5%",
     bottom: "36%",
     shadowColor: "#000",
@@ -302,19 +301,21 @@ const styles = StyleSheet.create({
   tradeBoard: {
     flexDirection: "row",
     alignItems: "center",
-    height: "110%",
+    height: "100%",
     width: "48%",
     marginBottom: "2%",
     borderRadius: 8,
-    backgroundColor: "rgba(251, 251, 251, 0.35)",
+    backgroundColor: "rgba(251, 251, 251, 0.85)",
     shadowColor: "#c9c9c9",
     shadowOffset: {
       width: 0,
       height: 4,
     },
-    shadowOpacity: 0.26,
+    shadowOpacity: 0.66,
     shadowRadius: 4,
     borderRadius: 10,
+    elevation: 4, // elevation 추가
+    overflow: "visible", // overflow 추가
   },
   nameText: {
     fontWeight: 600,
