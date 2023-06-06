@@ -85,7 +85,7 @@ const DetailLocalTrade = ({ route }) => {
                 <Image
                   source={require("../assets/user.png")}
                   resizeMode={"contain"}
-                  style={{ width: 45, height: 45 }}
+                  style={{ width: 45, height: 45, backgroundColor: Variables.mainColor, borderRadius: 15, }}
                 />
                 <Text style={styles.profileText}>{localTrade.user_name}</Text>
               </View>
@@ -114,22 +114,22 @@ const DetailLocalTrade = ({ route }) => {
               </View>
             </View>
           </View>
-          <View style={styles.bottomView}>
-            <Text style={styles.priceText}>
-              {localTrade.price
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-              원
-            </Text>
-
-            <View style={styles.bottomBtnView}>
-              <Text style={styles.bottomBtnText}>
-                {localTrade.sold_yn ? "판매완료" : "판매 중"}
-              </Text>
-            </View>
-          </View>
+          
         </View>
       </ScrollView>
+      <View style={styles.bottomView}>
+        <Text style={styles.priceText}>
+          {localTrade.price
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+          원
+        </Text>
+        <View style={styles.bottomBtnView}>
+          <Text style={styles.bottomBtnText}>
+            {localTrade.sold_yn ? "판매완료" : "판매 중"}
+          </Text>
+        </View>
+      </View>
     </View>
   );
 };
@@ -180,8 +180,9 @@ const styles = StyleSheet.create({
   },
   profileText: {
     fontWeight: 600,
-    fontSize: 16,
+    fontSize: 18,
     color: "rgba(0, 0, 0, 0.75)",
+    marginLeft: '8%',
   },
   itemView: {
     height: "42%",
@@ -214,20 +215,18 @@ const styles = StyleSheet.create({
   },
   bottomView: {
     position: "absolute",
-    bottom: 150,
+    bottom: 0,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: "90%",
-    height: "8%",
+    width: "100%",
+    height: "10%",
     borderTopWidth: 1,
-    borderTopColor: "#aaa",
+    borderTopColor: "#ddd",
+    backgroundColor: '#fff',
+    paddingHorizontal: '5%',
   },
   bottomBtnView: {
-    backgroundColor: Variables.btnColor,
-    borderRadius: 5,
-    width: "28%",
-    height: "70%",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -241,7 +240,7 @@ const styles = StyleSheet.create({
     fontWeight: 600,
     fontSize: 18,
     lineHeight: 26,
-    color: "#fff",
+    color: Variables.btnColor,
   },
 });
 

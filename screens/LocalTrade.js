@@ -41,7 +41,7 @@ export default function LocalTrade({ navigation }) {
         setLocalTradeList(response.data);
       })
       .catch((error) => console.log(error));
-  }, []);
+  }, [localTradeList]);
 
   const createColumns = (data, columnsCount) => {
     const columns = [];

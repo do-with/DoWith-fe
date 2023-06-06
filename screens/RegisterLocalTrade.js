@@ -7,6 +7,7 @@ import {
   Pressable,
   TextInput,
   Keyboard,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -162,7 +163,10 @@ export default function RegisterLocalTrade({ navigation }) {
     setPrice(cleanedText);
   };
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const onRegister = async () => {
+    setIsLoading(true);
     if (imageUris.length === 0) {
       Alert.alert("물품 이미지를 업로드해주세요");
     } else if (imageUris.length === 1) {
@@ -204,6 +208,7 @@ export default function RegisterLocalTrade({ navigation }) {
           .then((response) => {
             // console.log(response);
             navigation.navigate("LocalTrade", { key: Date.now() });
+            setIsLoading(false);
           })
           .catch((error) => {
             console.log(error);
@@ -223,90 +228,96 @@ export default function RegisterLocalTrade({ navigation }) {
             height: "90%",
           }}
         >
-          <View style={styles.writePostContent}>
-            <Text style={styles.localTradeTitle}>물품 등록하기</Text>
-            <View style={{ flexDirection: "row", height: "18%" }}>
-              <Pressable onPress={selectImage} style={styles.selectImageBtn}>
-                <Ionicons name="camera-outline" size={33} color="white" />
-              </Pressable>
-              {imageUris.map((uri, index) => (
-                <View key={index} style={styles.selectedImageContainer}>
-                  <Image
-                    source={{ uri: uri.uri }}
-                    style={styles.selectedImage}
-                    resizeMode="contain"
-                  />
-                  <Pressable
-                    onPress={() => removeImage(index)}
-                    style={styles.removeImageBtn}
-                  >
-                    <Ionicons
-                      name="close-circle-outline"
-                      size={24}
-                      color="grey"
-                    />
-                  </Pressable>
-                </View>
-              ))}
-            </View>
-            <View style={{ flexDirection: "row" }}>
-              <Text style={[styles.inputTitle, { marginBottom: "4%" }]}>
-                분류{" "}
-              </Text>
-              <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
-            </View>
-            <DropDownPicker
-              open={open}
-              value={selectedClassify}
-              items={items}
-              setOpen={setOpen}
-              setValue={setSelectedClassify}
-              setItems={setItems}
-              placeholder="물품 분류를 선택해주세요"
-              listMode="MODAL"
-              modalProps={{
-                animationType: "fade",
-              }}
-              modalTitle="물품 분류 선택"
-              style={{
-                borderWidth: 0.5,
-                minHeight: "8%",
-                marginBottom: "2%",
-              }}
-            />
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.inputTitle}>물품명 </Text>
-              <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
-            </View>
-            <TextInput
-              value={title}
-              onChangeText={setTitle}
-              placeholder="물품명을 입력해주세요"
-              style={styles.input}
-            />
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.inputTitle}>가격 </Text>
-              <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
-            </View>
-            <TextInput
-              value={price}
-              onChangeText={handlePriceChange}
-              placeholder="가격을 설정해주세요"
-              style={styles.input}
-              keyboardType="numeric"
-            />
-            <View style={{ flexDirection: "row" }}>
-              <Text style={styles.inputTitle}>물품 설명 </Text>
-              <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
-            </View>
-            <TextInput
-              value={content}
-              onChangeText={setContent}
-              placeholder="물품 설명을 입력해주세요"
-              style={[styles.detailInput]}
-              multiline={true}
-            />
+        {isLoading ? (
+          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+            <ActivityIndicator size="large" color="#808080" />
           </View>
+          ): (
+            <View style={styles.writePostContent}>
+              <Text style={styles.localTradeTitle}>물품 등록하기</Text>
+              <View style={{ flexDirection: "row", height: "18%" }}>
+                <Pressable onPress={selectImage} style={styles.selectImageBtn}>
+                  <Ionicons name="camera-outline" size={33} color="white" />
+                </Pressable>
+                {imageUris.map((uri, index) => (
+                  <View key={index} style={styles.selectedImageContainer}>
+                    <Image
+                      source={{ uri: uri.uri }}
+                      style={styles.selectedImage}
+                      resizeMode="contain"
+                    />
+                    <Pressable
+                      onPress={() => removeImage(index)}
+                      style={styles.removeImageBtn}
+                    >
+                      <Ionicons
+                        name="close-circle-outline"
+                        size={24}
+                        color="grey"
+                      />
+                    </Pressable>
+                  </View>
+                ))}
+              </View>
+              <View style={{ flexDirection: "row" }}>
+                <Text style={[styles.inputTitle, { marginBottom: "4%" }]}>
+                  분류{" "}
+                </Text>
+                <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
+              </View>
+              <DropDownPicker
+                open={open}
+                value={selectedClassify}
+                items={items}
+                setOpen={setOpen}
+                setValue={setSelectedClassify}
+                setItems={setItems}
+                placeholder="물품 분류를 선택해주세요"
+                listMode="MODAL"
+                modalProps={{
+                  animationType: "fade",
+                }}
+                modalTitle="물품 분류 선택"
+                style={{
+                  borderWidth: 0.5,
+                  minHeight: "8%",
+                  marginBottom: "2%",
+                }}
+              />
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.inputTitle}>물품명 </Text>
+                <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
+              </View>
+              <TextInput
+                value={title}
+                onChangeText={setTitle}
+                placeholder="물품명을 입력해주세요"
+                style={styles.input}
+              />
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.inputTitle}>가격 </Text>
+                <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
+              </View>
+              <TextInput
+                value={price}
+                onChangeText={handlePriceChange}
+                placeholder="가격을 설정해주세요"
+                style={styles.input}
+                keyboardType="numeric"
+              />
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.inputTitle}>물품 설명 </Text>
+                <Text style={[styles.inputTitle, { color: "#FF1919" }]}>*</Text>
+              </View>
+              <TextInput
+                value={content}
+                onChangeText={setContent}
+                placeholder="물품 설명을 입력해주세요"
+                style={[styles.detailInput]}
+                multiline={true}
+              />
+          </View>)}
+
           <LinearGradient
             colors={["#4A6BAC", "#1B3974"]}
             style={styles.submitBtn}

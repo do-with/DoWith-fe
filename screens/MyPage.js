@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, Text, Pressable, Image, Alert } from 'react-native';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -45,74 +45,75 @@ export default function MyPage({ navigation }) {
     );
   };
   
-    return(
-        <View style={styles.joinBody}>
-            <ScreenHeader headerTitle="마이페이지"/>
-            <View style={styles.joinContent}>
-                {!isAuthenticated || !user || !user.id ? (
-                    <Pressable onPress={()=>navigation.navigate('LoginScreen')}>
-                        <View style={styles.myProfile}> 
-                            <Text style={styles.profileText}>로그인이 필요합니다.</Text>
-                        </View>
-                    </Pressable>
-                ) : (
-                    <View style={{alignItems: 'center'}}>
-                        <View style={styles.myProfile}>
-                            <Text style={styles.profileText}>프로필</Text>
-                            {user && (
-                                <Text style={styles.profileText}>{user.name}</Text>
-                            )}
-                        </View>
-                        <View style={styles.myInfoBoardView}>
-                            <Pressable style={styles.myInfoBoard}
-                                onPress={()=>navigation.navigate('CheckToken')}>
-                                <Text style={styles.boardText}>토큰</Text>
-                                <Image source={require('../assets/token.png')}
-                                    resizeMode={'contain'}
-                                    style={styles.img}
-                                />
-                                <Text style={styles.text}>5000</Text>
-                            </Pressable>
-                            <Pressable style={styles.myInfoBoard}
-                                onPress={()=>navigation.navigate('CheckDonation')}>
-                                <Text style={styles.boardText}>기부 횟수</Text>
-                                <Image source={require('../assets/pride.png')}
-                                    resizeMode={'contain'}
-                                    style={styles.img}
-                                />
-                                <Text style={styles.text}>
-                                  {count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}회
-                                </Text>
-                            </Pressable>
-                        </View>
-                        <View style={styles.myPageBtnView}>
-                            <LinearGradient colors={['#d7eeff','#ffffff8a']}
-                                style={styles.myPageBtn}>
-                                <Pressable onPress={()=>navigation.navigate('SupportMoney')}>
-                                    <Text style={styles.myPageText}>토큰 발행하기</Text>
-                                </Pressable>
-                            </LinearGradient>
-                        </View>
-                        <View style={styles.myListView}>
-                            <Pressable style={styles.myList}
-                                onPress={()=>navigation.navigate('MyLocalTradeList')}>
-                                <Text style={styles.listText}>지역거래 물품 내역</Text>
-                            </Pressable>
-                            <Pressable style={styles.myList}
-                                onPress={()=>navigation.navigate('MyCsList')}>
-                                <Text style={styles.listText}>나의 문의 내역</Text>
-                            </Pressable>
-                        </View>
-
-                        <Pressable onPress={()=>onClickLogoutBtn()}
-                            style={styles.logout}>
-                                <Ionicons name="log-out-outline" size={20} color="#808080" />
-                                <Text style={styles.logoutText}>로그아웃</Text>
+return(
+    <View style={styles.joinBody}>
+        <ScreenHeader headerTitle="마이페이지"/>
+        <View style={styles.joinContent}>
+            {!isAuthenticated || !user || !user.id ? (
+                <Pressable onPress={()=>navigation.navigate('LoginScreen')}>
+                    <View style={styles.myProfile}> 
+                        <Text style={styles.profileText}>로그인이 필요합니다.</Text>
+                    </View>
+                </Pressable>
+            ) : (
+                <View style={{alignItems: 'center'}}>
+                    <View style={styles.myProfile}>
+                        <Text style={styles.profileText}>프로필</Text>
+                        {user && (
+                            <Text style={styles.profileText}>{user.name}</Text>
+                        )}
+                    </View>
+                    <View style={styles.myInfoBoardView}>
+                        <Pressable style={styles.myInfoBoard}
+                            onPress={()=>navigation.navigate('CheckToken')}>
+                            <Text style={styles.boardText}>토큰</Text>
+                            <Image source={require('../assets/token.png')}
+                                resizeMode={'contain'}
+                                style={styles.img}
+                            />
+                            <Text style={styles.text}>5000</Text>
+                        </Pressable>
+                        <Pressable style={styles.myInfoBoard}
+                            onPress={()=>navigation.navigate('CheckDonation')}>
+                            <Text style={styles.boardText}>기부 횟수</Text>
+                            <Image source={require('../assets/pride.png')}
+                                resizeMode={'contain'}
+                                style={styles.img}
+                            />
+                            <Text style={styles.text}>
+                                {count.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}회
+                            </Text>
                         </Pressable>
                     </View>
-                )}
-            </View>
+                    <View style={styles.myPageBtnView}>
+                        <LinearGradient colors={['#d7eeff','#ffffff8a']}
+                            style={styles.myPageBtn}>
+                            <Pressable onPress={()=>navigation.navigate('SupportMoney')}>
+                                <Text style={styles.myPageText}>토큰 발행하기</Text>
+                            </Pressable>
+                        </LinearGradient>
+                    </View>
+                    <View style={styles.myListView}>
+                        <Pressable style={styles.myList}
+                            onPress={()=>navigation.navigate('MyLocalTradeList')}>
+                            <Text style={styles.listText}>지역거래 물품 내역</Text>
+                        </Pressable>
+                        <Pressable style={styles.myList}
+                            onPress={()=>navigation.navigate('MyCsList')}>
+                            <Text style={styles.listText}>나의 문의 내역</Text>
+                        </Pressable>
+                    </View>
+
+                    <Pressable onPress={()=>onClickLogoutBtn()}
+                        style={styles.logout}>
+                            <Ionicons name="log-out-outline" size={20} color="#808080" />
+                            <Text style={styles.logoutText}>로그아웃</Text>
+                    </Pressable>
+                </View>
+            )}
         </View>
+    </View>
+)};
 
 const styles = StyleSheet.create({
     joinBody: {
