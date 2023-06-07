@@ -8,7 +8,7 @@ import {
   TextInput,
   Keyboard,
   ActivityIndicator,
-  Alert
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -192,7 +192,7 @@ export default function RegisterLocalTrade({ navigation }) {
         const data = {
           name: title,
           price: price,
-          describe: content,
+          description: content,
           sold_yn: false,
           image1GitHubURL: githubURLs[0] || null,
           image2GitHubURL: githubURLs[1] || null,
@@ -228,11 +228,17 @@ export default function RegisterLocalTrade({ navigation }) {
             height: "90%",
           }}
         >
-        {isLoading ? (
-          <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-            <ActivityIndicator size="large" color="#808080" />
-          </View>
-          ): (
+          {isLoading ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <ActivityIndicator size="large" color="#808080" />
+            </View>
+          ) : (
             <View style={styles.writePostContent}>
               <Text style={styles.localTradeTitle}>물품 등록하기</Text>
               <View style={{ flexDirection: "row", height: "18%" }}>
@@ -316,7 +322,8 @@ export default function RegisterLocalTrade({ navigation }) {
                 style={[styles.detailInput]}
                 multiline={true}
               />
-          </View>)}
+            </View>
+          )}
 
           <LinearGradient
             colors={["#4A6BAC", "#1B3974"]}

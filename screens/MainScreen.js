@@ -23,7 +23,7 @@ function MainScreen({ navigation }) {
       .get(`http://${ipAddress}:8080/user/count`)
       .then((response) => setCount(response.data))
       .catch((error) => console.log(error));
-  }, []);
+  }, [count]);
 
   const onNavigateBtnClick = (page) => {
     if (isAuthenticated) {

@@ -27,14 +27,14 @@ export default function LocalTrade({ navigation }) {
       .get(`http://${ipAddress}:8080/local-trade/user-count`)
       .then((response) => setCount(response.data))
       .catch((error) => console.log(error));
-  }, []);
+  }, [count]);
 
   useEffect(() => {
     axios
       .get(`http://${ipAddress}:8080/local-trade/price-count`)
       .then((response) => setMoney(response.data))
       .catch((error) => console.log(error));
-  }, []);
+  }, [money]);
 
   useEffect(() => {
     axios
@@ -299,10 +299,10 @@ const styles = StyleSheet.create({
   },
   submitBtnView: {
     position: "absolute",
-    width: "33%",
-    height: "7%",
-    right: "5%",
-    bottom: "36%",
+    width: 130,
+    height: 65,
+    right: 20,
+    top: 520,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,

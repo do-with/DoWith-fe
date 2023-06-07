@@ -55,11 +55,12 @@ const DetailLocalTrade = ({ route }) => {
   return (
     <View style={styles.joinBody}>
       <ScreenHeader headerTitle="기부 거래" />
-      <ScrollView
-        style={{ width: "100%" }}
-        contentContainerStyle={{ height: "100%" }}
-      >
-        <View style={styles.joinContainer}>
+
+      <View style={styles.joinContainer}>
+        <ScrollView
+          style={{ width: "100%" }}
+          contentContainerStyle={{ height: "auto" }}
+        >
           <View style={styles.imageContainer}>
             <Carousel
               data={images}
@@ -79,50 +80,43 @@ const DetailLocalTrade = ({ route }) => {
               inactiveDotOpacity={1}
             />
           </View>
-          <View style={styles.itemContainer}>
-            <View style={styles.profileView}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image
-                  source={require("../assets/user.png")}
-                  resizeMode={"contain"}
-                  style={{ width: 45, height: 45, backgroundColor: Variables.mainColor, borderRadius: 15, }}
-                />
-                <Text style={styles.profileText}>{localTrade.user_name}</Text>
-              </View>
-
-              <AntDesign
-                name="message1"
-                size={28}
-                color="rgba(0, 0, 0, 0.75)"
-                style={{ marginRight: "5%" }}
+          <View style={styles.profileView}>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <Image
+                source={require("../assets/user.png")}
+                resizeMode={"contain"}
+                style={{
+                  width: 45,
+                  height: 45,
+                  backgroundColor: Variables.mainColor,
+                  borderRadius: 15,
+                }}
               />
+              <Text style={styles.profileText}>{localTrade.user_name}</Text>
             </View>
 
-            <View style={styles.itemView}>
-              <View style={{ height: "15%" }}>
-                <Text style={styles.itemTitleText}>{localTrade.name}</Text>
-              </View>
-
-              <View style={styles.infoView}>
-                <Text style={styles.infoText}>
-                  {categoryMapping[localTrade.category]} |{" "}
-                  {Moment(localTrade.created_at).format("MM.DD")}
-                </Text>
-              </View>
-              <View style={styles.detailView}>
-                <Text style={styles.detailText}>{localTrade.describe}</Text>
-              </View>
-            </View>
+            <AntDesign name="message1" size={28} color="rgba(0, 0, 0, 0.75)" />
           </View>
-          
-        </View>
-      </ScrollView>
+
+          <View style={{ height: "auto", paddingHorizontal: "2%" }}>
+            <Text style={styles.itemTitleText}>{localTrade.name}</Text>
+          </View>
+
+          <View style={styles.infoView}>
+            <Text style={styles.infoText}>
+              {categoryMapping[localTrade.category]} |{" "}
+              {Moment(localTrade.created_at).format("MM.DD")}
+            </Text>
+          </View>
+          <View style={styles.detailView}>
+            <Text style={styles.detailText}>{localTrade.description}</Text>
+          </View>
+        </ScrollView>
+      </View>
+
       <View style={styles.bottomView}>
         <Text style={styles.priceText}>
-          {localTrade.price
-            .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-          원
+          {localTrade.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원
         </Text>
         <View style={styles.bottomBtnView}>
           <Text style={styles.bottomBtnText}>
@@ -145,10 +139,11 @@ const styles = StyleSheet.create({
     width: "100%",
     top: "14%",
     alignItems: "center",
+    height: "76%",
   },
   imageContainer: {
     width: "100%",
-    height: "45%",
+    height: windowWidth,
     alignItems: "center",
   },
   paginationContainer: {
@@ -172,20 +167,21 @@ const styles = StyleSheet.create({
   },
   profileView: {
     width: "100%",
-    height: "14%",
+    height: "7%",
     marginVertical: "2%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    paddingHorizontal: "2%",
   },
   profileText: {
     fontWeight: 600,
     fontSize: 18,
     color: "rgba(0, 0, 0, 0.75)",
-    marginLeft: '8%',
+    marginLeft: "8%",
   },
   itemView: {
-    height: "42%",
+    height: "15%",
   },
   itemTitleText: {
     fontWeight: 700,
@@ -196,8 +192,9 @@ const styles = StyleSheet.create({
   infoView: {
     flexDirection: "row",
     alignItems: "center",
-    height: "15%",
+    height: "5%",
     marginBottom: "5%",
+    paddingHorizontal: "2%",
   },
   infoText: {
     fontWeight: 400,
@@ -207,6 +204,9 @@ const styles = StyleSheet.create({
   },
   detailView: {
     width: "100%",
+    height: "auto",
+    marginBottom: "30%",
+    paddingHorizontal: "2%",
   },
   detailText: {
     fontWeight: 400,
@@ -223,8 +223,8 @@ const styles = StyleSheet.create({
     height: "10%",
     borderTopWidth: 1,
     borderTopColor: "#ddd",
-    backgroundColor: '#fff',
-    paddingHorizontal: '5%',
+    backgroundColor: "#fff",
+    paddingHorizontal: "5%",
   },
   bottomBtnView: {
     justifyContent: "center",
