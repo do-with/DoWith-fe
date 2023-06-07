@@ -10,7 +10,7 @@ import {
   Modal,
   Keyboard,
   KeyboardAvoidingView,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import { ScreenHeader } from "../components/ScreenHeader";
 import { Variables } from "../components/Variables";
@@ -30,6 +30,7 @@ export default function Join1({ navigation }) {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showWarning, setShowWarning] = useState(false);
   const [checkPassword, setCheckPassword] = useState("");
   const [birth, setBirth] = useState("");
   const [area, setArea] = useState("제주");
@@ -143,6 +144,11 @@ export default function Join1({ navigation }) {
     setPhone(formattedPhoneNumber);
   };
 
+  const handlePasswordChange = (text) => {
+    setPassword(text);
+    setShowWarning(text.length < 8); // 비밀번호가 8자리 미만일 경우 경고 표시
+  };
+
   const isEmailValid = (email) => {
     const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     return emailPattern.test(email);
@@ -214,6 +220,8 @@ export default function Join1({ navigation }) {
       Alert.alert("이메일을 인증해주세요");
     } else if (password === "") {
       Alert.alert("비밀번호를 입력해주세요");
+    } else if (password.length < 8) {
+      Alert.alert("비밀번호는 8자리 이상이어야 합니다");
     } else if (checkPassword === "") {
       Alert.alert("비밀번호 확인을 입력해주세요");
     } else if (name === "") {
@@ -229,7 +237,7 @@ export default function Join1({ navigation }) {
       phone &&
       email &&
       birth &&
-      password &&
+      password.length >= 8 &&
       checkPassword &&
       isAgreed1 &&
       isAgreed2 &&
@@ -272,214 +280,228 @@ export default function Join1({ navigation }) {
           keyboardShouldPersistTaps="handled"
         >
           {isloading ? (
-              <View style={{flex: 1, marginTop: '100%', justifyContent: 'center', alignItems: 'center'}}>
-                <ActivityIndicator size="large" color="#808080" />
-              </View>
-          ) : (
-          <View style={styles.scrollView}>
-            <View style={styles.inputInfo}>
-              <View style={[styles.inputText, { marginBottom: "10%" }]}>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>이메일 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <View style={styles.phoneHorizontal}>
-                  <TextInput
-                    value={email}
-                    onChangeText={setEmail}
-                    style={[styles.textForm, { width: "75%" }]}
-                    placeholder="이메일 입력"
-                  />
-                  <Pressable
-                    title="인증하기"
-                    onPress={sendVerificationEmail}
-                    style={styles.phoneAuth}
-                  >
-                    <Text>인증하기</Text>
-                  </Pressable>
-                </View>
-                {!isCodeSent ? (
-                  <Text style={{ color: "grey" }}>
-                    입력하신 메일로 인증 번호가 전송됩니다.
-                  </Text>
-                ) : (
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      height: "40%",
-                    }}
-                  >
-                    <TextInput
-                      value={verificationCode}
-                      onChangeText={setVerificationCode}
-                      style={[
-                        styles.phoneForm,
-                        { width: "75%", marginRight: "5%" },
-                      ]}
-                      placeholder="인증번호 입력"
-                      keyboardType="numeric"
-                      maxLength={6}
-                    />
-                    <Pressable onPress={verifyCode} style={styles.phoneAuth}>
-                      <Text>확인</Text>
-                    </Pressable>
-                  </View>
-                )}
-              </View>
-
-              <View style={[styles.inputText, { marginTop: "10%" }]}>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>비밀번호 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <TextInput
-                  value={password}
-                  onChangeText={setPassword}
-                  placeholder="비밀번호 입력"
-                  style={styles.textForm}
-                  secureTextEntry={true}
-                />
-              </View>
-
-              <View style={styles.inputText}>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>비밀번호 확인 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <TextInput
-                  value={checkPassword}
-                  onChangeText={setCheckPassword}
-                  placeholder="비밀번호 확인"
-                  style={styles.textForm}
-                  secureTextEntry={true}
-                />
-              </View>
-              <View style={styles.inputText}>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>이름 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <TextInput
-                  value={name}
-                  onChangeText={setName}
-                  placeholder="이름 입력(ex 홍길동)"
-                  style={styles.textForm}
-                />
-              </View>
-
-              <View style={styles.inputText}>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>휴대전화 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <TextInput
-                  value={phone}
-                  onChangeText={handlePhoneChange}
-                  placeholder="휴대전화 번호 입력"
-                  style={styles.textForm}
-                  keyboardType="numeric"
-                  maxLength={13}
-                />
-              </View>
-              <View style={styles.inputText}>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>생넌월일 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <DatePicker onDateChange={handleDateChange} />
-              </View>
-
-              <View style={styles.inputText}>
-                <View style={{ flexDirection: "row" }}>
-                  <Text style={styles.inputTitle}>거주 지역 </Text>
-                  <Text style={{ color: "#FF1919" }}>*</Text>
-                </View>
-                <Pressable onPress={openSelectModal} style={styles.areaName}>
-                  <Text
-                    style={{
-                      fontWeight: 700,
-                      fontSize: 17,
-                      color: "#3a3a3a",
-                    }}
-                  >
-                    {area}
-                  </Text>
-                </Pressable>
-              </View>
-              <Modal
-                animationType="slide"
-                transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => {
-                  setModalVisible(!modalVisible);
-                }}
-              >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <Text>거주 지역을 선택해주세요</Text>
-                    <View style={styles.modalBtnView}>
-                      {chunk(areas, 4).map((chunk, index) => (
-                        <View key={index}>
-                          {chunk.map((area, index) => (
-                            <View key={index}>
-                              <Pressable
-                                onPress={() => onPressArea(area)}
-                                style={[
-                                  styles.modalBtn,
-                                  selectedButtonIndex === area &&
-                                    styles.selectedModalBtn,
-                                ]}
-                              >
-                                <Text
-                                  style={
-                                    selectedButtonIndex === area &&
-                                    styles.selectedModalBtnText
-                                  }
-                                >
-                                  {area}
-                                </Text>
-                              </Pressable>
-                            </View>
-                          ))}
-                        </View>
-                      ))}
-                    </View>
-                    <Pressable
-                      onPress={() => setModalVisible(!modalVisible)}
-                      style={styles.button}
-                    >
-                      <Text style={styles.textStyle}>닫기</Text>
-                    </Pressable>
-                  </View>
-                </View>
-              </Modal>
-
-              <View>
-                <CustomCheckBox
-                  value={isAgreed1}
-                  onValueChange={setIsAgreed1}
-                  text="[필수]이용 약관과 개인 정보 수집 및 이용에 동의합니다"
-                />
-                <CustomCheckBox
-                  value={isAgreed2}
-                  onValueChange={setIsAgreed2}
-                  text="이메일 SNS 마케팅 정보 수신 동의합니다"
-                />
-              </View>
-
-              <View style={styles.joinBtnView}>
-                <LinearGradient
-                  colors={["#4A6BAC", "#1B3974"]}
-                  style={styles.joinBtn}
-                >
-                  <Pressable onPress={clickJoin} style={styles.joinBtn1}>
-                    <Text style={styles.joinBtnText}>가입하기</Text>
-                  </Pressable>
-                </LinearGradient>
-              </View>
-              <View style={{ height: "40%" }}></View>
+            <View
+              style={{
+                flex: 1,
+                marginTop: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <ActivityIndicator size="large" color="#808080" />
             </View>
-          </View>
+          ) : (
+            <View style={styles.scrollView}>
+              <View style={styles.inputInfo}>
+                <View style={[styles.inputText, { marginBottom: "10%" }]}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.inputTitle}>이메일 </Text>
+                    <Text style={{ color: "#FF1919" }}>*</Text>
+                  </View>
+                  <View style={styles.phoneHorizontal}>
+                    <TextInput
+                      value={email}
+                      onChangeText={setEmail}
+                      style={[styles.textForm, { width: "75%" }]}
+                      placeholder="이메일 입력"
+                    />
+                    <Pressable
+                      title="인증하기"
+                      onPress={sendVerificationEmail}
+                      style={styles.phoneAuth}
+                    >
+                      <Text>인증하기</Text>
+                    </Pressable>
+                  </View>
+                  {!isCodeSent ? (
+                    <Text style={{ color: "grey", fontSize: 13 }}>
+                      입력하신 메일로 인증 번호가 전송됩니다.
+                    </Text>
+                  ) : (
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        height: "40%",
+                      }}
+                    >
+                      <TextInput
+                        value={verificationCode}
+                        onChangeText={setVerificationCode}
+                        style={[
+                          styles.phoneForm,
+                          { width: "75%", marginRight: "5%" },
+                        ]}
+                        placeholder="인증번호 입력"
+                        keyboardType="numeric"
+                        maxLength={6}
+                      />
+                      <Pressable onPress={verifyCode} style={styles.phoneAuth}>
+                        <Text>확인</Text>
+                      </Pressable>
+                    </View>
+                  )}
+                </View>
+
+                <View style={[styles.inputText, { marginTop: "10%" }]}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.inputTitle}>비밀번호 </Text>
+                    <Text style={{ color: "#FF1919" }}>*</Text>
+                  </View>
+                  <TextInput
+                    value={password}
+                    onChangeText={handlePasswordChange}
+                    placeholder="비밀번호 입력"
+                    style={styles.textForm}
+                    secureTextEntry={true}
+                  />
+                  {showWarning && (
+                    <Text
+                      style={{ fontSize: 13, color: "red", marginTop: "2%" }}
+                    >
+                      비밀번호는 8자리 이상이어야 합니다.
+                    </Text>
+                  )}
+                </View>
+
+                <View style={styles.inputText}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.inputTitle}>비밀번호 확인 </Text>
+                    <Text style={{ color: "#FF1919" }}>*</Text>
+                  </View>
+                  <TextInput
+                    value={checkPassword}
+                    onChangeText={setCheckPassword}
+                    placeholder="비밀번호 확인"
+                    style={styles.textForm}
+                    secureTextEntry={true}
+                  />
+                </View>
+                <View style={styles.inputText}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.inputTitle}>이름 </Text>
+                    <Text style={{ color: "#FF1919" }}>*</Text>
+                  </View>
+                  <TextInput
+                    value={name}
+                    onChangeText={setName}
+                    placeholder="이름 입력(ex 홍길동)"
+                    style={styles.textForm}
+                  />
+                </View>
+
+                <View style={styles.inputText}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.inputTitle}>휴대전화 </Text>
+                    <Text style={{ color: "#FF1919" }}>*</Text>
+                  </View>
+                  <TextInput
+                    value={phone}
+                    onChangeText={handlePhoneChange}
+                    placeholder="휴대전화 번호 입력"
+                    style={styles.textForm}
+                    keyboardType="numeric"
+                    maxLength={13}
+                  />
+                </View>
+                <View style={styles.inputText}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.inputTitle}>생넌월일 </Text>
+                    <Text style={{ color: "#FF1919" }}>*</Text>
+                  </View>
+                  <DatePicker onDateChange={handleDateChange} />
+                </View>
+
+                <View style={styles.inputText}>
+                  <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.inputTitle}>거주 지역 </Text>
+                    <Text style={{ color: "#FF1919" }}>*</Text>
+                  </View>
+                  <Pressable onPress={openSelectModal} style={styles.areaName}>
+                    <Text
+                      style={{
+                        fontWeight: 700,
+                        fontSize: 17,
+                        color: "#3a3a3a",
+                      }}
+                    >
+                      {area}
+                    </Text>
+                  </Pressable>
+                </View>
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                      <Text>거주 지역을 선택해주세요</Text>
+                      <View style={styles.modalBtnView}>
+                        {chunk(areas, 4).map((chunk, index) => (
+                          <View key={index}>
+                            {chunk.map((area, index) => (
+                              <View key={index}>
+                                <Pressable
+                                  onPress={() => onPressArea(area)}
+                                  style={[
+                                    styles.modalBtn,
+                                    selectedButtonIndex === area &&
+                                      styles.selectedModalBtn,
+                                  ]}
+                                >
+                                  <Text
+                                    style={
+                                      selectedButtonIndex === area &&
+                                      styles.selectedModalBtnText
+                                    }
+                                  >
+                                    {area}
+                                  </Text>
+                                </Pressable>
+                              </View>
+                            ))}
+                          </View>
+                        ))}
+                      </View>
+                      <Pressable
+                        onPress={() => setModalVisible(!modalVisible)}
+                        style={styles.button}
+                      >
+                        <Text style={styles.textStyle}>닫기</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </Modal>
+
+                <View>
+                  <CustomCheckBox
+                    value={isAgreed1}
+                    onValueChange={setIsAgreed1}
+                    text="[필수]이용 약관과 개인 정보 수집 및 이용에 동의합니다"
+                  />
+                  <CustomCheckBox
+                    value={isAgreed2}
+                    onValueChange={setIsAgreed2}
+                    text="이메일 SNS 마케팅 정보 수신 동의합니다"
+                  />
+                </View>
+
+                <View style={styles.joinBtnView}>
+                  <LinearGradient
+                    colors={["#4A6BAC", "#1B3974"]}
+                    style={styles.joinBtn}
+                  >
+                    <Pressable onPress={clickJoin} style={styles.joinBtn1}>
+                      <Text style={styles.joinBtnText}>가입하기</Text>
+                    </Pressable>
+                  </LinearGradient>
+                </View>
+                <View style={{ height: "40%" }}></View>
+              </View>
+            </View>
           )}
         </KeyboardAwareScrollView>
       </View>

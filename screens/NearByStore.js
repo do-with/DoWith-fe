@@ -6,7 +6,7 @@ import {
   Pressable,
   Image,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { ScreenHeader } from "../components/ScreenHeader";
@@ -33,7 +33,9 @@ export default function NearByStore() {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-      let location = await Location.getCurrentPositionAsync({});
+      const location = await Location.getCurrentPositionAsync({
+        accuracy: Location.Accuracy.Low,
+      });
       setLocation(location);
     })();
   }, []);
@@ -42,24 +44,17 @@ export default function NearByStore() {
     getMarketListById();
   }, []);
 
-  const getCurrentLocation = () => {
-    setIsLoading(true);
-    if (errorMsg) {
-      text = errorMsg;
-    } else if (location) {
+  const getCurrentLocation = async () => {
+    if (location && location.coords.latitude && location.coords.longitude) {
       setLatitude(location.coords.latitude);
       setLongitude(location.coords.longitude);
-      text = JSON.stringify(location);
-      //text에 location값이 저장된다.
-      console.log("latitude : ", latitude);
-      console.log("longitude : ", longitude);
-      setLoading(false);
     }
     axios
       .get(`http://${ipAddress}:8080/market/distance/${latitude}/${longitude}`)
       .then((response) => {
-        setMarketList(response.data)
-        setIsLoading(false);
+        setMarketList(response.data);
+
+        setLoading(false);
       })
       .catch((error) => console.log(error));
     console.log(marketList);
@@ -98,53 +93,59 @@ export default function NearByStore() {
           </LinearGradient>
         </View>
         {isloading ? (
-            <View style={{height: '60%', justifyContent: 'center', alignItems: 'center'}}>
-              <ActivityIndicator size="large" color="#808080" />
-            </View>
-        ): (
-        <View style={styles.contentListWrapApi}>
-          <ScrollView>
-            {marketListById.map((market) => {
-              return (
-                <View key={market.id}>
-                  <Pressable onPress={() => setModalVisible(market.id)}>
-                    <View style={[styles.listBoxImg, styles.listBoxImgApi]}>
-                      <View
-                        style={[
-                          styles.contentListText,
-                          styles.contentListTextApi,
-                        ]}
-                      >
+          <View
+            style={{
+              height: "60%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <ActivityIndicator size="large" color="#808080" />
+          </View>
+        ) : (
+          <View style={styles.contentListWrapApi}>
+            <ScrollView>
+              {marketListById.map((market) => {
+                return (
+                  <View key={market.id}>
+                    <Pressable onPress={() => setModalVisible(market.id)}>
+                      <View style={[styles.listBoxImg, styles.listBoxImgApi]}>
                         <View
-                          style={{
-                            height: "60%",
-                            justifyContent: "space-between",
-                            marginTop: "2%",
-                          }}
+                          style={[
+                            styles.contentListText,
+                            styles.contentListTextApi,
+                          ]}
                         >
-                          <Text style={{ fontSize: 15, fontWeight: 700 }}>
-                            {market.name}
-                          </Text>
-                          <Text>{market.address}</Text>
-                          <Text>{market.phone}</Text>
+                          <View
+                            style={{
+                              height: "60%",
+                              justifyContent: "space-between",
+                              marginTop: "2%",
+                            }}
+                          >
+                            <Text style={{ fontSize: 15, fontWeight: 700 }}>
+                              {market.name}
+                            </Text>
+                            <Text>{market.address}</Text>
+                            <Text>{market.phone}</Text>
+                          </View>
                         </View>
                       </View>
-                    </View>
-                  </Pressable>
-                  <BottomSheet2
-                    modalVisible={modalVisible === market.id}
-                    setModalVisible={setModalVisible}
-                    name={market.name}
-                    address={market.address}
-                    phone={market.phone}
-                    longitude={market.longitude}
-                    latitude={market.latitude}
-                  />
-                </View>
-              );
-            })}
-          </ScrollView>
-        </View>
+                    </Pressable>
+                    <BottomSheet2
+                      modalVisible={modalVisible === market.id}
+                      setModalVisible={setModalVisible}
+                      name={market.name}
+                      address={market.address}
+                      phone={market.phone}
+                      longitude={market.longitude}
+                      latitude={market.latitude}
+                    />
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </View>
         )}
       </View>
     </View>
@@ -163,7 +164,7 @@ export default function NearByStore() {
             style={styles.imgBackground}
           >
             <Pressable
-              style={styles.imgBackground}
+              style={styles.imgBackgroundBtn}
               onPress={getCurrentLocation}
             >
               <Text style={styles.text}>현위치</Text>
@@ -247,7 +248,7 @@ const styles = StyleSheet.create({
     width: 350,
     height: 160,
     top: "6%",
-    left: '2%',
+    left: "2%",
   },
   imgBackground: {
     borderTopWidth: 1,
@@ -292,7 +293,7 @@ const styles = StyleSheet.create({
     marginLeft: "3%",
     backgroundColor: "#fff",
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: "#ddd",
     borderRadius: 10,
     width: "95%",
     height: 105,
@@ -338,6 +339,6 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
     letterSpacing: 0.5,
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
 });
