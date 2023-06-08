@@ -71,6 +71,13 @@ export default function MyCsList({navigation}){
                     );
                 })}
                 </View>
+                {myCsList.length === 0 && (
+                    <View style={styles.noContent}>
+                        <Text style={styles.noContentText}>
+                            문의 내역이 없습니다.
+                        </Text>
+                    </View>
+                )}
             </View>
         </View>
     );
@@ -97,5 +104,16 @@ const styles = StyleSheet.create({
         lineHeight: 26,
         letterSpacing: 0.15,
         color: '#353535',
+    },
+    noContent: {
+        height: '65%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    noContentText: {
+        fontWeight: 400,
+        fontSize: 16,
+        lineHeight: 19,
+        color: "#aaa",
     },
 });

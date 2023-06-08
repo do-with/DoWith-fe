@@ -176,14 +176,16 @@ export default function Join1({ navigation }) {
           Alert.alert("중복된 이메일입니다.");
           return; // 중복된 이메일인 경우 함수 종료
         }
+        else {
+          Alert.alert("이메일 전송이 완료되었습니다.");
+        }
 
         // 중복 확인이 완료되면 이메일 전송 요청 수행
         await axios.post(
           `http://${ipAddress}:8080/email/verification?${queryParams}`
         );
-
         setIsCodeSent(true);
-        Alert.alert("이메일 전송이 완료되었습니다.");
+        
       } catch (error) {
         Alert.alert("이메일 전송에 실패했습니다. 다시 시도해주세요.");
       }

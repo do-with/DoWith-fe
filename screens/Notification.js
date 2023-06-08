@@ -10,53 +10,67 @@ import axios from "axios";
 export default function Notification({navigation}){
     const [notiList, setNotiList] = useState([]);
 
-    const { user } = useContext(AuthContext);
-    const userId = user.id;
+    const { user, isAuthenticated } = useContext(AuthContext);
 
     useEffect(() => {
-        axios.get(`http://${ipAddress}:8080/notification/user/${userId}`)
+      if (isAuthenticated) {
+        axios.get(`http://${ipAddress}:8080/notification/user/${user.id}`)
             .then(response => setNotiList(response.data))
             .catch(error => console.log(error))
-      }, []);
+      }
+    }, [isAuthenticated]);
 
   return (
     <View style={styles.joinBody}>
       <ScreenHeader headerTitle="알림" />
-      <View style={styles.joinContent}>
-        {notiList.map((notiList) => {
-          let date = notiList.created_at.toString();
-          const formattedDate = Moment(date).format("M.d");
-          return (
-            <View style={styles.notiBoardList} key={notiList.id}>
-              <View>
-                <Image
-                  source={require("../assets/donator.png")}
-                  style={styles.notiImg}
-                  resizeMode={"contain"}
-                />
-              </View>
-              <View style={styles.notiBoardListContent}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Text style={styles.notiText}>{notiList.message}</Text>
-                  <Pressable>
-                    <Text style={styles.notiIcon}>x</Text>
-                  </Pressable>
+        {!isAuthenticated ? (
+          <View style={styles.noLogin}>
+            <Text style={styles.noLoginText}>로그인이 필요합니다.</Text>
+          </View>
+        ) : (
+          <View style={styles.joinContent}>
+            {notiList.map((notiList) => {
+              let date = notiList.created_at.toString();
+              const formattedDate = Moment(date).format("M.d");
+              return (
+                <View style={styles.notiBoardList} key={notiList.id}>
+                  <View>
+                    <Image
+                      source={require("../assets/donator.png")}
+                      style={styles.notiImg}
+                      resizeMode={"contain"}
+                    />
+                  </View>
+                  <View style={styles.notiBoardListContent}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Text style={styles.notiText}>{notiList.message}</Text>
+                      <Pressable>
+                        <Text style={styles.notiIcon}>x</Text>
+                      </Pressable>
+                    </View>
+                    <View>
+                      <Text style={(styles.notiText, styles.date)}>
+                        {formattedDate}
+                      </Text>
+                    </View>
+                  </View>
                 </View>
-                <View>
-                  <Text style={(styles.notiText, styles.date)}>
-                    {formattedDate}
+              );
+            })}
+            {notiList.length === 0 && (
+              <View style={styles.noContent}>
+                  <Text style={styles.noContentText}>
+                      알림 내역이 없습니다.
                   </Text>
-                </View>
               </View>
-            </View>
-          );
-        })}
-      </View>
+            )}
+         </View>
+        )}
     </View>
   );
 }
@@ -67,6 +81,17 @@ const styles = StyleSheet.create({
     height: "100%",
     backgroundColor: Variables.mainColor,
     wordBreak: "break-all",
+  },
+  noLogin: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    top: "50%",
+  },
+  noLoginText: {
+    fontWeight: 400,
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#aaa",
   },
   joinContent: {
     width: "100%",
@@ -119,5 +144,18 @@ const styles = StyleSheet.create({
   },
   date: {
     color: "grey",
+  },
+  noContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: "100%",
+    height: "70%",
+    position: "relative",
+},
+  noContentText: {
+    fontWeight: 400,
+    fontSize: 16,
+    lineHeight: 19,
+    color: "#aaa",
   },
 });
