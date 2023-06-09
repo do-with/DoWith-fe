@@ -28,29 +28,34 @@ function LoginScreen({ navigation }) {
   const authContext = useContext(AuthContext);
 
   const onClickLoginBtn = async () => {
-    const data = {
-      email: email,
-      password: password,
-    };
-
-    await axios
-      .post(`http://${ipAddress}:8080/user/login`, data, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-      })
-      .then((response) => {
-        const user = response.data;
-        console.log(user);
-
-        authContext.login(user);
-        navigation.goBack("MainScreen");
-      })
-      .catch((error) => {
-        console.log(error);
-        Alert.alert("아이디 또는 비밀번호를 잘못 입력하였습니다.");
+    if ( !email || !password ){
+      Alert.alert("아이디와 비밀번호를 입력해주세요.");
+    }
+    else {
+      const data = {
+        email: email,
+        password: password,
+      };
+  
+      await axios
+        .post(`http://${ipAddress}:8080/user/login`, data, {
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+        })
+        .then((response) => {
+          const user = response.data;
+          console.log(user);
+  
+          authContext.login(user);
+          navigation.goBack("MainScreen");
+        })
+        .catch((error) => {
+          console.log(error);
+          Alert.alert("아이디 또는 비밀번호를 잘못 입력하였습니다.");
       });
+    }
   };
 
   return (

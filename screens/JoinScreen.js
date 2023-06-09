@@ -253,7 +253,7 @@ export default function Join1({ navigation }) {
         use_pcy_agree_yn: isAgreed1,
         info_proc_agree_yn: isAgreed2,
         phone: phone,
-        birth_date: birth,
+        birth_date: birth + 1,
         region: areaNum,
       };
       setIsLoading(true);
