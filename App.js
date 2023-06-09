@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image } from "react-native";
 import RootNavigator from './screens/RootNavigator';
 import { AuthProvider } from "./contexts/AuthContext";
+import { Variables } from './components/Variables';
+
 function App(){
   const[loading, setLoading] = useState(true);
 
@@ -22,7 +24,8 @@ function App(){
       <Image
             resizeMode={"cover"}
             source={require("./assets/splash.png")}
-            style={styles.imageStyle}></Image>
+            style={styles.imageStyle}
+      />
     </View>
   ):(
     <AuthProvider>
@@ -35,12 +38,13 @@ export default App;
 
 const styles = StyleSheet.create({
   imageStyle: {
-    width: '100%',
-    height: '100%',
+    width: '110%',
+    height: '115%',
   },
   loadingView: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: Variables.mainColor,
   }
 })
