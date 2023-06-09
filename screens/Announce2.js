@@ -12,14 +12,14 @@ export default function Announce2({navigation}){
                     <Image source={require('../assets/announce-back.png')}
                         style={styles.announceImg} resizeMode={'contain'}/>
                     <View style={styles.announceBtnView}>
-                        <LinearGradient colors={['#fbfbfba3', '#fbfbfbd4', '#ffffff']}
+                        <LinearGradient colors={['#fbfbfbaa', '#fbfbfb', '#ffffffd4']}
                             style={styles.announceBtnLinear}>
                             <Pressable onPress={()=>navigation.navigate('Announce1')}
                                 style={styles.announceBtn}>
                                 <Text style={styles.announceBtnText}>기부소식</Text>
                             </Pressable>
                         </LinearGradient>
-                        <LinearGradient colors={['#fbfbfba3', '#fbfbfbd4', '#ffffff']}
+                        <LinearGradient colors={['#fbfbfbaa', '#fbfbfb', '#ffffffd4']}
                             style={styles.announceBtnLinear}>
                             <Pressable style={styles.announceBtn}>
                                 <Text style={styles.announceBtnText}>공지사항</Text>
@@ -30,17 +30,18 @@ export default function Announce2({navigation}){
                 
                 <View style={styles.contentListWrap}>
                     <View style={styles.refresh}>
-                        <Text>전체글</Text>
+                        <Text style={styles.refreshText}>전체글</Text>
                     </View>
                     <View style={styles.contentList}>
+                        {/* map으로 */}
                         <View style={styles.listBoxNoImg}>
                             <View style={styles.contentListText}>
                                 <Text style={styles.h3}>전산실 전기 공사에 따른 이용..</Text>
                                 <Text style={styles.span}>글쓴이 이름</Text>
                             </View>
                             <View style={styles.contentListSubText}>
-                                <Text style={styles.span}>날짜</Text>
-                                <Text style={styles.span}>조회수</Text>
+                                <Text style={styles.dateText}>2023-03-31</Text>
+                                <Text style={styles.hitText}>조회수 21</Text>
                             </View>
                         </View>
                     </View>
@@ -66,13 +67,16 @@ const styles = StyleSheet.create({
     announceImgBackground: {
         position: 'relative',
         width: '100%',
-        height: '22%',
+        height: '20%',
         display: 'flex',
         alignItems: 'flex-end',
     },
     announceImg: {
-        width: 460,
-        height: 185,
+        // width: 460,
+        // height: 185,
+        width: 415,
+        height: 168,
+        left: -1,
     },
     announceBtnView: {
         position: 'absolute',
@@ -87,13 +91,13 @@ const styles = StyleSheet.create({
         display: 'flex',
         borderRadius: 10,
         borderWidth: 0,
-        width: '30%',
+        width: '25%',
         height: '100%',
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: '4%',
-        marginBottom: '7%',
+        marginBottom: '6%',
     },
     announceBtn: {
         flex: 1,
@@ -103,8 +107,8 @@ const styles = StyleSheet.create({
     announceBtnText: {
         fontWeight: 700,
         fontSize: 13,
-        color: '#383838',
-        lineHeight: 16,
+        lineHeight: 17,
+        color: '#1F1F1F',
     },
     contentListWrap: {
         position: 'relative',
@@ -113,19 +117,24 @@ const styles = StyleSheet.create({
     },
     refresh: {
         display: 'flex',
-        padding: '4%',
-        boxSizing: 'border-box',
-        height: '20%',
+        justifyContent: 'center',
+        paddingLeft: '4%',
+        height: '17%',
         width: '100%',
         borderBottomWidth: 1,
-        borderBottomColor: '#d2d2d2',
+        borderBottomColor: 'rgba(214, 214, 214, 0.44)',
+    },
+    refreshText: {
+        fontWeight: 400,
+        fontSize: 16,
+        lineHeight: 23,
+        color: 'rgba(35, 35, 35, 0.8)',
     },
     contentList: {
         display: 'flex',
         flexDirection: 'column',
-        boxSizing: 'border-box',
         borderBottomWidth: 1,
-        borderBottomColor: '#d2d2d2',
+        borderBottomColor: 'rgba(214, 214, 214, 0.44)',
     },
     listBoxNoImg: {
         flexDirection: 'column',
@@ -134,27 +143,41 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 113,
         borderBottomWidth: 1,
-        borderBottomColor: 'rgba(214, 214, 214, 0.9)',
+        borderBottomColor: 'rgba(214, 214, 214, 0.44)',
     },
     contentListText: {
         paddingLeft: 0,
-        width: '88%',
+        width: '90%',
     },
     h3: {
+        fontWeight: 500,
+        fontSize: 17,
+        lineHeight: 25,
+        color: 'rgba(35, 35, 35, 0.91)',
         marginBottom: '2%',
     },
     span: {
         fontSize: 15,
-        marginBottom: 10,
         lineHeight: 22,
-        letterSpacing: 0.5,
-        color: '#6f6f6f',
+        color: 'rgba(35, 35, 35, 0.6)',
+        marginBottom: 10,
     },
     contentListSubText: {
         display: 'flex',
-        width: '88%',
+        width: '90%',
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    dateText: {
+        fontWeight: 400,
+        fontSize: 16,
+        lineHeight: 23,
+        color: 'rgba(111, 111, 111, 0.99)',
+    },
+    hitText: {
+        fontSize: 17,
+        lineHeight: 25,
+        color: 'rgba(111, 111, 111, 0.98)',
     },
 });

@@ -1,41 +1,34 @@
 
-import React from 'react';
-import { StyleSheet } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Image } from "react-native";
 import RootNavigator from './screens/RootNavigator';
 import { AuthProvider } from "./contexts/AuthContext";
 function App(){
-  // const[loading, setLoading] = useState(true);
+  const[loading, setLoading] = useState(true);
 
-  // const getReady = () => {
-  //   setTimeout(() => {
-  //     setLoading(false)
-  //   }, 1000);
+  const getReady = () => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 1000);
 
-  // }
+  }
 
-  // useEffect(()=> {
-  //   getReady();
-  // }, []);
+  useEffect(()=> {
+    getReady();
+  }, []);
   
-  // return loading ? (
-  //   <View style={styles.loadingView}>
-  //     <Image
-  //           resizeMode={"cover"}
-  //           source={require("./assets/splash.png")}
-  //           style={styles.imageStyle}></Image>
-  //   </View>
-  // ):(
-  //       <Root />
-  // )
-  // return (
-  //     <RootNavigator />
-  // );
-  return (
+  return loading ? (
+    <View style={styles.loadingView}>
+      <Image
+            resizeMode={"cover"}
+            source={require("./assets/splash.png")}
+            style={styles.imageStyle}></Image>
+    </View>
+  ):(
     <AuthProvider>
       <RootNavigator />
     </AuthProvider>
-      
-  );
+  )
 };
 
 export default App;

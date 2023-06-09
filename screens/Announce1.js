@@ -12,13 +12,13 @@ export default function Announce1({navigation}){
                     <Image source={require('../assets/announce-back.png')}
                         style={styles.announceImg} resizeMode={'contain'}/>
                     <View style={styles.announceBtnView}>
-                        <LinearGradient colors={['#fbfbfba3', '#fbfbfbd4', '#ffffff']}
+                        <LinearGradient colors={['#fbfbfbaa', '#fbfbfb', '#ffffffd4']}
                             style={styles.announceBtnLinear}>
                             <Pressable style={styles.announceBtn}>
                                 <Text style={styles.announceBtnText}>기부소식</Text>
                             </Pressable>
                         </LinearGradient>
-                        <LinearGradient colors={['#fbfbfba3', '#fbfbfbd4', '#ffffff']}
+                        <LinearGradient colors={['#fbfbfbaa', '#fbfbfb', '#ffffffd4']}
                             style={styles.announceBtnLinear}>
                             <Pressable onPress={()=>navigation.navigate('Announce2')}
                                 style={styles.announceBtn}>
@@ -30,10 +30,11 @@ export default function Announce1({navigation}){
                 
                 <View style={styles.contentListWrap}>
                     <View style={styles.refresh}>
-                        <Text>전체글</Text>
+                        <Text style={styles.refreshText}>전체글</Text>
                     </View>
 
                     <View style={styles.contentList}>
+                        {/* map으로 */}
                         <View style={styles.listBoxImg}>
                             <View style={styles.contentListText}>
                                 <Text style={styles.h3}>대표자</Text>
@@ -41,7 +42,7 @@ export default function Announce1({navigation}){
                                 <Text style={styles.span2}>날짜</Text>
                             </View>
                             <View style={styles.contentListImg}>
-                                <Image source={require('../assets/ask.png')}
+                                <Image source={require('../assets/people.png')}
                                     style={styles.img} resizeMode={'contain'}/>
                             </View>
                         </View>
@@ -68,13 +69,16 @@ const styles = StyleSheet.create({
     announceImgBackground: {
         position: 'relative',
         width: '100%',
-        height: '22%',
+        height: '20%',
         display: 'flex',
         alignItems: 'flex-end',
     },
     announceImg: {
-        width: 460,
-        height: 185,
+        // width: 460,
+        // height: 185,
+        width: 415,
+        height: 168,
+        left: -1,
     },
     announceBtnView: {
         position: 'absolute',
@@ -89,13 +93,13 @@ const styles = StyleSheet.create({
         display: 'flex',
         borderRadius: 10,
         borderWidth: 0,
-        width: '30%',
+        width: '25%',
         height: '100%',
         borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: '4%',
-        marginBottom: '7%',
+        marginBottom: '6%',
     },
     announceBtn: {
         flex: 1,
@@ -105,8 +109,8 @@ const styles = StyleSheet.create({
     announceBtnText: {
         fontWeight: 700,
         fontSize: 13,
-        color: '#383838',
-        lineHeight: 16,
+        lineHeight: 17,
+        color: '#1F1F1F',
     },
     contentListWrap: {
         position: 'relative',
@@ -115,61 +119,68 @@ const styles = StyleSheet.create({
     },
     refresh: {
         display: 'flex',
-        padding: '4%',
-        boxSizing: 'border-box',
-        height: '20%',
+        justifyContent: 'center',
+        paddingLeft: '4%',
+        height: '17%',
         width: '100%',
         borderBottomWidth: 1,
-        borderBottomColor: '#d2d2d2',
+        borderBottomColor: 'rgba(214, 214, 214, 0.44)',
+    },
+    refreshText: {
+        fontWeight: 400,
+        fontSize: 16,
+        lineHeight: 23,
+        color: 'rgba(35, 35, 35, 0.8)',
     },
     contentList: {
         display: 'flex',
         flexDirection: 'column',
-        boxSizing: 'border-box',
         borderBottomWidth: 1,
-        borderBottomColor: '#d2d2d2',
+        borderBottomColor: 'rgba(214, 214, 214, 0.44)',
     },
     listBoxImg: {
         width: '100%',
-        height: 124,
+        height: 113,
         borderBottomWidth: 1,
-        borderBottomColor: '#d8d8d8',
+        borderBottomColor: 'rgba(214, 214, 214, 0.44)',
         display: 'flex',
         flexDirection: 'row',
-        wordBreak: 'break-all',
+        justifyContent: 'space-between',
     },
     contentListText: {
-        width: '61%',
+        width: '66%',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        boxSizing: 'border-box',
-        paddingLeft: '6%',
+        paddingLeft: '5%',
     },
     h3: {
-        fontSize: 18,
-        fontWeight: '700',
+        fontWeight: 500,
+        lineHeight: 25,
+        fontSize: 17,
+        color:' rgba(35, 35, 35, 0.5)',
         marginBottom: '3%',
     },
     span1: {
-        fontSize: 16,
-        marginBottom: '4%',
+        fontSize: 15,
         lineHeight: 22,
-        letterSpacing: 0.5,
+        color: 'rgba(35, 35, 35, 0.8)',
+        marginBottom: '3%',
     },
     span2: {
-        fontSize: 15,
-        color: '#bababa',
+        fontSize: 13,
+        lineHeight: 19,
+        color: 'rgba(111, 111, 111, 0.61)',
     },
     contentListImg: {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        width: '37%',
+        width: '34%',
     },
     img: {
-        width: '80%',
-        height: '68%',
+        width: '70%',
+        height: '70%',
         borderRadius: 10,
     },
 });
