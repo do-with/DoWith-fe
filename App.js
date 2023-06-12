@@ -1,4 +1,4 @@
-
+import "text-encoding-polyfill";
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Image } from "react-native";
 import RootNavigator from './screens/RootNavigator';
@@ -18,19 +18,19 @@ function App(){
   useEffect(()=> {
     getReady();
   }, []);
-  
+
   return loading ? (
-    <View style={styles.loadingView}>
-      <Image
+      <View style={styles.loadingView}>
+        <Image
             resizeMode={"cover"}
             source={require("./assets/splash.png")}
             style={styles.imageStyle}
-      />
-    </View>
+        />
+      </View>
   ):(
-    <AuthProvider>
-      <RootNavigator />
-    </AuthProvider>
+      <AuthProvider>
+        <RootNavigator />
+      </AuthProvider>
   )
 };
 

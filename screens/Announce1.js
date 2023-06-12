@@ -1,9 +1,31 @@
-import React from 'react';
+import 'text-encoding';
+import 'react-native-get-random-values';
+import "text-encoding-polyfill";
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, View, Image, Text, Pressable } from 'react-native';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { LinearGradient } from 'expo-linear-gradient';
+import Web3 from 'web3';
+//import * as crypto from "crypto";
+
+//import axios from "axios";
+
 
 export default function Announce1({navigation}){
+    const [account, setAccount] = useState(""); // 계정 가져오기
+    useEffect(() => {
+        async function load() {
+            const web3 = new Web3(Web3.givenProvider || 'http://172.30.1.82:8548'); // Besu endpoint를 넣기
+            const privateKeyA = "0x0e56cdfaa5bcbd357a5dcc6e4c6461aa762bf5aa77e54ac252c39ab5a56827c3";  //Node1 private key
+            const accountA = web3.eth.accounts.privateKeyToAccount(privateKeyA); // 계정의 정보를 담고 있음
+            console.log(accountA.address);
+            setAccount(accountA.address);
+        }
+
+        load();
+
+    }, []);
+    console.log("주소는",account);
     return(
         <View style={styles.joinBody}>
             <ScreenHeader headerTitle="알림마당"/>
@@ -46,6 +68,7 @@ export default function Announce1({navigation}){
                                     style={styles.img} resizeMode={'contain'}/>
                             </View>
                         </View>
+                        <Text>your account is {account}</Text>
                     </View>
                 </View>
             </View>
@@ -95,7 +118,6 @@ const styles = StyleSheet.create({
         borderWidth: 0,
         width: '25%',
         height: '100%',
-        borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center',
         marginLeft: '4%',
