@@ -1,3 +1,8 @@
+import 'text-encoding';
+import 'react-native-get-random-values';
+import "text-encoding-polyfill";
+import Web3 from 'web3';
+
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
@@ -212,6 +217,22 @@ export default function Join1({ navigation }) {
     }
   };
 
+  //블록체인 코드
+  const [account, setAccount] = useState(""); // 계정 가져오기
+  useEffect(() => {
+    async function load() {
+      const web3 = new Web3(Web3.givenProvider || 'http://172.30.1.82:8548'); // Besu endpoint를 넣기
+      const privateKeyA = "0x0e56cdfaa5bcbd357a5dcc6e4c6461aa762bf5aa77e54ac252c39ab5a56827c3";  //Node1 private key
+      const accountA = web3.eth.accounts.privateKeyToAccount(privateKeyA); // 계정의 정보를 담고 있음
+      console.log(accountA.address);
+      setAccount(accountA.address);
+    }
+
+    load();
+
+  }, []);
+  console.log("주소는",account);
+
   const clickJoin = () => {
     if (password !== checkPassword) {
       Alert.alert("비밀번호가 다릅니다");
@@ -254,6 +275,8 @@ export default function Join1({ navigation }) {
         phone: phone,
         birth_date: birth + 1,
         region: areaNum,
+        publicKey : account,
+        privateKey : privateKeyA,
       };
       setIsLoading(true);
       axios
