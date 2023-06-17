@@ -110,12 +110,12 @@ function MainScreen({ navigation }) {
               <Text style={styles.menuText}>문의하기</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.transImgBtn}
+              style={[styles.transImgBtn, {marginBottom: '3%'}]}
               onPress={() => onNavigateBtnClick("SupportMoney")}
             >
               <Image
-                source={require("../assets/burger.png")}
-                style={styles.img}
+                source={require("../assets/support.png")}
+                style={styles.supportImg}
                 resizeMode={"contain"}
               />
               <Text style={styles.menuText}>후원하기</Text>
@@ -368,5 +368,9 @@ const styles = StyleSheet.create({
   supportMoneyBtn: {
     fontWeight: 500,
     fontSize: 18,
+  },
+  supportImg: {
+    width: 60,
+    height: 65,
   },
 });

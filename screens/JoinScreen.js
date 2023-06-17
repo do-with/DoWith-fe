@@ -20,7 +20,6 @@ import { ipAddress } from "../ipAddress";
 import axios from "axios";
 import DatePicker from "../components/DatePicker";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { width } from "deprecated-react-native-prop-types/DeprecatedImagePropType";
 
 // 유효성 검사 필요
 // 휴대전화 인증 필요
