@@ -1,9 +1,26 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, View, Image, Text, Pressable } from 'react-native';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function Announce1({navigation}){
+    const [apiData, setApiData] = useState([]);
+    //나머지는 진주랑 얘기해서 저장 형태 결정
+    useEffect(() => {
+        axios.get('http://172.20.10.4:8888/Announces')
+            .then(response => {
+                setApiData(response.data.announce)
+                console.log("data-first:", response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
+    // console.log("data-second",data);
+
     return(
         <View style={styles.joinBody}>
             <ScreenHeader headerTitle="알림마당"/>
@@ -34,18 +51,26 @@ export default function Announce1({navigation}){
                     </View>
 
                     <View style={styles.contentList}>
-                        {/* map으로 */}
-                        <View style={styles.listBoxImg}>
-                            <View style={styles.contentListText}>
-                                <Text style={styles.h3}>대표자</Text>
-                                <Text style={styles.span1}>대표자, 과자 외 물품이 아동센터에 전달</Text>
-                                <Text style={styles.span2}>날짜</Text>
-                            </View>
-                            <View style={styles.contentListImg}>
-                                <Image source={require('../assets/people.png')}
-                                    style={styles.img} resizeMode={'contain'}/>
-                            </View>
-                        </View>
+                        <ScrollView
+                            contentContainerStyle={{ height: 'auto' }}>
+                            {apiData.map((data) => {
+                                const apiURL = data.src;
+                                const fommattedApiTitle =  data.title.split(',').join('');
+                                return (
+                                    <View style={styles.listBoxImg}
+                                        key={data.id}>
+                                        <View style={styles.contentListText}>
+                                            <Text style={styles.h3}>{fommattedApiTitle}</Text>
+                                            <Text style={styles.span1}>{data.content}</Text>
+                                        </View>
+                                        <View style={styles.contentListImg}>
+                                            <Image source={{uri: apiURL}}
+                                                style={styles.img} resizeMode={'contain'}/>
+                                        </View>
+                                    </View>
+                                )}
+                            )}
+                        </ScrollView>
                     </View>
                 </View>
             </View>
@@ -121,7 +146,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         paddingLeft: '4%',
-        height: '17%',
+        height: '6%',
         width: '100%',
         borderBottomWidth: 1,
         borderBottomColor: 'rgba(214, 214, 214, 0.44)',
@@ -137,6 +162,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         borderBottomWidth: 1,
         borderBottomColor: 'rgba(214, 214, 214, 0.44)',
+        height: '75%',
     },
     listBoxImg: {
         width: '100%',
@@ -158,13 +184,13 @@ const styles = StyleSheet.create({
         fontWeight: 500,
         lineHeight: 25,
         fontSize: 17,
-        color:' rgba(35, 35, 35, 0.5)',
+        color:' rgba(35, 35, 35, 0.75)',
         marginBottom: '3%',
     },
     span1: {
         fontSize: 15,
         lineHeight: 22,
-        color: 'rgba(35, 35, 35, 0.8)',
+        color: 'rgba(35, 35, 35, 0.6)',
         marginBottom: '3%',
     },
     span2: {

@@ -1,28 +1,41 @@
-import React from 'react';
-import { StyleSheet, View, Image, Text, Pressable } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import { StyleSheet, View, Image, Text, Pressable, ScrollView } from 'react-native';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { LinearGradient } from 'expo-linear-gradient';
+import axios from 'axios';
 
 export default function Announce2({navigation}){
+    const [noticeData, setNoticeData] = useState([]);
+    useEffect(() => {
+        axios.get('http://172.20.10.4:8888/Notices')
+            .then(response => {
+                setNoticeData(response.data.Notices)
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, []);
+
     return(
         <View style={styles.joinBody}>
             <ScreenHeader headerTitle="알림마당"/>
-            <View style={styles.announceContent}>
-                <View style={styles.announceImgBackground}>
+            <View style={styles.noticeContent}>
+                <View style={styles.noticeImgBackground}>
                     <Image source={require('../assets/announce-back.png')}
-                        style={styles.announceImg} resizeMode={'contain'}/>
-                    <View style={styles.announceBtnView}>
+                        style={styles.noticeImg} resizeMode={'contain'}/>
+                    <View style={styles.noticeBtnView}>
                         <LinearGradient colors={['#fbfbfbaa', '#fbfbfb', '#ffffffd4']}
-                            style={styles.announceBtnLinear}>
+                            style={styles.noticeBtnLinear}>
                             <Pressable onPress={()=>navigation.navigate('Announce1')}
-                                style={styles.announceBtn}>
-                                <Text style={styles.announceBtnText}>기부소식</Text>
+                                style={styles.noticeBtn}>
+                                <Text style={styles.noticeBtnText}>기부소식</Text>
                             </Pressable>
                         </LinearGradient>
                         <LinearGradient colors={['#fbfbfbaa', '#fbfbfb', '#ffffffd4']}
-                            style={styles.announceBtnLinear}>
-                            <Pressable style={styles.announceBtn}>
-                                <Text style={styles.announceBtnText}>공지사항</Text>
+                            style={styles.noticeBtnLinear}>
+                            <Pressable style={styles.noticeBtn}>
+                                <Text style={styles.noticeBtnText}>공지사항</Text>
                             </Pressable>
                         </LinearGradient>
                     </View>
@@ -32,8 +45,7 @@ export default function Announce2({navigation}){
                     <View style={styles.refresh}>
                         <Text style={styles.refreshText}>전체글</Text>
                     </View>
-                    <View style={styles.contentList}>
-                        {/* map으로 */}
+                    {/* <View style={styles.contentList}>
                         <View style={styles.listBoxNoImg}>
                             <View style={styles.contentListText}>
                                 <Text style={styles.h3}>전산실 전기 공사에 따른 이용..</Text>
@@ -44,6 +56,26 @@ export default function Announce2({navigation}){
                                 <Text style={styles.hitText}>조회수 21</Text>
                             </View>
                         </View>
+                    </View> */}
+                    <View style={styles.contentList}>
+                        <ScrollView
+                            contentContainerStyle={{ height: 'auto' }}>
+                            {noticeData.map((notice) => {
+                                return (
+                                    <View style={styles.listBoxNoImg}
+                                        key={notice.id}>
+                                        <View style={styles.contentListText}>
+                                            <Text style={styles.h3}>{notice.title}</Text>
+                                            {/* <Text style={styles.span}>글쓴이 이름</Text> */}
+                                        </View>
+                                        {/* <View style={styles.contentListSubText}>
+                                            <Text style={styles.dateText}>2023-03-31</Text>
+                                            <Text style={styles.hitText}>조회수 21</Text>
+                                        </View> */}
+                                    </View>
+                                )}
+                            )}
+                        </ScrollView>
                     </View>
                 </View>
             </View>
@@ -58,27 +90,27 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         wordBreak: 'break-all',
     },
-    announceContent: {
+    noticeContent: {
         width: '100%',
         height: '100%',
         position: 'relative',
         top: '14%',
     },
-    announceImgBackground: {
+    noticeImgBackground: {
         position: 'relative',
         width: '100%',
         height: '20%',
         display: 'flex',
         alignItems: 'flex-end',
     },
-    announceImg: {
+    noticeImg: {
         // width: 460,
         // height: 185,
         width: 415,
         height: 168,
         left: -1,
     },
-    announceBtnView: {
+    noticeBtnView: {
         position: 'absolute',
         bottom: 0,
         left: 0,
@@ -87,7 +119,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         paddingVertical: '5%',
     },
-    announceBtnLinear: {
+    noticeBtnLinear: {
         display: 'flex',
         borderRadius: 10,
         borderWidth: 0,
@@ -99,12 +131,12 @@ const styles = StyleSheet.create({
         marginLeft: '4%',
         marginBottom: '6%',
     },
-    announceBtn: {
+    noticeBtn: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
     },
-    announceBtnText: {
+    noticeBtnText: {
         fontWeight: 700,
         fontSize: 13,
         lineHeight: 17,
@@ -119,7 +151,7 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         paddingLeft: '4%',
-        height: '17%',
+        height: '6%',
         width: '100%',
         borderBottomWidth: 1,
         borderBottomColor: 'rgba(214, 214, 214, 0.44)',
@@ -135,6 +167,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         borderBottomWidth: 1,
         borderBottomColor: 'rgba(214, 214, 214, 0.44)',
+        height: '75%',
     },
     listBoxNoImg: {
         flexDirection: 'column',
