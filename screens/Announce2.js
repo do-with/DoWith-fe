@@ -3,11 +3,12 @@ import { StyleSheet, View, Image, Text, Pressable, ScrollView } from 'react-nati
 import { ScreenHeader } from '../components/ScreenHeader';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
+import { ipAddress } from '../ipAddress';
 
 export default function Announce2({navigation}){
     const [noticeData, setNoticeData] = useState([]);
     useEffect(() => {
-        axios.get('http://172.20.10.4:8888/Notices')
+        axios.get(`http://${ipAddress}:8888/Notices`)
             .then(response => {
                 setNoticeData(response.data.Notices)
                 console.log(response.data);

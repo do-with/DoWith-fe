@@ -4,12 +4,13 @@ import { ScreenHeader } from '../components/ScreenHeader';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import { ScrollView } from 'react-native-gesture-handler';
+import { ipAddress } from '../ipAddress';
 
 export default function Announce1({navigation}){
     const [apiData, setApiData] = useState([]);
     //나머지는 진주랑 얘기해서 저장 형태 결정
     useEffect(() => {
-        axios.get('http://172.20.10.4:8888/Announces')
+        axios.get(`http://${ipAddress}:8888/Announces`)
             .then(response => {
                 setApiData(response.data.announce)
                 console.log("data-first:", response.data);
