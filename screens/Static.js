@@ -12,8 +12,9 @@ export default function Static({navigation}){
     const [modalVisible, setModalVisible] = useState(false);
     const [money, setMoney] = useState(null); // 후원금액 get
     const [count, setCount] = useState(null); // 기부 참여자 수 get
-    const [area, setArea] = useState('제주');
+    const [area, setArea] = useState('제주'); // 지역 이름
     const [selectedButtonIndex, setSelectedButtonIndex] = useState(null); // 선택된 버튼의 인덱스 저장
+    const [areaNum, setAreaNum] = useState(0); // 지역 번호
     
     useEffect(() => {
         axios.get(`http://${ipAddress}:8080/user/count`)
@@ -21,43 +22,70 @@ export default function Static({navigation}){
             .catch(error => console.log(error))
     }, []);
 
-    // JSON 파일 가져와서 그래프 데이터 설정
-    // const [graphData, setGraphData] = useState([]);
-    // useEffect(() => {
-    //     const jsonData = require('./data.json');
-    //     const data = jsonData.map((item) => item.value);
-    //     setGraphData(data);
-    //   }, []);
-
-    const ringGraphData = [0.4];
+    const [preferTitle, setPreferTitle] = useState([]); // 차트 데이터
+    const [preferValue, setPreferValue] = useState([]); 
+    useEffect(() => {
+        axios.get(`http://${ipAddress}:8888/preferItem/${areaNum}`)
+            .then(response => {
+                setPreferTitle(response.data.prefer_title);
+                setPreferValue(response.data.prefer_value)
+                console.log(response.data.prefer_title);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, [areaNum]);
 
     const barGraphData = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        labels: preferTitle,
         datasets: [
-          {
-            data: [20, 45, 28, 80, 99, 43],
-          },
+            {
+                data: preferValue,
+            },
         ],
     };
 
+    const [preferData, setPreferData] = useState([]); // 부족 물품 데이터
+    useEffect(() => {
+        axios.get(`http://${ipAddress}:8888/preferItem/top3/${areaNum}`)
+            .then(response => {
+                setPreferData(response.data.top_three);
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }, [areaNum]);
+
+    const ringGraphData = [0.4];
+
+    // const barGraphData = {
+    //     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+    //     datasets: [
+    //       {
+    //         data: [20, 45, 28, 80, 99, 43],
+    //       },
+    //     ],
+    // };
+
     const areaMappings = {
-        서울: 2,
-        부산: 3,
-        대구: 4,
-        인천: 5,
-        광주: 6,
-        대전: 7,
-        울산: 8,
-        경기: 9,
-        강원: 10,
-        충북: 11,
-        충남: 12,
-        전북: 13,
-        전남: 14,
-        경북: 15,
-        경남: 16,
-        제주: 17,
-        세종: 20,
+        서울: 1,
+        부산: 2,
+        대구: 3,
+        인천: 4,
+        광주: 5,
+        대전: 6,
+        울산: 7,
+        경기: 8,
+        강원: 9,
+        충북: 10,
+        충남: 11,
+        전북: 12,
+        전남: 13,
+        경북: 14,
+        경남: 15,
+        제주: 16,
+        세종: 17,
     };
     
     const areas = [
@@ -86,6 +114,7 @@ export default function Static({navigation}){
 
     const onPressArea = (area) => {
         setArea(area);
+        setAreaNum(areaMappings[area]);
         setModalVisible(false);
         setSelectedButtonIndex(area);
     };
@@ -154,10 +183,10 @@ export default function Static({navigation}){
                             style={styles.summaryBox}>
                             <View>
                                 <Text style={{fontWeight: 500, fontSize: 15, color: 'rgba(5,5,5,0.61)'}}>
-                                    {area} 선호 물품은
+                                    {area} 부족 물품은
                                 </Text>
                                 <Text style={{fontWeight: 500, fontSize: 17}}>
-                                    1위 라면, 2위 김밥, 3위 샴푸입니다!
+                                    1위 {preferData[0]}, 2위 {preferData[1]}, 3위 {preferData[2]}입니다!
                                 </Text>
                             </View>
                         </LinearGradient>
@@ -165,7 +194,9 @@ export default function Static({navigation}){
 
                     <View>
                         <Text style={styles.lineText}>기부 물품 현황</Text>
-                            <BarGraph data={barGraphData} />
+                            {preferTitle.length > 0 && (
+                                    <BarGraph data={barGraphData} />
+                            )}
                     </View>
                 </View>
 
@@ -234,7 +265,7 @@ const styles = StyleSheet.create({
         lineHeight: 25,
     },
     graphBoxContainer: {
-        height: '33%',
+        height: '28%',
         marginBottom: '1%',
     },
     graphBox: {
@@ -243,7 +274,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#fff',
-        height: '83%',
+        height: '75%',
         marginBottom: '2%',
         borderRadius: 8,
         shadowColor: "#000",
@@ -261,8 +292,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     bottomContainer: {
-        height: '60%',
-        justifyContent: 'space-between',
+        height: '65%',
+        justifyContent: 'space-around',
     },
     titleView: {
         flexDirection: 'row',

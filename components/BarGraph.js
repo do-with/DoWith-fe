@@ -8,9 +8,7 @@ const BarGraph = ({ data }) => {
         backgroundGradientFromOpacity: 1,
         backgroundGradientTo: "white",
         backgroundGradientToOpacity: 1,
-        // backgroundColor: '#fff',
-        // backgroundGradientFrom: '#fb8c00',
-        // backgroundGradientTo: '#ffa726',
+        barPercentage: 0.2, // 막대의 너비 조정
         decimalPlaces: 0,
         color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
         style: {
@@ -23,9 +21,9 @@ const BarGraph = ({ data }) => {
             <BarChart
                 data={data}
                 width={350}
-                height={200}
+                height={290}
                 chartConfig={chartConfig}
-                verticalLabelRotation={10}
+                verticalLabelRotation={90}
             />
       </View>
     )
@@ -34,19 +32,10 @@ const BarGraph = ({ data }) => {
 const styles = StyleSheet.create({
     chartContainer: {
         display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
-        height: '60%',
+        height: '70%',
         borderRadius: 8,
         overflow: 'hidden',
-        // shadowColor: "#000",
-        // shadowOffset: {
-        //     width: 2,
-        //     height: 3,
-        // },
-        // shadowOpacity: 0.11,
-        // shadowRadius: 4,
     },
 });
 
